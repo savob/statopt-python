@@ -8,7 +8,7 @@ from generateSettingsLimits import generateSettingsLimits
 
 # Begin simulation
 print('----------Preparing Simulation----------')
-startTime = time.time() # Get start (clock)time
+startTime = time.time() # Get start (clock) time
 
 simSettings = generateUserSettings()
 print('Simulation Settings Loaded')
@@ -22,7 +22,7 @@ print('Simulation Settings Limits Set')
 # End Simulation
 print('----------Simulation Complete----------')
 endTime = time.time()
-print('Elapsed time is {:.3f} seconds.'.format(endTime - startTime))
+print('{:.3f} seconds elapsed since starting the script.'.format(endTime - startTime))
 
 quit()
 
@@ -33,7 +33,7 @@ quit()
 # Ensure settings meet requirements
 [simSettings, simResults] = CheckSettings(simSettings, simResults)
 
-# Analyze and Adapt Link
+## Analyze and Adapt Link
 
 # Update channel
 simResults = GenerateTransferFunction(simSettings, simResults)
