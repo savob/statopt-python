@@ -44,8 +44,9 @@ class plottingSettings:
 
 @dataclass
 class codingGainSettings:
-    addCoding: bool = False
     gain: valueWithLimits
+    addCoding: bool = False
+    
 
 @dataclass
 class generalSettings:
@@ -75,8 +76,7 @@ class generalSettings:
 
 @dataclass
 class adaptionSettings:
-    adapt: bool = False
-    
+
     # Adaption complexity
     totalParents: valueWithLimits
     childrenPerParent: valueWithLimits
@@ -86,42 +86,42 @@ class adaptionSettings:
 
     knobs: List[str]
 
+    adapt: bool = False
+
 
 @dataclass
 class distortionSetting:
+    fileName: str
     addDistortion: bool = False
-    fileName: str = 'distortionTX.mat'
+    
 
 @dataclass
 class noiseSettings:
-    addNoise: bool = False
     stdDeviation: valueWithLimits   # TX random noise standard diviation [V]
     amplitude: valueWithLimits      # TX deterministic noise amplitude [V]
     frequency: valueWithLimits      # TX deterministic noise frequency [Hz]
     noiseDensity: valueWithLimits   # Noise density [V^2/Hz]
+    addNoise: bool = False
 
 @dataclass
 class jitterSettings:
-    addJitter: bool = False
     stdDeviation: valueWithLimits # TX random jitter standard diviation [UI]
     amplitude: valueWithLimits    # TX deterministic jitter amplitude [UI]
     DCD: valueWithLimits          # TX duty-cycle distortion jitter [UI]
+    addJitter: bool = False
 
 @dataclass
 class equalizerSettings:
-    addEqualization: bool = False
     preTaps: List[valueWithLimits]
     mainTap: valueWithLimits 
     postTaps: List[valueWithLimits]
+    addEqualization: bool = False
 
 
 @dataclass
 class transmitterSettings:
     # Maximum amplitude [V]
     signalAmplitude: valueWithLimits
-    
-    # Add source impedance (drop amplitude by half)
-    includeSourceImpedance: bool = True
     
     # Rise/fall time [s]
     tRise: valueWithLimits
@@ -145,20 +145,23 @@ class transmitterSettings:
     # Distortion
     distortion: distortionSetting
 
-@dataclass
-class preAmpSettings:
-    addGain: bool = False
-    gain: float
+    # Add source impedance (drop amplitude by half)
+    includeSourceImpedance: bool = True
 
 @dataclass
-class CTLESettings:
-    addEqualization: bool = False    
+class preAmpSettings:
+    gain: valueWithLimits
+    addGain: bool = False
+
+@dataclass
+class CTLESettings: 
     zeroFreq: valueWithLimits       # frequency of first zero [Hz]
     zeroNumb: valueWithLimits       # number of zeros
     pole1Freq: valueWithLimits      # frequency of first pole [Hz]
     pole1Numb: valueWithLimits      # number of first poles
     pole2Freq: valueWithLimits      # frequency of additional poles [Hz]
     pole2Numb: valueWithLimits      # number of additional poles
+    addEqualization: bool = False   
 
 @dataclass
 class receiverSettings:
@@ -189,22 +192,31 @@ class receiverSettings:
 
 @dataclass
 class channelSettings:
-    # Apply channel/cross-talk
-    addChannel: bool = True
-    addCrossTalk: bool = True
+        # Channel file names (ensure channel data has same frequency points)
+    fileNameThru: str
+    fileNamesNEXT: List[str]
+    fileNamesFEXT: List[str]
+
+    # Noise
+    noise: noiseSettings
+
+    overrideFileName: str 
+
+    modelCircuitTFName: str
+    
+
     
     # Add notch (must update transfer function)
-    addNotch: bool = False
     notchFreq: valueWithLimits      # frequency of notch
     notchAttenuation: valueWithLimits # attenuation at notch [dB]
+    addNotch: bool = False
        
     # Convolve pulse response (convolve all channels with additional transfer function, must update transfer function)
     modelCircuitTF: bool = False
-    modelCircuitTFName: str
-    
+
     # Override channel pulse response (must have same over-sampling frequency)
     overrideResponse: bool = False
-    overrideFileName: str 
+    
     
     # Approximate cross-talk to speed up simulation
     approximate: bool = True
@@ -212,13 +224,10 @@ class channelSettings:
     # Make cross-talk channels asynchronous
     makeAsynchronous: bool = True
 
-    # Channel file names (ensure channel data has same frequency points)
-    fileNameThru: str
-    fileNamesNEXT: List[str]
-    fileNamesFEXT: List[str]
+    # Apply channel/cross-talk
+    addChannel: bool = True
+    addCrossTalk: bool = True
 
-    # Noise
-    noise: noiseSettings
 
 
 # The complete compiled class for all simulation settings
