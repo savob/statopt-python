@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import List
 
 # Generic dataclass for any value that may have an associated increment and limits for both.
-@dataclass
+@dataclass(init=False)
 class valueWithLimits: 
     value: float = float("nan")
     maxValue: float = float("nan")
@@ -10,6 +10,9 @@ class valueWithLimits:
     increment: float = float("nan")
     minIncrement: float = float("nan")
     maxIncrement: float = float("nan")
+
+    def __init__(self, val: float):
+        self.value = val
 
 @dataclass
 class plottingSettings:
