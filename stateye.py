@@ -1,36 +1,31 @@
-from dataclasses import dataclass
+import time # Used for timing exectution
+from generateUserSettingsExampleECE1392 import generateUserSettings # Change the 'from' file to desired file
+from generateSettingsLimits import generateSettingsLimits
 
-#@dataclass
-class userSettings:
-    x: int
-    y: int
 
-test = userSettings()
 
-test.x = 8
-#test.y.u = 0
 
-print(test)
 
-test.a = lambda:None
+# Begin simulation
+print('----------Preparing Simulation----------')
+startTime = time.time() # Get start (clock)time
 
-setattr(test.a, "p", 16)
+simSettings = generateUserSettings()
+print('Simulation Settings Loaded')
+generateSettingsLimits(simSettings)
+print('Simulation Settings Limits Set')
 
-print(test.a.p)
+
+
+
+
+# End Simulation
+print('----------Simulation Complete----------')
+endTime = time.time()
+print('Elapsed time is {:.3f} seconds.'.format(endTime - startTime))
 
 quit()
 
-# Begin Simulation
-print('----------Begining Simulation----------')
-
-### Define Simulation Settings
-# Generate user settings
-
-simSettings = GenerateUserSettingsExample_ECE1392_A1() # Example for Assignment 1 of ECE1392
-
-
-# Generate settings limits
-simSettings = GenerateSettingsLimits(simSettings)
 
 # Initialize simulation
 [simSettings, simResults] = InitializeSimulation(simSettings)
@@ -93,7 +88,3 @@ DisplayBER(simSettings, simResults)
 # Display final results
 DisplayResults(simSettings, simResults)
 DisplayAdaption(simSettings, simResults)
-
-# End Simulation
-print('----------Simulation Complete----------')
-print(['Elapsed time is ',num2str(round(toc,1)),' seconds.'])
