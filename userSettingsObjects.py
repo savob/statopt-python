@@ -213,7 +213,9 @@ class channelSettings:
     makeAsynchronous: bool = True
 
     # Channel file names (ensure channel data has same frequency points)
-    fileNames: dict
+    fileNameThru: str
+    fileNamesNEXT: List[str]
+    fileNamesFEXT: List[str]
 
     # Noise
     noise: noiseSettings
