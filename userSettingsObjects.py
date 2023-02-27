@@ -51,7 +51,10 @@ class codingGainSettings:
 @dataclass
 class generalSettings:
     symbolRate: valueWithLimits = valueWithLimits() #symbol rate [S/s] (or 2x frequency [Hz])
-        
+    symbolPeriod: valueWithLimits = valueWithLimits()
+    sampleRate: valueWithLimits = valueWithLimits()
+    samplePeriod: valueWithLimits = valueWithLimits()
+
     # Signaling mode ('standard','1+D','1+0.5D','clock')
     signalingMode: str = 'standard'
     
@@ -64,10 +67,13 @@ class generalSettings:
     # Resolution
     samplesPerSymb: valueWithLimits = valueWithLimits() # horizontal resolution
     yAxisLength: valueWithLimits = valueWithLimits()    # vertical resolution (must be odd)
+    yIncrement: valueWithLimits = valueWithLimits()
     
     # General display
     numbSymb: valueWithLimits = valueWithLimits()    # number of symbols to plot
     contLevels: valueWithLimits = valueWithLimits() # number of contour levels
+    levelNumb: valueWithLimits = valueWithLimits()
+    samplerNumb: valueWithLimits = valueWithLimits()
         
     # Target BER
     targetBER: valueWithLimits = valueWithLimits() # used for measurement purposes
@@ -87,6 +93,8 @@ class adaptionSettings:
     mode1Generations: valueWithLimits = valueWithLimits()# coarse adjustment
     mode2Generations: valueWithLimits = valueWithLimits() # fine adjustment
 
+    totalSimulations: valueWithLimits = valueWithLimits()
+    totalPopulation: valueWithLimits = valueWithLimits()
 
 @dataclass
 class distortionSetting:
@@ -126,6 +134,7 @@ class transmitterSettings:
     # Impulse cursor length
     preCursorCount: valueWithLimits = valueWithLimits()
     postCursorCount: valueWithLimits = valueWithLimits()
+    cursorCount: valueWithLimits = valueWithLimits()
     tRise: valueWithLimits = valueWithLimits() # Rise/fall time [s]
 
     EQ: equalizerSettings = equalizerSettings() # Pre-emphasis
