@@ -11,7 +11,7 @@ class valueWithLimits:
     minIncrement: float = float("nan")
     maxIncrement: float = float("nan")
 
-    def __init__(self, val: float):
+    def __init__(self, val: float = float("nan")):
         self.value = val
 
 @dataclass
