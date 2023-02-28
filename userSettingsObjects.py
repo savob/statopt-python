@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List
+from numpy import ndarray, empty
 
 # Generic dataclass for any value that may have an associated increment and limits for both.
 @dataclass(init=False)
@@ -13,6 +14,10 @@ class valueWithLimits:
 
     def __init__(self, val: float = float("nan")):
         self.value = val
+
+@dataclass
+class valueList:
+    value: ndarray = empty(0)
 
 @dataclass
 class plottingSettings:
@@ -66,8 +71,11 @@ class generalSettings:
     
     # Resolution
     samplesPerSymb: valueWithLimits = valueWithLimits() # horizontal resolution
+    yAxis: valueList = valueList()
     yAxisLength: valueWithLimits = valueWithLimits()    # vertical resolution (must be odd)
     yIncrement: valueWithLimits = valueWithLimits()
+    xAxisCenter: valueList = valueList()
+    xAxisLong: valueList = valueList()
     
     # General display
     numbSymb: valueWithLimits = valueWithLimits()    # number of symbols to plot
@@ -79,6 +87,15 @@ class generalSettings:
     targetBER: valueWithLimits = valueWithLimits() # used for measurement purposes
 
     plotting: plottingSettings = plottingSettings()
+
+@dataclass
+class originalSettings:
+    modulation: valueWithLimits = valueWithLimits()
+    levelNumb: valueWithLimits = valueWithLimits()
+    samplerNumb: valueWithLimits = valueWithLimits()
+    preCursorCount: valueWithLimits = valueWithLimits()
+    postCursorCount: valueWithLimits = valueWithLimits()
+    cursorCount: valueWithLimits = valueWithLimits()
 
 @dataclass
 class adaptionSettings:
@@ -95,6 +112,9 @@ class adaptionSettings:
 
     totalSimulations: valueWithLimits = valueWithLimits()
     totalPopulation: valueWithLimits = valueWithLimits()
+
+    speedUpSim: bool = False
+    savedSettings: originalSettings = originalSettings()
 
 @dataclass
 class distortionSetting:

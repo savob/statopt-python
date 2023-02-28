@@ -1,7 +1,7 @@
 import time # Used for timing exectution
 from generateUserSettingsExampleECE1392 import generateUserSettings # Change the 'from' file to desired file
 from generateSettingsLimits import generateSettingsLimits
-
+from initializeSimulation import initializeSimulation
 
 
 
@@ -11,11 +11,11 @@ print('----------Preparing Simulation----------')
 startTime = time.time() # Get start (clock) time
 
 simSettings = generateUserSettings()
-print('Simulation Settings Loaded')
+print('Simulation settings Loaded')
 generateSettingsLimits(simSettings)
-print('Simulation Settings Limits Set')
-
-
+print('Simulation settings limits Set')
+simResults = initializeSimulation(simSettings) # Really just adds a bunch of settings and prepares simulation result object
+print('User-dependant settings set')
 
 
 
@@ -26,9 +26,6 @@ print('{:.3f} seconds elapsed since starting the script.'.format(endTime - start
 
 quit()
 
-
-# Initialize simulation
-[simSettings, simResults] = InitializeSimulation(simSettings)
 
 # Ensure settings meet requirements
 [simSettings, simResults] = CheckSettings(simSettings, simResults)
