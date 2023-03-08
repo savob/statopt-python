@@ -2,9 +2,7 @@ import time # Used for timing exectution
 from generateUserSettingsExampleECE1392 import generateUserSettings # Change the 'from' file to desired file
 from generateSettingsLimits import generateSettingsLimits
 from initializeSimulation import initializeSimulation
-
-
-
+from checkSettings import checkSettings
 
 # Begin simulation
 print('----------Preparing Simulation----------')
@@ -15,7 +13,8 @@ print('Simulation settings Loaded')
 generateSettingsLimits(simSettings)
 print('Simulation settings limits Set')
 simResults = initializeSimulation(simSettings) # Really just adds a bunch of settings and prepares simulation result object
-print('User-dependant settings set')
+print('User-dependant settings generated')
+checkSettings(simSettings, simResults)
 
 
 
