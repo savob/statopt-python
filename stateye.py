@@ -25,10 +25,6 @@ print('{:.3f} seconds elapsed since starting the script.'.format(endTime - start
 
 quit()
 
-
-# Ensure settings meet requirements
-[simSettings, simResults] = CheckSettings(simSettings, simResults)
-
 ## Analyze and Adapt Link
 
 # Update channel

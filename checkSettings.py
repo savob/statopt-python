@@ -340,7 +340,7 @@ def checkSimTime(simSettings: simulationSettings):
     
     
     # Determine approximate simulation time
-    # TODO: Update these coefficients with tests from Python (these are the ones taken from MATLAB)
+    # TODO: #1 Update these coefficients with tests from Python (these are the ones taken from MATLAB)
     simTime = [0, 0, 0, 0, 0, 0, 0]
     simTime[0] = 0.8 * chanNumb                                     # Generate sources
     simTime[1] = 2e-2 * chanNumb                                    # Generate pulse response
