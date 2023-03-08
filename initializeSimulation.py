@@ -1,5 +1,5 @@
 from userSettingsObjects import simulationSettings
-from numpy import arange
+from numpy import linspace, arange
 from dataclasses import dataclass
 
 @dataclass
@@ -54,10 +54,11 @@ def addGeneralSettings(simSettings: simulationSettings):
     
     # Define axis
     simSettings.general.yIncrement.value = 2*simSettings.receiver.signalAmplitude.value/(simSettings.general.yAxisLength.value-1)
-    simSettings.general.yAxis.value = arange(-simSettings.receiver.signalAmplitude.value, simSettings.receiver.signalAmplitude.value, simSettings.general.yIncrement.value)
-    simSettings.general.yAxisLength.value = len(simSettings.general.yAxis.value)
-    simSettings.general.xAxisCenter.value = arange(-0.5*simSettings.general.samplesPerSymb.value, 0.5*simSettings.general.samplesPerSymb.value)*simSettings.general.samplePeriod.value
-    simSettings.general.xAxisLong.value = arange(0, simSettings.general.samplesPerSymb.value*simSettings.general.numbSymb.value-1)*simSettings.general.samplePeriod.value
+    simSettings.general.yAxisLength.value = 1 + 2 * int(simSettings.receiver.signalAmplitude.value / simSettings.general.yIncrement.value) # Determine length from increment and add one for zero
+    simSettings.general.yAxis.value = linspace(-simSettings.receiver.signalAmplitude.value, simSettings.receiver.signalAmplitude.value, simSettings.general.yAxisLength.value)
+    samplesPerSymbol = simSettings.general.samplesPerSymb.value
+    simSettings.general.xAxisCenter.value = linspace(-0.5*samplesPerSymbol, 0.5*samplesPerSymbol, samplesPerSymbol + 1)*simSettings.general.samplePeriod.value
+    simSettings.general.xAxisLong.value = arange(samplesPerSymbol * simSettings.general.numbSymb.value-1) * simSettings.general.samplePeriod.value
 
 
 ###########################################################################
