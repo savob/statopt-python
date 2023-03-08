@@ -97,7 +97,7 @@ def generateUserSettings():
     # Pre-emphasis
     simSettings.transmitter.EQ.addEqualization = False
     simSettings.transmitter.EQ.preTaps = [valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0)]
-    # simSettings.transmitter.EQ.taps.main.value  =  1.00 # calculated automatically
+    # simSettings.transmitter.EQ.mainTap.value  =  1.00 # calculated automatically
     simSettings.transmitter.EQ.postTaps = [valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0)]
 
     # Jitter
@@ -109,7 +109,6 @@ def generateUserSettings():
     # Noise
     simSettings.transmitter.noise.addNoise = True
     simSettings.transmitter.noise.stdDeviation.value = sqrt(pow(simSettings.transmitter.signalAmplitude.value,2) / 2 / pow(10, (6*6.01+1.76)/10)) # TX random noise standard diviation [V]
-    
     simSettings.transmitter.noise.amplitude.value = 0    # TX deterministic noise amplitude [V]
     simSettings.transmitter.noise.frequency.value = 1e6  # TX deterministic noise frequency [Hz]
 
