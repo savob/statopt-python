@@ -122,13 +122,13 @@ class distortionSetting:
     fileName: str = ''
     
 
-@dataclass
 class noiseSettings:
-    addNoise: bool = False
-    stdDeviation: valueWithLimits = valueWithLimits()   # TX random noise standard diviation [V]
-    amplitude: valueWithLimits = valueWithLimits()      # TX deterministic noise amplitude [V]
-    frequency: valueWithLimits = valueWithLimits()      # TX deterministic noise frequency [Hz]
-    noiseDensity: valueWithLimits = valueWithLimits()   # Noise density [V^2/Hz]
+    def __init__(self):
+        self.addNoise: bool = False
+        self.stdDeviation: valueWithLimits = valueWithLimits()   # TX random noise standard diviation [V]
+        self.amplitude: valueWithLimits = valueWithLimits()      # TX deterministic noise amplitude [V]
+        self.frequency: valueWithLimits = valueWithLimits()      # TX deterministic noise frequency [Hz]
+        self.noiseDensity: valueWithLimits = valueWithLimits()   # Noise density [V^2/Hz]
 
 @dataclass
 class jitterSettings:
@@ -137,12 +137,13 @@ class jitterSettings:
     amplitude: valueWithLimits = valueWithLimits()    # TX deterministic jitter amplitude [UI]
     DCD: valueWithLimits = valueWithLimits()          # TX duty-cycle distortion jitter [UI]
 
-@dataclass
+
 class equalizerSettings:
-    addEqualization: bool = False
-    preTaps: list = field(default_factory=lambda : [])
-    mainTap: valueWithLimits = valueWithLimits() 
-    postTaps: list = field(default_factory=lambda : [])
+    def __init__(self):
+        self.addEqualization = False
+        self.preTaps = []
+        self.mainTap = valueWithLimits() 
+        self.postTaps = []
 
 
 @dataclass
