@@ -81,7 +81,7 @@ def addTransmitterSettings(simSettings: simulationSettings):
     addLimits(simSettings.transmitter.cursorCount,100,1,1)
     
     # Pre-emphasis
-    addLimits(simSettings.transmitter.EQ.mainTap,1,-1,0.05) # add main tap individually
+    addLimits(simSettings.transmitter.EQ.mainTap,1,0,0.05) # add main tap individually
     for tap in simSettings.transmitter.EQ.preTaps:
         addLimits(tap,1,-1,0.05)
     for tap in simSettings.transmitter.EQ.postTaps:
