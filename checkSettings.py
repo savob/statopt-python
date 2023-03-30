@@ -191,14 +191,14 @@ def checkChannelSettings(simSettings: simulationSettings):
     
     # Check channel files for allowed extensions
     for iteration, filename in enumerate(simSettings.channel.fileNamesNEXT):
-        if (filename[-4:] != '.s4p') and (filename[-4:] != '.mat'):
+        if (filename[-4:] != '.s4p'):
             print('Invalid file extension for NEXT file {0:d}, with filename of "{1}"'.format(iteration, filename))
-            error('unknown channel file type detected, please ensure using .s4p or .mat files!')
+            error('unknown channel file type detected, please ensure using .s4p files!')
 
     for iteration, filename in enumerate(simSettings.channel.fileNamesFEXT):
-        if (filename[-4:] != '.s4p') and (filename[-4:] != '.mat'):
+        if (filename[-4:] != '.s4p'):
             print('Invalid file extension for FEXT file {0:d}, with filename of "{1}"'.format(iteration, filename))
-            error('unknown channel file type detected, please ensure using .s4p or .mat files!')
+            error('unknown channel file type detected, please ensure using .s4p or files!')
         
     
     if simSettings.channel.fileNameThru == '':
