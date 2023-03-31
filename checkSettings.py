@@ -192,7 +192,7 @@ def checkChannelSettings(simSettings: simulationSettings):
     # Check channel files for allowed extensions
     for channel in simSettings.channel.fileNames.__dict__:
         if (simSettings.channel.fileNames.__dict__[channel][-4:] != '.s4p'):
-            print('Invalid file extension for channel file with filename of "{0}"'.format(filename))
+            print('Invalid file extension for channel file with filename of "{0}"'.format(simSettings.channel.fileNames.__dict__[channel]))
             error('unknown channel file type detected, please ensure using .s4p files!')
         
     
