@@ -44,11 +44,6 @@ import numpy as np
 from math import isnan
 from scipy import signal, optimize
 
-delayFactor = 0.98 # Between 0 and 1 inclusive
-
-
-
-
 
 def generateTransferFunction(simSettings: simulationSettings, simResults: simulationStatus):
     
@@ -392,8 +387,11 @@ def updateFile(simSettings: simulationSettings, simResults: simulationStatus):
     #simResults.channelData.(fileName(1:end-4)) = .(name)
     data = simResults.channelData
 
+    '''
+    Temporarily disable  saving channel data to simplify start
+    
     with open('ChannelData.pkl', 'wb') as f:
         pickle.dump(data, f)
-
-    print('ChannelData.pkl file created')
+        print('ChannelData.pkl file created')
+    '''
 
