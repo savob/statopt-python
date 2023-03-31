@@ -143,9 +143,14 @@ def generateUserSettings():
     simSettings.channel.makeAsynchronous = True
 
     # Channel file names (ensure channel data has same frequency points)
-    simSettings.channel.fileNameThru = 'C2M__Z100_IL14_WC_BOR_H_L_H_THRU.s4p'
-    simSettings.channel.fileNamesNEXT = ['C2M__Z100_IL14_WC_BOR_H_L_H_NEXT1.s4p', 'C2M__Z100_IL14_WC_BOR_H_L_H_NEXT2.s4p', 'C2M__Z100_IL14_WC_BOR_H_L_H_NEXT3.s4p', 'C2M__Z100_IL14_WC_BOR_H_L_H_NEXT4.s4p']
-    simSettings.channel.fileNamesFEXT = ['C2M__Z100_IL14_WC_BOR_H_L_H_FEXT1.s4p', 'C2M__Z100_IL14_WC_BOR_H_L_H_FEXT2.s4p', 'C2M__Z100_IL14_WC_BOR_H_L_H_FEXT3.s4p']
+    simSettings.channel.fileNames.thru = 'C2M__Z100_IL14_WC_BOR_H_L_H_THRU.s4p'
+    simSettings.channel.fileNames.next1 = 'C2M__Z100_IL14_WC_BOR_H_L_H_NEXT1.s4p'
+    simSettings.channel.fileNames.next2 = 'C2M__Z100_IL14_WC_BOR_H_L_H_NEXT2.s4p'
+    simSettings.channel.fileNames.next3 = 'C2M__Z100_IL14_WC_BOR_H_L_H_NEXT3.s4p'
+    simSettings.channel.fileNames.next4 = 'C2M__Z100_IL14_WC_BOR_H_L_H_NEXT4.s4p'
+    simSettings.channel.fileNames.fext1 = 'C2M__Z100_IL14_WC_BOR_H_L_H_FEXT1.s4p'
+    simSettings.channel.fileNames.fext2 = 'C2M__Z100_IL14_WC_BOR_H_L_H_FEXT2.s4p'
+    simSettings.channel.fileNames.fext3 = 'C2M__Z100_IL14_WC_BOR_H_L_H_FEXT3.s4p'
 
     # Noise
     simSettings.channel.noise.addNoise = True

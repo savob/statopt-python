@@ -190,21 +190,16 @@ def checkChannelSettings(simSettings: simulationSettings):
             simSettings.general.plotting.CTLEResponse = False
     
     # Check channel files for allowed extensions
-    for iteration, filename in enumerate(simSettings.channel.fileNamesNEXT):
-        if (filename[-4:] != '.s4p'):
-            print('Invalid file extension for NEXT file {0:d}, with filename of "{1}"'.format(iteration, filename))
+    for channel in simSettings.channel.fileNames.__dict__:
+        if (simSettings.channel.fileNames.__dict__[channel][-4:] != '.s4p'):
+            print('Invalid file extension for channel file with filename of "{0}"'.format(filename))
             error('unknown channel file type detected, please ensure using .s4p files!')
-
-    for iteration, filename in enumerate(simSettings.channel.fileNamesFEXT):
-        if (filename[-4:] != '.s4p'):
-            print('Invalid file extension for FEXT file {0:d}, with filename of "{1}"'.format(iteration, filename))
-            error('unknown channel file type detected, please ensure using .s4p or files!')
         
     
-    if simSettings.channel.fileNameThru == '':
+    if simSettings.channel.fileNames.thru == False:
         error('must have file for thruough channel!')
         
-    numberOfChannelFiles = 1 + len(simSettings.channel.fileNamesFEXT) + len(simSettings.channel.fileNamesNEXT)
+    numberOfChannelFiles = len(simSettings.channel.fileNames.__dict__)
     if simSettings.channel.addCrossTalk and (numberOfChannelFiles < 2):
         warn('to have cross-talk, must add references to more than one channel!')
     
@@ -327,7 +322,7 @@ def checkSimTime(simSettings: simulationSettings):
         if xTalkApprox:
             chanNumb = 2
         else:
-            chanNumb = len(channels.fileNamesFEXT) + len(channels.fileNamesNEXT) + (channels.fileNameThru != '')
+            chanNumb = len(channels.fileNames)
     else:
         chanNumb = 1
     

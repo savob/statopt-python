@@ -191,6 +191,9 @@ class receiverSettings:
     noise: noiseSettings = noiseSettings()
     distortion: distortionSetting = distortionSetting()
 
+@dataclass
+class fileNamesHolder:
+    pass
 
 @dataclass
 class channelSettings:
@@ -222,9 +225,7 @@ class channelSettings:
     makeAsynchronous: bool = True
 
     # Channel file names (ensure channel data has same frequency points)
-    fileNameThru: str = ''
-    fileNamesNEXT: list = field(default_factory=lambda : [])
-    fileNamesFEXT: list = field(default_factory=lambda : [])
+    fileNames: fileNamesHolder = fileNamesHolder()
 
 
 # The complete compiled class for all simulation settings
