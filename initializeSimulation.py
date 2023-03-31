@@ -1,15 +1,43 @@
 from userSettingsObjects import simulationSettings
-from numpy import linspace, arange
+from numpy import linspace, arange, array
 from dataclasses import dataclass
 
 @dataclass
 class simulationResults:
     successful: bool = True
 
-@dataclass
+
+class channelInfluence:
+    tranferFunction: array
+    frequencies: array
+
+    def __init__(self, tf = array((1), dtype='complex128'), freq = array(1,)):
+        self.tranferFunction = tf
+        self.frequencies = freq
+
+class channelsThatInfluence:
+    thru: channelInfluence
+
+    def __init__(self):
+        self.thru = channelInfluence()
+
+class influenceSourcesClass:
+    channel: channelsThatInfluence
+
+    def __init__(self):
+        self.channel = channelsThatInfluence()
+
 class simulationStatus:
-    finished: bool = False
-    resuls: simulationResults = simulationResults()
+
+    def __init__(self):
+        self.finished: bool = False
+        self.results: simulationResults = simulationResults()
+        self.influenceSources: influenceSourcesClass = influenceSourcesClass()
+
+        self.channelData = channelsThatInfluence() # will have a 'thru' channel but I think that's fine
+
+
+        
 
 
 def initializeSimulation(simSettings: simulationSettings):

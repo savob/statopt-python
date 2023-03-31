@@ -133,5 +133,6 @@ dmypy.json
 *.mat
 StatEye_MATLAB/
 
-# Exclude Touchstone files
+# Exclude Touchstone files and pickled summaries
 *.s4p
+*.pkl

@@ -3,6 +3,7 @@ from generateUserSettingsExampleECE1392 import generateUserSettings # Change the
 from generateSettingsLimits import generateSettingsLimits
 from initializeSimulation import initializeSimulation
 from checkSettings import checkSettings
+from generateTransferFunction import generateTransferFunction
 
 # Begin simulation
 print('----------Preparing Simulation----------')
@@ -17,6 +18,9 @@ print('User-dependant settings generated')
 checkSettings(simSettings, simResults)
 
 
+# Start preconditioning the simulation
+generateTransferFunction(simSettings, simResults)
+
 
 # End Simulation
 print('----------Simulation Complete----------')
@@ -26,9 +30,6 @@ print('{:.3f} seconds elapsed since starting the script.'.format(endTime - start
 quit()
 
 ## Analyze and Adapt Link
-
-# Update channel
-simResults = GenerateTransferFunction(simSettings, simResults)
 
 # Generate fixed sources of influence
 simResults = GenerateFixedInfluence(simSettings, simResults)
