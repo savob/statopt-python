@@ -10,10 +10,12 @@ class simulationResults:
 class channelInfluence:
     tranferFunction: array
     frequencies: array
+    impulseResponse: array
 
-    def __init__(self, tf = array((1), dtype='complex128'), freq = array(1,)):
+    def __init__(self, tf = array((1), dtype='complex128'), freq = array(1,), impResp = array(1,)):
         self.tranferFunction = tf
         self.frequencies = freq
+        self.impulseResponse = impResp
 
 class channelsThatInfluence:
     thru: channelInfluence
