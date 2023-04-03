@@ -227,7 +227,7 @@ def generateTXJitter(simSettings: simulationSettings, simResults: simulationStat
     if(len(totalJitter)<101):
         totalJitter = np.concatenate((np.zeros(1,round(samplesPerSymb/2)), totalJitter, np.zeros(1,round(samplesPerSymb/2))))
     
-    timeScale = np.linspace(-(len(totalJitter)-1)/2*samplePeriod, (len(totalJitter)-1)/2*samplePeriod, len(totalJitter))
+    timeScale = np.linspace(-(len(totalJitter)-1)/2*samplePeriod, (len(totalJitter)-1)/2*samplePeriod, len(totalJitter) + 1)
     UIScale = timeScale/symbolPeriod
     
     # Save results
@@ -322,7 +322,7 @@ def GenerateRXJitter(simSettings: simulationSettings, simResults: simulationStat
     if(len(totalJitter)<101):
         totalJitter = np.concatenate((np.zeros((round(samplesPerSymb/2),)), totalJitter, np.zeros((round(samplesPerSymb/2),))))
     
-    timeScale = np.linspace(-(len(totalJitter)-1)/2*samplePeriod, (len(totalJitter)-1)/2*samplePeriod, len(totalJitter))
+    timeScale = np.linspace(-(len(totalJitter)-1)/2*samplePeriod, (len(totalJitter)-1)/2*samplePeriod, len(totalJitter) + 1)
     UIScale = timeScale/symbolPeriod
     
     # Save results
@@ -397,7 +397,7 @@ def CombineInfluences(simSettings: simulationSettings, simResults: simulationSta
     
     # Combine jitter
     totalJitter = np.convolve(TXJitter,RXJitter)
-    timeScale = np.linspace(-(len(totalJitter)-1)/2*samplePeriod, (len(totalJitter)-1)/2*samplePeriod, len(totalJitter))
+    timeScale = np.linspace(-(len(totalJitter)-1)/2*samplePeriod, (len(totalJitter)-1)/2*samplePeriod, len(totalJitter) + 1)
     UIScale = timeScale/symbolPeriod
     
     # Save results
