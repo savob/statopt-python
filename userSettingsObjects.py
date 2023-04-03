@@ -130,12 +130,14 @@ class noiseSettings:
         self.frequency: valueWithLimits = valueWithLimits()      # TX deterministic noise frequency [Hz]
         self.noiseDensity: valueWithLimits = valueWithLimits()   # Noise density [V^2/Hz]
 
-@dataclass
+
 class jitterSettings:
-    addJitter: bool = False
-    stdDeviation: valueWithLimits = valueWithLimits() # TX random jitter standard diviation [UI]
-    amplitude: valueWithLimits = valueWithLimits()    # TX deterministic jitter amplitude [UI]
-    DCD: valueWithLimits = valueWithLimits()          # TX duty-cycle distortion jitter [UI]
+    
+    def __init__(self):
+        self.addJitter = False
+        self.stdDeviation = valueWithLimits() # TX random jitter standard diviation [UI]
+        self.amplitude = valueWithLimits()    # TX deterministic jitter amplitude [UI]
+        self.DCD = valueWithLimits()          # TX duty-cycle distortion jitter [UI]
 
 
 class equalizerSettings:
