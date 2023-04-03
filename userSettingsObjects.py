@@ -19,6 +19,10 @@ class valueWithLimits:
 class valueList:
     value: ndarray = empty(0)
 
+class nothing:
+    def __init__(self):
+        pass
+
 @dataclass
 class plottingSettings:
     # Display responses
@@ -143,9 +147,7 @@ class jitterSettings:
 class equalizerSettings:
     def __init__(self):
         self.addEqualization = False
-        self.preTaps = []
-        self.mainTap = valueWithLimits() 
-        self.postTaps = []
+        self.taps = nothing()
 
 
 @dataclass

@@ -144,11 +144,8 @@ def checkTransmitterSettings(simSettings: simulationSettings):
     checkLimits(simSettings.transmitter.cursorCount, 'transmitter.cursorCount')
     
     # Pre-emphasis
-    for index, tap in enumerate(simSettings.transmitter.EQ.postTaps):
-        checkLimits(tap, 'transmitter.EQ.postTaps[{0:d}]'.format(index))
-    for index, tap in enumerate(simSettings.transmitter.EQ.preTaps):
-        checkLimits(tap, 'transmitter.EQ.preTaps[{0:d}]'.format(index))
-    checkLimits(simSettings.transmitter.EQ.mainTap, 'transmitter.EQ.mainTap')
+    for tap in simSettings.transmitter.EQ.taps.__dict__:
+        checkLimits(simSettings.transmitter.EQ.taps.__dict__[tap], 'transmitter.EQ.taps.{0}'.format(tap))
     
     
     # Jitter
@@ -233,19 +230,12 @@ def checkReceiverSettings(simSettings: simulationSettings):
     
     
     # FFE
-    for index, tap in enumerate(simSettings.receiver.FFE.postTaps):
-        checkLimits(tap, 'receiver.FFE.postTaps[{0:d}]'.format(index))
-    for index, tap in enumerate(simSettings.receiver.FFE.preTaps):
-        checkLimits(tap, 'receiver.FFE.preTaps[{0:d}]'.format(index))
-    checkLimits(simSettings.receiver.FFE.mainTap, 'receiver.FFE.mainTap')
-    
+    for tap in simSettings.receiver.FFE.taps.__dict__:
+        checkLimits(simSettings.receiver.FFE.taps.__dict__[tap], 'receiver.FFE.taps.{0}'.format(tap))
     
     # DFE
-    for index, tap in enumerate(simSettings.receiver.DFE.postTaps):
-        checkLimits(tap, 'receiver.DFE.postTaps[{0:d}]'.format(index))
-    for index, tap in enumerate(simSettings.receiver.DFE.preTaps):
-        checkLimits(tap, 'receiver.DFE.preTaps[{0:d}]'.format(index))
-    checkLimits(simSettings.receiver.DFE.mainTap, 'receiver.DFE.mainTap')
+    for tap in simSettings.receiver.DFE.taps.__dict__:
+        checkLimits(simSettings.receiver.DFE.taps.__dict__[tap], 'receiver.DFE.taps.{0}'.format(tap))
     
     
     # Jitter

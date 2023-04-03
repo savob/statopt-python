@@ -96,9 +96,15 @@ def generateUserSettings():
 
     # Pre-emphasis
     simSettings.transmitter.EQ.addEqualization = False
-    simSettings.transmitter.EQ.preTaps = [valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0)]
-    # simSettings.transmitter.EQ.mainTap.value  =  1.00 # calculated automatically
-    simSettings.transmitter.EQ.postTaps = [valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0)]
+    simSettings.transmitter.EQ.taps.pre3 = valueWithLimits(-0.0)
+    simSettings.transmitter.EQ.taps.pre2 = valueWithLimits(-0.0)
+    simSettings.transmitter.EQ.taps.pre1 = valueWithLimits(-0.0)
+    simSettings.transmitter.EQ.taps.main = valueWithLimits(-0.0) # calculated automatically
+    simSettings.transmitter.EQ.taps.post1 = valueWithLimits(-0.0)
+    simSettings.transmitter.EQ.taps.post2 = valueWithLimits(-0.0)
+    simSettings.transmitter.EQ.taps.post3 = valueWithLimits(-0.0)
+    simSettings.transmitter.EQ.taps.post4 = valueWithLimits(-0.0)
+    simSettings.transmitter.EQ.taps.post5 = valueWithLimits(-0.0)
 
     # Jitter
     simSettings.transmitter.jitter.addJitter = True
@@ -182,13 +188,23 @@ def generateUserSettings():
     
     # FFE
     simSettings.receiver.FFE.addEqualization = False
-    simSettings.receiver.FFE.preTaps = [valueWithLimits(0.05), valueWithLimits(-0.0), valueWithLimits(-0.0)]
-    simSettings.receiver.FFE.mainTap.value = 1.10   
-    simSettings.receiver.FFE.postTaps = [valueWithLimits(-0.30), valueWithLimits(-0.05), valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0)]
+    simSettings.receiver.FFE.taps.pre3 = valueWithLimits(0.05)
+    simSettings.receiver.FFE.taps.pre2 = valueWithLimits(-0.0)
+    simSettings.receiver.FFE.taps.pre1 = valueWithLimits(-0.0)
+    simSettings.receiver.FFE.taps.main = valueWithLimits(1.10)   
+    simSettings.receiver.FFE.taps.post1 = valueWithLimits(-0.30)
+    simSettings.receiver.FFE.taps.post2 = valueWithLimits(-0.05)
+    simSettings.receiver.FFE.taps.post3 = valueWithLimits(-0.0)
+    simSettings.receiver.FFE.taps.post4 = valueWithLimits(-0.0)
+    simSettings.receiver.FFE.taps.post5 = valueWithLimits(-0.0)
     
     # DFE
     simSettings.receiver.DFE.addEqualization = False
-    simSettings.receiver.DFE.postTaps = [valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0)]
+    simSettings.receiver.DFE.taps.post1 = valueWithLimits(-0.0)
+    simSettings.receiver.DFE.taps.post2 = valueWithLimits(-0.0)
+    simSettings.receiver.DFE.taps.post3 = valueWithLimits(-0.0)
+    simSettings.receiver.DFE.taps.post4 = valueWithLimits(-0.0)
+    simSettings.receiver.DFE.taps.post5 = valueWithLimits(-0.0)
     
     # Jitter
     simSettings.receiver.jitter.addJitter = False

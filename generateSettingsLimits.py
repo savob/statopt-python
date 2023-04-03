@@ -81,11 +81,10 @@ def addTransmitterSettings(simSettings: simulationSettings):
     addLimits(simSettings.transmitter.cursorCount,100,1,1)
     
     # Pre-emphasis
-    addLimits(simSettings.transmitter.EQ.mainTap,1,0,0.05) # add main tap individually
-    for tap in simSettings.transmitter.EQ.preTaps:
-        addLimits(tap,1,-1,0.05)
-    for tap in simSettings.transmitter.EQ.postTaps:
-        addLimits(tap,1,-1,0.05)
+    addLimits(simSettings.transmitter.EQ.taps.main,1,0,0.05) # add main tap individually
+    for tap in simSettings.transmitter.EQ.taps.__dict__:
+        if not tap == 'main':
+            addLimits(simSettings.transmitter.EQ.taps.__dict__[tap],1,-1,0.05)
     
     # Jitter
     addLimits(simSettings.transmitter.jitter.stdDeviation,[],0,[])
@@ -128,19 +127,15 @@ def addReceiverSettings(simSettings: simulationSettings):
     addLimits(simSettings.receiver.CTLE.pole2Numb,5,1,1)
     
     # FFE
-    addLimits(simSettings.receiver.FFE.mainTap,2,-1,0.05) # allow for some boosting
-    for tap in simSettings.receiver.FFE.preTaps:
-        addLimits(tap,1,-1,0.05)
-    for tap in simSettings.receiver.FFE.postTaps:
-        addLimits(tap,1,-1,0.05)
+    addLimits(simSettings.receiver.FFE.taps.main, 2, -1, 0.05) # allow for some boosting
+    for tap in simSettings.receiver.FFE.taps.__dict__:
+        if not tap == 'main':
+            addLimits(simSettings.receiver.FFE.taps.__dict__[tap], 1, -1, 0.05)
     
     # DFE
-    addLimits(simSettings.receiver.DFE.mainTap,0,-1,0.01)
-    for tap in simSettings.receiver.DFE.preTaps:
-        addLimits(tap,0,-1,0.01)
-    for tap in simSettings.receiver.DFE.postTaps:
-        addLimits(tap,0,-1,0.01)
-    
+    for tap in simSettings.receiver.DFE.taps.__dict__:
+        addLimits(simSettings.receiver.DFE.taps.__dict__[tap], 0, -1, 0.01)
+
     # Jitter
     addLimits(simSettings.receiver.jitter.stdDeviation,[],0,[])
     addLimits(simSettings.receiver.jitter.amplitude,[],0,[])

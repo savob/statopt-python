@@ -97,7 +97,6 @@ def addGeneralSettings(simSettings: simulationSettings):
 def addTransmitterSettings(simSettings: simulationSettings):
 
     simSettings.transmitter.cursorCount.value = simSettings.transmitter.preCursorCount.value+simSettings.transmitter.postCursorCount.value+1 # pre+post+main
-    simSettings.transmitter.EQ.mainTap.value = 1 # will be adjusted later
 
 
 ###########################################################################
@@ -145,7 +144,7 @@ def addAdaptionSettings(simSettings: simulationSettings):
         simSettings.transmitter.cursorCount.value = simSettings.transmitter.preCursorCount.value+simSettings.transmitter.postCursorCount.value+1 # pre+main+post
         
         # Add a knob for the main EQ tap if there isn't one already specified
-        if not 'transmitter.EQ.maintap' in simSettings.adaption.knobs:
-            simSettings.adaption.knobs.append('transmitter.EQ.maintap') # add tap to ensure it is updated correctly
+        if not 'transmitter.EQ.taps.main' in simSettings.adaption.knobs:
+            simSettings.adaption.knobs.append('transmitter.EQ.taps.main') # add tap to ensure it is updated correctly
         
         simSettings.channel.approximate = True
