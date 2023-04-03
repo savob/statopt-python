@@ -39,13 +39,13 @@ def generateVariableInfluence(simSettings: simulationSettings, simResults: simul
     calculateFFERMS(simSettings, simResults)
 
     # Generate transmitter noise distribution
-    #generateTXNoise(simSettings, simResults)
+    generateTXNoise(simSettings, simResults)
 
     # Generate channel noise distribution
-    #generateChannelNoise(simSettings, simResults)
+    generateChannelNoise(simSettings, simResults)
 
     # Generate receiver noise distribution
-    #generateRXNoise(simSettings, simResults)
+    generateRXNoise(simSettings, simResults)
 
     # Combine influences
     combineInfluences(simSettings, simResults)
@@ -159,7 +159,6 @@ def calculateFFERMS(simSettings: simulationSettings, simResults: simulationStatu
     setattr(simResults.pulseResponse.receiver, 'FFE', nothing())
     setattr(simResults.pulseResponse.receiver.FFE, 'tapRMS', tapRMS)
 
-'''
 
 ###########################################################################
 # This function creates a probability distribution for the transmitter
@@ -195,45 +194,45 @@ def generateTXNoise(simSettings: simulationSettings, simResults: simulationStatu
     
     FFERMS        = simResults.pulseResponse.receiver.FFE.tapRMS
     channelFreqs  = simResults.influenceSources.channel.thru.frequencies
-    channelTF     = simResults.influenceSources.channel.thru.transferFunction  
-    zeroName      = strrep(['z',num2str(zeroFreq/1e9)],'.','_')
-    poleName      = strrep(['z',num2str(pole1Freq/1e9)],'.','_')
-    CTLEMagnitude = simResults.influenceSources.RXCTLE.(zeroName).(poleName).magnitude
+    channelTF     = simResults.influenceSources.channel.thru.transferFunction
+    zeroName     = ('z' + str(zeroFreq/1e9)).replace('.', '_')
+    poleName     = ('z' + str(pole1Freq/1e9)).replace('.', '_')
+    CTLEMagnitude = simResults.influenceSources.RXCTLE.__dict__[zeroName].__dict__[poleName].magnitude
     
     # Add random noise
     if addNoise and stdDeviation != 0:
 
         # Create noise frequency distribution in transmitter
-        power = stdDeviation^2
-        maxIndex = floor(interp1(channelFreqs,1:length(channelFreqs),TXBandwidth))
-        if(isnan(maxIndex)):
-            maxIndex=length(channelFreqs) 
+        power = stdDeviation ** 2
+        maxIndex = int(np.interp(TXBandwidth, channelFreqs, np.arange(len(channelFreqs))))
+        if np.isnan(maxIndex):
+            maxIndex=len(channelFreqs) 
         
-        powerDistribution = [ones(maxIndex,1)*power/TXBandwidthzeros(length(channelFreqs)-maxIndex,1)]
+        powerDistribution = np.concatenate((np.ones((maxIndex,))*(power/TXBandwidth) , np.zeros((len(channelFreqs)-maxIndex,))))
 
         # Calculate equivalent noise at receiver output
-        powerDistribution = powerDistribution.*(abs(channelTF).^2)
+        powerDistribution = powerDistribution * (abs(channelTF) ** 2)
         if(usePreAmp):
-            powerDistribution = powerDistribution*gain^2
+            powerDistribution = powerDistribution * (gain ** 2)
         
         if(useCTLE):
-            powerDistribution = powerDistribution.*CTLEMagnitude.^2
+            powerDistribution = powerDistribution * (CTLEMagnitude ** 2)
         
         if(useFFE):
-            powerDistribution = powerDistribution*FFERMS^2
+            powerDistribution = powerDistribution * (FFERMS ** 2)
         
-        freqIncrement = channelFreqs(2)-channelFreqs(1)
-        outputPower = sum(powerDistribution)*freqIncrement
-        stdDeviationOutput = sqrt(outputPower)
+        freqIncrement = channelFreqs[2]-channelFreqs[1]
+        outputPower = np.sum(powerDistribution)*freqIncrement
+        stdDeviationOutput = np.sqrt(outputPower)
 
         # Apply coding gain
         if(addCoding):
-            stdDeviationOutput = stdDeviationOutput/10^(codingGain/10) 
+            stdDeviationOutput = stdDeviationOutput/(10.0**(codingGain/10.0))
         
         
         # Create noise distribution
-        randNoise = normpdf(yAxis,0,stdDeviationOutput)
-        randNoise = randNoise/sum(randNoise) # normalize PDF
+        randNoise = stats.norm.pdf(yAxis, loc=0, scale=stdDeviationOutput)
+        randNoise = randNoise/np.sum(randNoise) # normalize PDF
     else:
         randNoise = 1 # perfect impulse
     
@@ -242,28 +241,27 @@ def generateTXNoise(simSettings: simulationSettings, simResults: simulationStatu
     if addNoise and sineAmp != 0:
 
         # Calculate equivalent noise at receiver output
-        freqIndex = interp1(channelFreqs,1:length(channelFreqs),sineFreq)
-        sineAmp = sineAmp*abs(interp1(1:length(channelTF),channelTF,freqIndex))
+        freqIndex = np.interp(sineFreq, channelFreqs, np.arange(len(channelFreqs)))
+        sineAmp = sineAmp*abs(np.interp(freqIndex, np.arange(len(channelTF)),channelTF))
         if(usePreAmp):
             sineAmp = sineAmp*gain
         
         if(useCTLE):
-            sineAmp = sineAmp*abs(interp1(1:length(channelTF),CTLEMagnitude,freqIndex))
+            sineAmp = sineAmp*abs(np.interp(freqIndex, np.arange(len(channelTF)),CTLEMagnitude))
         
         if(useFFE):
-            sineAmp = sineAmp*FFERMS^2
+            sineAmp = sineAmp*FFERMS**2
         
         
         # Apply coding gain
         if(addCoding):
-            sineAmp = sineAmp/10^(codingGain/10)
+            sineAmp = sineAmp/(10.0 ** (codingGain/10.0))
         
         
         # Generate sine distribution
-        sine = sineAmp*sin(2*pi*(0:0.0001:1))
-        sine = sine(1:-1) # remove repeated 0 value
-        sineNoise = hist(sine,yAxis)
-        sineNoise = sineNoise/sum(sineNoise) # normalize PDF
+        sine = sineAmp*np.sin(2*np.pi*np.arange(0, 1, 0.0001))
+        sineNoise = np.histogram(sine, bins=yAxis)
+        sineNoise = sineNoise/np.sum(sineNoise) # normalize PDF
     else:
         sineNoise = 1 # perfect impulse
     
@@ -271,11 +269,12 @@ def generateTXNoise(simSettings: simulationSettings, simResults: simulationStatu
     # Convolve both noise types
     totalNoise = np.convolve(randNoise,sineNoise)
     if(len(totalNoise)<2*supplyVoltage/yIncrement):
-       totalNoise = [zeros(1,round(yAxisLength/2)),totalNoise,zeros(1,round(yAxisLength/2))]
+       totalNoise = np.concatenate((np.zeros((round(yAxisLength/2),)), totalNoise, np.zeros((round(yAxisLength/2),))))
     
-    voltageScale = -(length(totalNoise)-1)/2*yIncrement:yIncrement:length(totalNoise)/2*yIncrement
+    voltageScale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise) + 1)
 
     # Save results
+    setattr(simResults.influenceSources, 'TXNoise', nothing())
     simResults.influenceSources.TXNoise.random = randNoise
     simResults.influenceSources.TXNoise.deterministic = sineNoise
     simResults.influenceSources.TXNoise.totalNoise = totalNoise
@@ -305,43 +304,44 @@ def generateChannelNoise(simSettings: simulationSettings, simResults: simulation
     pole1Freq     = simSettings.receiver.CTLE.pole1Freq.value
     useFFE        = simSettings.receiver.FFE.addEqualization
     FFERMS   = simResults.pulseResponse.receiver.FFE.tapRMS
-    zeroName = strrep(['z',num2str(zeroFreq/1e9)],'.','_')
-    poleName = strrep(['z',num2str(pole1Freq/1e9)],'.','_')
-    CTLE     = simResults.influenceSources.RXCTLE.(zeroName).(poleName)
+    zeroName     = ('z' + str(zeroFreq/1e9)).replace('.', '_')
+    poleName     = ('z' + str(pole1Freq/1e9)).replace('.', '_')
+    CTLE     = simResults.influenceSources.RXCTLE.__dict__[zeroName].__dict__[poleName]
         
     # Add random noise
     if addNoise and noiseDensity != 0: 
 
         # Create noise frequency distribution before amplification
-        freqIncrement = CTLE.frequency(2)-CTLE.frequency(1)
-        powerDistribution = noiseDensity*freqIncrement*ones(length(CTLE.frequency),1)
+        freqIncrement = CTLE.frequency[2]-CTLE.frequency[1]
+        powerDistribution = noiseDensity * freqIncrement * np.ones((len(CTLE.frequency),))
 
         # Calculate equivalent noise at receiver output
         if(usePreAmp):
-            powerDistribution = powerDistribution*gain^2
+            powerDistribution = powerDistribution * (gain ** 2)
         
         if(useCTLE):
-            powerDistribution = powerDistribution.*CTLE.magnitude.^2
+            powerDistribution = powerDistribution * (CTLE.magnitude ** 2)
         
         if(useFFE):
-            powerDistribution = powerDistribution*FFERMS^2
+            powerDistribution = powerDistribution * (FFERMS ** 2)
         
-        outputPower = sum(powerDistribution)
-        stdDeviationOutput = sqrt(outputPower)
+        outputPower = np.sum(powerDistribution)
+        stdDeviationOutput = np.sqrt(outputPower)
 
         # Apply coding gain
         if(addCoding):
-            stdDeviationOutput = stdDeviationOutput/10^(codingGain/10)
+            stdDeviationOutput = stdDeviationOutput/(10.0**(codingGain/10.0))
         
         
         # Create noise distribution
-        randNoise = normpdf(yAxis,0,stdDeviationOutput)
-        randNoise = randNoise/sum(randNoise) # normalize PDF
+        randNoise = stats.norm.pdf(yAxis, loc=0, scale=stdDeviationOutput)
+        randNoise = randNoise/np.sum(randNoise) # normalize PDF
     else:
-        randNoise = [zeros(1,floor(yAxisLength/2)),1,zeros(1,floor(yAxisLength/2))] # perfect impulse
+        randNoise = np.concatenate((np.zeros((int(yAxisLength/2),)), 1, np.zeros((int(yAxisLength/2),)))) # perfect impulse
     
 
     # Save results
+    setattr(simResults.influenceSources, 'CHNoise', nothing())
     simResults.influenceSources.CHNoise.totalNoise = randNoise
     simResults.influenceSources.CHNoise.voltageScale = yAxis
 
@@ -372,38 +372,38 @@ def generateRXNoise(simSettings: simulationSettings, simResults: simulationStatu
     pole1Freq     = simSettings.receiver.CTLE.pole1Freq.value
     useFFE        = simSettings.receiver.FFE.addEqualization
     FFERMS   = simResults.pulseResponse.receiver.FFE.tapRMS
-    zeroName = strrep(['z',num2str(zeroFreq/1e9)],'.','_')
-    poleName = strrep(['z',num2str(pole1Freq/1e9)],'.','_')
-    CTLE     = simResults.influenceSources.RXCTLE.(zeroName).(poleName)
+    zeroName     = ('z' + str(zeroFreq/1e9)).replace('.', '_')
+    poleName     = ('z' + str(pole1Freq/1e9)).replace('.', '_')
+    CTLE     = simResults.influenceSources.RXCTLE.__dict__[zeroName].__dict__[poleName]
     
     # Add random noise
-    if(addNoise and stdDeviation !=0):
+    if addNoise and stdDeviation !=0:
         
         # Create noise frequency distribution before amplification
-        power = stdDeviation^2
-        powerDistribution = ones(length(CTLE.frequency),1)*power/length(CTLE.frequency)
+        power = stdDeviation ** 2
+        powerDistribution = np.ones((len(CTLE.frequency),))*(power/len(CTLE.frequency))
         
         # Calculate output refered noise output
         if(useCTLE):
-            powerDistribution = powerDistribution.*CTLE.magnitude.^2
+            powerDistribution = powerDistribution * (CTLE.magnitude ** 2)
         
         if(usePreAmp):
-            powerDistribution = powerDistribution*gain^2
+            powerDistribution = powerDistribution * (gain ** 2)
         
         if(useFFE):
-            powerDistribution = powerDistribution*FFERMS^2
+            powerDistribution = powerDistribution * (FFERMS ** 2)
         
-        outputPower = sum(powerDistribution)
-        stdDeviationOutput = sqrt(outputPower)
+        outputPower = np.sum(powerDistribution)
+        stdDeviationOutput = np.sqrt(outputPower)
 
         # Apply coding gain
         if(addCoding):
-            stdDeviationOutput = stdDeviationOutput/10^(codingGain/10)
+            stdDeviationOutput = stdDeviationOutput/(10.0 ** (codingGain/10.0))
         
         
         # Create noise distribution
-        randNoise = normpdf(yAxis,0,stdDeviationOutput)
-        randNoise = randNoise/sum(randNoise) # normalize PDF
+        randNoise = stats.norm.pdf(yAxis, loc=0, scale=stdDeviationOutput)
+        randNoise = randNoise/np.sum(randNoise) # normalize PDF
     else:
         randNoise = 1 # perfect impulse
     
@@ -412,27 +412,26 @@ def generateRXNoise(simSettings: simulationSettings, simResults: simulationStatu
     if addNoise and sineAmp != 0:
         
         # Calculate equivalent noise at receiver output
-        freqIndex = interp1(CTLE.frequency,1:length(CTLE.frequency),sineFreq)
-        sineAmp = sineAmp*abs(interp1(1:length(CTLE.magnitude),CTLE.magnitude,freqIndex))
+        freqIndex = np.interp(sineFreq, CTLE.frequency, np.arange(len(CTLE.frequency)))
+        sineAmp = sineAmp*abs(np.interp(freqIndex, np.arange(len(CTLE.magnitude)), CTLE.magnitude))
         if(usePreAmp):
-            sineAmp = sineAmp*gain
+            sineAmp = sineAmp * gain
         
         if(useCTLE):
-            sineAmp = sineAmp*abs(interp1(1:length(CTLE.magnitude),CTLE.magnitude,freqIndex))
+            sineAmp = sineAmp * abs(np.interp(freqIndex, np.arange(len(CTLE.magnitude)), CTLE.magnitude))
         
         if(useFFE):
-            sineAmp = sineAmp*FFERMS^2
+            sineAmp = sineAmp * (FFERMS ** 2)
         
     
         # Apply coding gain
         if(addCoding):
-            sineAmp = sineAmp/10^(codingGain/10)
+            sineAmp = sineAmp / (10.0 ** (codingGain / 10.0))
         
         
         # Generate sine distribution
-        sine = sineAmp*np.sin(2*np.pi*(0:0.0001:1))
-        sine = sine(1:-1) # remove repeated 0 value
-        sineNoise = hist(sine,yAxis)
+        sine = sineAmp*np.sin(2*np.pi*np.arange(0, 1, 0, 0.0001))
+        sineNoise = np.histogram(sine, bins=yAxis)
         sineNoise = sineNoise/np.sum(sineNoise) # normalize PDF
     else:
         sineNoise = 1 # perfect impulse
@@ -446,11 +445,12 @@ def generateRXNoise(simSettings: simulationSettings, simResults: simulationStatu
     voltageScale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise) + 1)
     
     # Save results
+    setattr(simResults.influenceSources, 'RXNoise', nothing())
     simResults.influenceSources.RXNoise.random = randNoise
     simResults.influenceSources.RXNoise.deterministic = sineNoise
     simResults.influenceSources.RXNoise.totalNoise = totalNoise
     simResults.influenceSources.RXNoise.voltageScale = voltageScale  
-'''
+
 
 ###########################################################################
 # This function combines all sources of noise together.
@@ -469,5 +469,6 @@ def combineInfluences(simSettings: simulationSettings, simResults: simulationSta
     voltagescale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise) + 1)
 
     # Save results
+    setattr(simResults.influenceSources, 'totalNoise', nothing())
     simResults.influenceSources.totalNoise.histogram = totalNoise
     simResults.influenceSources.totalNoise.voltageScale = voltagescale
