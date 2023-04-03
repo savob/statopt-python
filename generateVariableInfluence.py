@@ -155,9 +155,9 @@ def calculateFFERMS(simSettings: simulationSettings, simResults: simulationStatu
     
     # Save results
     setattr(simResults, 'pulseResponse', nothing())
-    setattr(simResults.pulseResponse, 'reciever', nothing())
-    setattr(simResults.pulseResponse.reciever, 'FFE', nothing())
-    setattr(simResults.pulseResponse.reciever.FFE, 'tapRMS', tapRMS)
+    setattr(simResults.pulseResponse, 'receiver', nothing())
+    setattr(simResults.pulseResponse.receiver, 'FFE', nothing())
+    setattr(simResults.pulseResponse.receiver.FFE, 'tapRMS', tapRMS)
 
 '''
 
