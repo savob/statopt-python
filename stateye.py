@@ -5,6 +5,7 @@ from initializeSimulation import initializeSimulation
 from checkSettings import checkSettings
 from generateTransferFunction import generateTransferFunction
 from generateFixedInfluence import generateFixedInfluence
+from generateVariableInfluence import generateVariableInfluence
 
 # Begin simulation
 print('----------Preparing Simulation----------')
@@ -27,7 +28,30 @@ generateTransferFunction(simSettings, simResults)
 # Generate fixed sources of influence
 generateFixedInfluence(simSettings, simResults)
 
+# Loop during adaption
+while not simResults.finished:
+    
+    # Generate variable sources of influence
+    generateVariableInfluence(simSettings, simResults)
 
+    # Generate pulse response
+    #GeneratePulseResponse(simSettings, simResults)
+
+    # Generate ISI signal trajectories
+    #GenerateISI(simSettings, simResults)
+
+    # Generate probability distribution
+    #GeneratePDF(simSettings, simResults)
+
+    # Generate BER distribution
+    #GenerateBER(simSettings, simResults)
+
+    # Generate simulation results
+    #GenerateResults(simSettings, simResults)
+
+    # Update adaption settings (if required)
+    #AdaptLink(simSettings, simResults)
+    simResults.finished = True # Not doing adaptions for now
 
 
 
@@ -38,30 +62,8 @@ print('{:.3f} seconds elapsed since starting the script.'.format(endTime - start
 
 quit()
 
-
-# Loop during adaption
-while (~simResults.finished):
     
-    # Generate variable sources of influence
-    simResults = GenerateVariableInfluence(simSettings, simResults)
-    
-    # Generate pulse response
-    simResults = GeneratePulseResponse(simSettings, simResults)
-    
-    # Generate ISI signal trajectories
-    simResults = GenerateISI(simSettings, simResults)
 
-    # Generate probability distribution
-    simResults = GeneratePDF(simSettings, simResults)
-
-    # Generate BER distribution
-    simResults = GenerateBER(simSettings, simResults)
-
-    # Generate simulation results
-    simResults = GenerateResults(simSettings, simResults)
-
-    # Update adaption settings (if required)
-    [simSettings, simResults] = AdaptLink(simSettings, simResults)
 
 
 # Plot Results

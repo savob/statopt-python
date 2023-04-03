@@ -36,7 +36,7 @@ def generateVariableInfluence(simSettings: simulationSettings, simResults: simul
     generateCTLE(simSettings, simResults)
 
     # Calculate RMS of RX FFE tap values
-    #calculateFFERMS(simSettings, simResults)
+    calculateFFERMS(simSettings, simResults)
 
     # Generate transmitter noise distribution
     #generateTXNoise(simSettings, simResults)
@@ -50,6 +50,17 @@ def generateVariableInfluence(simSettings: simulationSettings, simResults: simul
     # Combine influences
     combineInfluences(simSettings, simResults)
 
+class nothing:
+    def __init__(self):
+        pass
+
+class CTLE:
+
+    def __init__(self, tf, mag, ph, freq):
+        self.transferFunc = tf
+        self.magnitude = mag
+        self.phase = ph
+        self.frequency = freq
 
 ###########################################################################
 # This function determines if the CTLE response for the given knob settings
@@ -76,6 +87,7 @@ def generateCTLE(simSettings: simulationSettings, simResults: simulationStatus):
         if 'RXCTLE' in simResults.influenceSources.__dict__:
             CTLEs = simResults.influenceSources.RXCTLE
         else:
+            setattr(simResults.influenceSources, 'RXCTLE', nothing())
             CTLEs = []
         
         calculated = True
@@ -120,12 +132,11 @@ def generateCTLE(simSettings: simulationSettings, simResults: simulationStatus):
 
     # Save results
     w, magnitude, phase = signal.bode(transferFunc, 2*np.pi*channelFreqs) # force frequencies to be same as channel
-    #simResults.influenceSources.RXCTLE.(zeroName).(poleName).transferFunc = transferFunc
-    #simResults.influenceSources.RXCTLE.(zeroName).(poleName).magnitude = magnitude
-    #simResults.influenceSources.RXCTLE.(zeroName).(poleName).phase = phase
-    #simResults.influenceSources.RXCTLE.(zeroName).(poleName).frequency = channelFreqs
+    temp = CTLE(transferFunc, magnitude, phase, channelFreqs)
+    setattr(simResults.influenceSources.RXCTLE, zeroName, nothing())
+    setattr(simResults.influenceSources.RXCTLE.__dict__[zeroName], poleName, temp)
 
-'''
+
 ###########################################################################
 # This function calculates the RMS value of the RX FFE tap settings. This
 # value is required later for output-refering noise.
@@ -137,16 +148,18 @@ def calculateFFERMS(simSettings: simulationSettings, simResults: simulationStatu
     
     # Calculate RMS of taps (used for noise analysis)
     FFESum = 0
-    tapNames = fieldnames(taps)
-    for index=1:length(tapNames):
-        tapName = tapNames{index}
-        FFESum = FFESum+taps.(tapName).value^2
+    for tap in taps.__dict__:
+        FFESum = FFESum + taps.__dict__[tap].value ** 2
     
-    tapRMS = sqrt(FFESum)
+    tapRMS = np.sqrt(FFESum)
     
     # Save results
-    simResults.pulseResponse.receiver.FFE.tapRMS = tapRMS
+    setattr(simResults, 'pulseResponse', nothing())
+    setattr(simResults.pulseResponse, 'reciever', nothing())
+    setattr(simResults.pulseResponse.reciever, 'FFE', nothing())
+    setattr(simResults.pulseResponse.reciever.FFE, 'tapRMS', tapRMS)
 
+'''
 
 ###########################################################################
 # This function creates a probability distribution for the transmitter
