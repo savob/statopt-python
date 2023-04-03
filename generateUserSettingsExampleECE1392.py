@@ -101,10 +101,10 @@ def generateUserSettings():
     simSettings.transmitter.EQ.postTaps = [valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0), valueWithLimits(-0.0)]
 
     # Jitter
-    simSettings.transmitter.jitter.addJitter = False
-    simSettings.transmitter.jitter.stdDeviation.value = 0 # TX random jitter standard diviation [UI]
-    simSettings.transmitter.jitter.amplitude.value = 0    # TX deterministic jitter amplitude [UI]
-    simSettings.transmitter.jitter.DCD.value = 0          # TX duty-cycle distortion jitter [UI]
+    simSettings.transmitter.jitter.addJitter = True
+    simSettings.transmitter.jitter.stdDeviation.value = 0.1 # TX random jitter standard diviation [UI]
+    simSettings.transmitter.jitter.amplitude.value = 0.1    # TX deterministic jitter amplitude [UI]
+    simSettings.transmitter.jitter.DCD.value = 0.1          # TX duty-cycle distortion jitter [UI]
     
     # Noise
     simSettings.transmitter.noise.addNoise = True

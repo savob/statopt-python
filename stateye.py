@@ -4,6 +4,7 @@ from generateSettingsLimits import generateSettingsLimits
 from initializeSimulation import initializeSimulation
 from checkSettings import checkSettings
 from generateTransferFunction import generateTransferFunction
+from generateFixedInfluence import generateFixedInfluence
 
 # Begin simulation
 print('----------Preparing Simulation----------')
@@ -21,6 +22,14 @@ checkSettings(simSettings, simResults)
 # Start preconditioning the simulation
 generateTransferFunction(simSettings, simResults)
 
+## Analyze and Adapt Link
+
+# Generate fixed sources of influence
+generateFixedInfluence(simSettings, simResults)
+
+
+
+
 
 # End Simulation
 print('----------Simulation Complete----------')
@@ -29,10 +38,6 @@ print('{:.3f} seconds elapsed since starting the script.'.format(endTime - start
 
 quit()
 
-## Analyze and Adapt Link
-
-# Generate fixed sources of influence
-simResults = GenerateFixedInfluence(simSettings, simResults)
 
 # Loop during adaption
 while (~simResults.finished):
