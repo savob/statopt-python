@@ -197,7 +197,7 @@ def loadFiles(simSettings: simulationSettings, simResults: simulationStatus):
             k = 2 * np.pi * notchFreq / 10
             g = 10 ^ (notchAttenuation / 20)
             notchLTI = signal.lti([1, 5*k/g, 100*k^2], [1, 5*k, 100*k^2])
-            [mag, phase] = signal.bode(notchLTI, 2*np.pi*freqs)
+            w, mag, phase = signal.bode(notchLTI, 2*np.pi*freqs)
             mag = np.squeeze(mag)
             phase = np.squeeze(phase) * 180 / np.pi
             notchTF = mag * np.exp(np.pi * phase)
