@@ -24,13 +24,14 @@
 ###########################################################################
 from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus
+import control.matlab as ml
 import numpy as np
 import scipy.stats as stats
-import scipy.signal as signal
 from scipy import io
 import scipy as sp
 
 def generateVariableInfluence(simSettings: simulationSettings, simResults: simulationStatus):
+    ml.use_matlab_defaults() # Needed to ensure compatibility with MATLAB expectations for control code
 
     # Generate CTLE responses
     generateCTLE(simSettings, simResults)
@@ -124,14 +125,14 @@ def generateCTLE(simSettings: simulationSettings, simResults: simulationStatus):
             listWp = np.concatenate((listWp1, listWp2))
 
             # Combine transfer functions
-            transferFunc = signal.ZerosPolesGain(listWz, listWp, gain)
+            transferFunc = ml.zpk(listWz,listWp,gain)
         
     else:
-        transferFunc = signal.TransferFunction([1],[1])
+        transferFunc = ml.tf([1],[1])
     
 
     # Save results
-    w, magnitude, phase = signal.bode(transferFunc, 2*np.pi*channelFreqs) # force frequencies to be same as channel
+    magnitude, phase, w = ml.bode(transferFunc, 2*np.pi*channelFreqs, plot=False) # force frequencies to be same as channel
     temp = CTLE(transferFunc, magnitude, phase, channelFreqs)
     setattr(simResults.influenceSources.RXCTLE, zeroName, nothing())
     setattr(simResults.influenceSources.RXCTLE.__dict__[zeroName], poleName, temp)

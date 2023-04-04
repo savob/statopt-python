@@ -42,16 +42,18 @@ import os
 import skrf as rf # Used to read Touchstone files and nothing else
 import numpy as np
 from math import isnan
-from scipy import signal, optimize
+import control.matlab as ml
 
 
 def generateTransferFunction(simSettings: simulationSettings, simResults: simulationStatus):
-    
+
     # Check if must update
     update = updateChannelData(simSettings, simResults)
     if not update:
         return 
     
+    ml.use_matlab_defaults() # Needed to ensure compatibility with MATLAB expectations for control code
+
     # Begin importing
     print('----------Importing Channel Data----------')
     
@@ -196,8 +198,8 @@ def loadFiles(simSettings: simulationSettings, simResults: simulationStatus):
         if addNotch:
             k = 2 * np.pi * notchFreq / 10
             g = 10 ^ (notchAttenuation / 20)
-            notchLTI = signal.lti([1, 5*k/g, 100*k^2], [1, 5*k, 100*k^2])
-            w, mag, phase = signal.bode(notchLTI, 2*np.pi*freqs)
+            notchLTI = ml.tf([1, 5*k/g, 100*k^2], [1, 5*k, 100*k^2])
+            mag, phase, w = ml.bode(notchLTI, 2*np.pi*freqs, plot=False)
             mag = np.squeeze(mag)
             phase = np.squeeze(phase) * 180 / np.pi
             notchTF = mag * np.exp(np.pi * phase)
