@@ -6,6 +6,7 @@ from checkSettings import checkSettings
 from generateTransferFunction import generateTransferFunction
 from generateFixedInfluence import generateFixedInfluence
 from generateVariableInfluence import generateVariableInfluence
+from generatePulseResponse import generatePulseResponse
 
 # Begin simulation
 print('----------Preparing Simulation----------')
@@ -35,7 +36,7 @@ while not simResults.finished:
     generateVariableInfluence(simSettings, simResults)
 
     # Generate pulse response
-    #GeneratePulseResponse(simSettings, simResults)
+    generatePulseResponse(simSettings, simResults)
 
     # Generate ISI signal trajectories
     #GenerateISI(simSettings, simResults)
