@@ -8,6 +8,7 @@ from generateFixedInfluence import generateFixedInfluence
 from generateVariableInfluence import generateVariableInfluence
 from generatePulseResponse import generatePulseResponse
 from generateISI import generateISI
+from generatePDF import generatePDF
 
 # Begin simulation
 print('----------Preparing Simulation----------')
@@ -43,7 +44,7 @@ while not simResults.finished:
     generateISI(simSettings, simResults)
 
     # Generate probability distribution
-    #GeneratePDF(simSettings, simResults)
+    generatePDF(simSettings, simResults)
 
     # Generate BER distribution
     #GenerateBER(simSettings, simResults)
