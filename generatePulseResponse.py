@@ -27,10 +27,8 @@
 from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus
 import numpy as np
-import scipy.stats as stats
 import control.matlab as ml
 from scipy import io
-import scipy as sp
 import scipy.signal as spsig
 
 class nothing:
