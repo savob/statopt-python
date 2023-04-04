@@ -7,6 +7,7 @@ from generateTransferFunction import generateTransferFunction
 from generateFixedInfluence import generateFixedInfluence
 from generateVariableInfluence import generateVariableInfluence
 from generatePulseResponse import generatePulseResponse
+from generateISI import generateISI
 
 # Begin simulation
 print('----------Preparing Simulation----------')
@@ -39,7 +40,7 @@ while not simResults.finished:
     generatePulseResponse(simSettings, simResults)
 
     # Generate ISI signal trajectories
-    #GenerateISI(simSettings, simResults)
+    generateISI(simSettings, simResults)
 
     # Generate probability distribution
     #GeneratePDF(simSettings, simResults)
