@@ -141,6 +141,7 @@ def createChannel(simSettings: simulationSettings, simResults: simulationStatus)
         # Apply step to channel convolution
         else:
             stepResponse = np.convolve(idealStep, impulseResponse)
+            stepResponse = stepResponse[:-(len(impulseResponse)-1)] # remove the trailing (falling edge) of the convolution
             
         
             
