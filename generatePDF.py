@@ -245,6 +245,8 @@ def applyDistortion(simSettings: simulationSettings, simResults: simulationStatu
     plots = list(PDF.__dict__)
     plotName = plots[-1]
 
+    PDF.distorted = nothing()
+
     # Loop through each transition
     transitions = PDF.__dict__[plotName].__dict__
     for transName in transitions:
@@ -287,29 +289,32 @@ def applyJitter(simSettings: simulationSettings, simResults: simulationStatus):
     jitter = simResults.influenceSources.totalJitter.totalJitter
     PDF    = simResults.eyeGeneration.PDF
     
-    PDF.jitter = nothing()
-    
     # Use last created plot
     plots = list(PDF.__dict__)
     plotName = plots[-1]
+
+    PDF.jitter = nothing()
 
     # Loop through each transition
     transitions = PDF.__dict__[plotName].__dict__
     for transName in transitions:
 
         # Convolve PDF with total jitter
-        PDF.jitter.__dict__[transName] = []
-        combPDF = [PDF.__dict__[plotName].__dict__[transName],PDF.__dict__[plotName].__dict__[transName],PDF.__dict__[plotName].__dict__[transName]] # add adjacent PDFs to ensure no discontinuities
+        combPDF = np.hstack((PDF.__dict__[plotName].__dict__[transName], PDF.__dict__[plotName].__dict__[transName], PDF.__dict__[plotName].__dict__[transName])) # add adjacent PDFs to ensure no discontinuities
+        
+        temp = np.convolve(combPDF[0,:], jitter) # Used for sizing
+        PDF.jitter.__dict__[transName] = np.zeros((yAxisLength, len(temp)))
+
         for index in range(yAxisLength):
             PDF.jitter.__dict__[transName][index,:] = np.convolve(combPDF[index,:], jitter)
-        
 
         # Limit length to 1 symbol length
-        lengthDiff = np.size(PDF.jitter.__dict__[transName],2)-samplesPerSymb
+        lengthDiff = np.size(PDF.jitter.__dict__[transName],1)-samplesPerSymb
         if lengthDiff != 0:
             # Trim to middle section
-            trimmedRegion = np.arange(lengthDiff/2, np.size(PDF.jitter.__dict__[transName],2)-lengthDiff/2, 1)
-            PDF.jitter.__dict__[transName] = PDF.jitter.__dict__[transName][:, trimmedRegion]
+            trimmedRegionStart = int(lengthDiff/2)
+            trimmedRegionEnd = int(np.size(PDF.jitter.__dict__[transName],1)-lengthDiff/2)
+            PDF.jitter.__dict__[transName] = PDF.jitter.__dict__[transName][:, trimmedRegionStart:trimmedRegionEnd]
         
 
         # Ensure distribution adds up to 1 in vertical axis
@@ -345,22 +350,28 @@ def applyNoise(simSettings: simulationSettings, simResults: simulationStatus):
     # Chose last created plot
     plots = list(PDF.__dict__)
     plotName = plots[-1]
+
+    PDF.noise = nothing()
         
     # Loop through each transition
     transitions = PDF.__dict__[plotName].__dict__
     for transName in transitions:
 
         # Convolve PDF with noise
+        temp = np.convolve(PDF.__dict__[plotName].__dict__[transName][:,0], noise) # Used for sizing
+        PDF.noise.__dict__[transName] = np.zeros((len(temp), samplesPerSymb))
+
         for index in range(samplesPerSymb):
             PDF.noise.__dict__[transName][:,index] = np.convolve(PDF.__dict__[plotName].__dict__[transName][:,index], noise)
         
 
         # Limit height to y-axis limits
-        heightDiff = np.size(PDF.noise.__dict__[transName],1)-yAxisLength
+        heightDiff = np.size(PDF.noise.__dict__[transName],0)-yAxisLength
         if heightDiff != 0:
             # Trim to middle section
-            trimmedRegion = np.arange(round(heightDiff/2), np.size(PDF.noise.__dict__[transName],1)-round(heightDiff/2), 1)
-            PDF.noise.__dict__[transName] = PDF.noise.__dict__[transName][trimmedRegion,:]
+            trimmedRegionStart = int(heightDiff/2)
+            trimmedRegionEnd = int(np.size(PDF.noise.__dict__[transName],0)-heightDiff/2)
+            PDF.noise.__dict__[transName] = PDF.noise.__dict__[transName][trimmedRegionStart:trimmedRegionEnd, :]
         
 
         # Ensure distribution adds up to 1 in vertical axis
@@ -389,7 +400,7 @@ def combinePDFs(simResults: simulationStatus):
         
         if len(transitions) == 0:
             continue # skip any states without transitions
-        PDF.__dict__[plotName].combined = np.zeros_like(PDF.__dict__[plotName].__dict__[transitions[1]])
+        PDF.__dict__[plotName].combined = np.zeros_like(PDF.__dict__[plotName].__dict__[transitions[0]])
         for transName in transitions:
             PDF.__dict__[plotName].combined = PDF.__dict__[plotName].combined + (PDF.__dict__[plotName].__dict__[transName]/len(transitions))
 
