@@ -226,7 +226,7 @@ def generateTXJitter(simSettings: simulationSettings, simResults: simulationStat
     totalJitter = np.convolve(randJitter,sineJitter)
     totalJitter = np.convolve(totalJitter,DCDJitter)
     if(len(totalJitter)<101):
-        totalJitter = np.concatenate((np.zeros(1,round(samplesPerSymb/2)), totalJitter, np.zeros(1,round(samplesPerSymb/2))))
+        totalJitter = np.concatenate((np.zeros((round(samplesPerSymb/2),)), totalJitter, np.zeros((round(samplesPerSymb/2),))))
     
     timeScale = np.linspace(-(len(totalJitter)-1)/2*samplePeriod, (len(totalJitter)-1)/2*samplePeriod, len(totalJitter) + 1)
     UIScale = timeScale/symbolPeriod
