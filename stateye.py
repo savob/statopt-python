@@ -10,6 +10,7 @@ from generatePulseResponse import generatePulseResponse
 from generateISI import generateISI
 from generatePDF import generatePDF
 from generateBER import generateBER
+from generateResults import generateResults
 
 # Begin simulation
 print('----------Preparing Simulation----------')
@@ -51,7 +52,7 @@ while not simResults.finished:
     generateBER(simSettings, simResults)
 
     # Generate simulation results
-    #GenerateResults(simSettings, simResults)
+    generateResults(simSettings, simResults)
 
     # Update adaption settings (if required)
     #AdaptLink(simSettings, simResults)
