@@ -50,6 +50,9 @@ def generateISI(simSettings: simulationSettings, simResults: simulationStatus):
     result = nothing()
     transitions = 0
 
+    if not 'eyeGeneration' in simResults.__dict__:
+        setattr(simResults, 'eyeGeneration', nothing())
+
     # Break if simulation has already failed
     if not simResults.results.successful: return 
     
