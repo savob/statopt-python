@@ -43,24 +43,24 @@ def generateBER(simSettings: simulationSettings, simResults: simulationStatus):
     # Break if simulation has already failed
     if not simResults.results.successful: return 
     
-    #try:
-    # Generate BER contour
-    generateBERContours(simSettings, simResults)
-    
-    # Find eye locations
-    findEyeLocations(simSettings, simResults)
-    
-    # Generate vertical tubs
-    generateVerticalBathtub(simResults)
-    
-    # Generate horizontal tub
-    generateHorizontalBathtub(simResults)
-    
-    # Generate BER constellation
-    generateBERConstellation(simSettings, simResults)
-    #except:
+    try:
+        # Generate BER contour
+        generateBERContours(simSettings, simResults)
+        
+        # Find eye locations
+        findEyeLocations(simSettings, simResults)
+        
+        # Generate vertical tubs
+        generateVerticalBathtub(simResults)
+        
+        # Generate horizontal tub
+        generateHorizontalBathtub(simResults)
+        
+        # Generate BER constellation
+        generateBERConstellation(simSettings, simResults)
+    except:
         # Create empty structure
-        #createEmptyStruct(simResults)
+        createEmptyStruct(simResults)
     
 
 
