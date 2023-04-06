@@ -686,13 +686,13 @@ def limitLength(simSettings,simResults):
         if(endIdx>len(pulses.__dict__[chName])):
             pulses.__dict__[chName] = np.concatenate((pulses.__dict__[chName], np.zeros((endIdx-len(pulses.__dict__[chName]),))))
         else:
-            pulses.__dict__[chName] = pulses.__dict__[chName][1:endIdx]
+            pulses.__dict__[chName] = pulses.__dict__[chName][0:endIdx]
         
         
         # Adjust beginning
         if (startIdx<1) :
             diff = 1-startIdx
-            pulses.__dict__[chName] = np.concatenate((np.zeros((diff,)), pulses.__dict__[chName][1:endIdx]))
+            pulses.__dict__[chName] = np.concatenate((np.zeros((diff,)), pulses.__dict__[chName][0:endIdx]))
             print('Having trouble finding main cursor!\n')
             #successful = False
         else:
