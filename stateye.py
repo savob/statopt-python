@@ -20,7 +20,7 @@ startTime = time.time() # Get start (clock) time
 simSettings = generateUserSettings()
 print('Simulation settings Loaded')
 generateSettingsLimits(simSettings)
-print('Simulation settings limits Set')
+print('Simulation settings limits set')
 simResults = initializeSimulation(simSettings) # Really just adds a bunch of settings and prepares simulation result object
 print('User-dependant settings generated')
 checkSettings(simSettings, simResults)
@@ -29,12 +29,10 @@ checkSettings(simSettings, simResults)
 # Start preconditioning the simulation
 generateTransferFunction(simSettings, simResults)
 
-## Analyze and Adapt Link
-
 # Generate fixed sources of influence
 generateFixedInfluence(simSettings, simResults)
 
-# Loop during adaption
+# Analyze and Adapt Link
 while not simResults.finished:
     
     # Generate variable sources of influence

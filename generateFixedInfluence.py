@@ -47,16 +47,16 @@ def generateFixedInfluence(simSettings: simulationSettings, simResults: simulati
     generateTXJitter(simSettings, simResults)
     
     # Generate TX distortion
-    GenerateTXDistortion(simSettings, simResults)
+    generateTXDistortion(simSettings, simResults)
         
     # Generate RX jitter
-    GenerateRXJitter(simSettings, simResults)
+    generateRXJitter(simSettings, simResults)
     
     # Generate RX distortion
-    GenerateRXDistortion(simSettings, simResults)
+    generateRXDistortion(simSettings, simResults)
     
     # Combine influences
-    CombineInfluences(simSettings, simResults)
+    combineInfluences(simSettings, simResults)
 
 
 ###########################################################################
@@ -136,7 +136,7 @@ def createChannel(simSettings: simulationSettings, simResults: simulationStatus)
             
         # Apply ideal step response if not adding channel
         if not addChannel:
-            stepResponse = np.concatenate((np.zeros(1, preCursorCount*samplesPerSymb), idealStep))
+            stepResponse = np.concatenate((np.zeros((preCursorCount*samplesPerSymb,)), idealStep))
         
         # Apply step to channel convolution
         else:
@@ -241,7 +241,7 @@ def generateTXJitter(simSettings: simulationSettings, simResults: simulationStat
 # the pulse response. This represents the non-linearity of the transmit
 # driver.
 ###########################################################################
-def GenerateTXDistortion(simSettings: simulationSettings, simResults: simulationStatus):
+def generateTXDistortion(simSettings: simulationSettings, simResults: simulationStatus):
     
     # Import variables
     supplyVoltage   = simSettings.transmitter.signalAmplitude.value
@@ -281,7 +281,7 @@ def GenerateTXDistortion(simSettings: simulationSettings, simResults: simulation
 # clock-data recovery unity jitter. This function adds random aswell as 
 # deterministic jitter.
 ###########################################################################
-def GenerateRXJitter(simSettings: simulationSettings, simResults: simulationStatus):
+def generateRXJitter(simSettings: simulationSettings, simResults: simulationStatus):
     
     # Import variables
     samplesPerSymb = simSettings.general.samplesPerSymb.value
@@ -320,7 +320,7 @@ def GenerateRXJitter(simSettings: simulationSettings, simResults: simulationStat
     # Convolve all jitter types
     totalJitter = np.convolve(randJitter,sineJitter)
     totalJitter = np.convolve(totalJitter,DCDJitter)
-    if(len(totalJitter)<101):
+    if len(totalJitter) < 101:
         totalJitter = np.concatenate((np.zeros((round(samplesPerSymb/2),)), totalJitter, np.zeros((round(samplesPerSymb/2),))))
     
     timeScale = np.linspace(-(len(totalJitter)-1)/2*samplePeriod, (len(totalJitter)-1)/2*samplePeriod, len(totalJitter) + 1)
@@ -334,7 +334,7 @@ def GenerateRXJitter(simSettings: simulationSettings, simResults: simulationStat
 # This function creates a transfer function used to add distortion to
 # the pulse response. This represents the non-linearity of the receiver.
 ###########################################################################
-def GenerateRXDistortion(simSettings: simulationSettings, simResults: simulationStatus):
+def generateRXDistortion(simSettings: simulationSettings, simResults: simulationStatus):
     
     # Import variables
     supplyVoltage   = simSettings.receiver.signalAmplitude.value
@@ -342,13 +342,13 @@ def GenerateRXDistortion(simSettings: simulationSettings, simResults: simulation
     fileName        = simSettings.transmitter.distortion.fileName
 
     # Define gain function
-    if(applyDistortion):
+    if applyDistortion:
         distortion = io.loadmat(fileName)
         fields = distortion.__dict__
         if 'input' in fields:
             input  = distortion.input
         else:
-            print('Error: TX distortion file missing "input" vector. Exiting.')
+            print('Error: RX distortion file missing "input" vector. Exiting.')
             quit()
         
         if 'output' in fields:
@@ -356,7 +356,7 @@ def GenerateRXDistortion(simSettings: simulationSettings, simResults: simulation
         elif 'out' in fields:
             output  = distortion.out
         else:
-            print('Error: TX distortion file missing "output" vector. Exiting.')
+            print('Error: RX distortion file missing "output" vector. Exiting.')
             quit()
         
     else:
@@ -375,7 +375,7 @@ def GenerateRXDistortion(simSettings: simulationSettings, simResults: simulation
 # together. Since the noise depends on the CTLE response, it must be
 # determined later.
 ###########################################################################
-def CombineInfluences(simSettings: simulationSettings, simResults: simulationStatus):
+def combineInfluences(simSettings: simulationSettings, simResults: simulationStatus):
 
     # Import variables
     samplePeriod = simSettings.general.samplePeriod.value
