@@ -46,15 +46,15 @@ def displayCTLEResponse(simSettings: simulationSettings, simResults: simulationS
 
     # Plot CTLE
     plt.figure(dpi = 200, num='CTLE Response')
-    plt.semilogx(freqScale*CTLE.frequency, 20*np.log(abs(CTLE.magnitude)), label = "CTLE responsel")
+    plt.semilogx(freqScale*CTLE.frequency, 10*np.log10(abs(CTLE.magnitude)), label = "CTLE responsel")
     plt.grid()
 
     # Plot channel
-    plt.semilogx(freqScale*channel.frequencies, 20*np.log(abs(channel.transferFunction)), label = "Channel response")
+    plt.semilogx(freqScale*channel.frequencies, 10*np.log10(abs(channel.transferFunction)), label = "Channel response")
     
     # Plot resultant
     resultant = CTLE.magnitude*channel.transferFunction
-    plt.semilogx(freqScale*channel.frequencies, 20*np.log(abs(resultant)), label = "Resultant response")
+    plt.semilogx(freqScale*channel.frequencies, 10*np.log10(abs(resultant)), label = "Resultant response")
     
     # Plot Nyquist
     plt.axvline(x=freqScale*simSettings.general.symbolRate.value / (simSettings.general.modulation.value),linestyle='dashed',color = 'red', label = "Nyquist Frequency")
