@@ -80,7 +80,7 @@ def generateISI(simSettings: simulationSettings, simResults: simulationStatus):
             
         
         # Split pulse into symbol portions
-        splitPul = splitPulse(pulses.__dict__[chName],preCursorCount,postCursorCount,samplesPerSymb)
+        splitPul = splitPulse(pulses.__dict__[chName], preCursorCount, postCursorCount, samplesPerSymb)
 
         # Apply cursor combinations to the split pulse response
         result.__dict__[chName] = applyCursorCombination(transitions,splitPul,samplesPerSymb)
@@ -96,7 +96,7 @@ def generateISI(simSettings: simulationSettings, simResults: simulationStatus):
 # scheme and the number of cursors. If a signaling mode such as QAM is
 # selected, combinations which do not have DC components will be created.
 ###########################################################################
-def generateCursorCombinations(cursorCount,signalingMode,modulation,levelNumb):
+def generateCursorCombinations(cursorCount, signalingMode, modulation, levelNumb):
     ISI = nothing()
 
     # Create combinations with DC component
@@ -142,7 +142,7 @@ def generateCursorCombinations(cursorCount,signalingMode,modulation,levelNumb):
 # It should be noted that the order of cursors is reversed to account for
 # time.
 ###########################################################################
-def clasifyTrajectories(ISI,preCursorCount,signalingMode):
+def clasifyTrajectories(ISI, preCursorCount, signalingMode):
     
     classifiedISI = nothing()
 
@@ -170,24 +170,24 @@ def clasifyTrajectories(ISI,preCursorCount,signalingMode):
 # This function splits the pulse response into symbols and returns them
 # in a structure categorized by name.
 ###########################################################################
-def splitPulse(pulse,preCursorCount,postCursorCount,samplesPerSymb):
+def splitPulse(pulse, preCursorCount, postCursorCount, samplesPerSymb):
 
     splitPulse = nothing()
     # Split pre-cursors
     index = 0
-    for cursor in np.arange(preCursorCount, 0, -1):
+    for cursor in np.flip(np.arange(preCursorCount)+1):
         splitPulse.__dict__['pre' + str(cursor)] = pulse[index:index+samplesPerSymb]
-        index = index+samplesPerSymb
+        index = index + samplesPerSymb
     
     
     # Split main-cursor(s)
     splitPulse.__dict__['main'] = pulse[index:index+samplesPerSymb]
-    index = index+samplesPerSymb
+    index = index + samplesPerSymb
     
     # Split post-cursors
     for cursor in range(postCursorCount):
         splitPulse.__dict__['post'+str(cursor)] = pulse[index:index+samplesPerSymb]
-        index = index+samplesPerSymb
+        index = index + samplesPerSymb
     
     return splitPulse
 
@@ -196,7 +196,7 @@ def splitPulse(pulse,preCursorCount,postCursorCount,samplesPerSymb):
 # This function applies the cursor combinations to the split pulse 
 # response. This creates all possible signal trajectories due to ISI.
 ###########################################################################
-def applyCursorCombination(ISI,splitPulse,samplesPerSymb):
+def applyCursorCombination(ISI, splitPulse, samplesPerSymb):
 
     # Loop through transitions
     cursors = list(splitPulse.__dict__)
@@ -210,8 +210,8 @@ def applyCursorCombination(ISI,splitPulse,samplesPerSymb):
             ISI.__dict__[transName].__dict__[comb].trajectory = np.zeros((samplesPerSymb,))
             
             for pos in range(len(vector)):
-                offset = splitPulse.__dict__[cursors[pos]]*vector[pos] # multiply cursor by data levels
-                ISI.__dict__[transName].__dict__[comb].trajectory = ISI.__dict__[transName].__dict__[comb].trajectory+offset
+                offset = splitPulse.__dict__[cursors[pos]] * vector[pos] # multiply cursor by data levels
+                ISI.__dict__[transName].__dict__[comb].trajectory = ISI.__dict__[transName].__dict__[comb].trajectory + offset
             
     return ISI    
     
