@@ -11,6 +11,7 @@ from generateISI import generateISI
 from generatePDF import generatePDF
 from generateBER import generateBER
 from generateResults import generateResults
+from displayResults import displayResults
 
 # Begin simulation
 print('----------Preparing Simulation----------')
@@ -59,6 +60,9 @@ while not simResults.finished:
     simResults.finished = True # Not doing adaptions for now
 
 
+# Display final results
+displayResults(simSettings, simResults)
+#DisplayAdaption(simSettings, simResults)
 
 # End Simulation
 print('----------Simulation Complete----------')
@@ -90,6 +94,3 @@ DisplayISI(simSettings, simResults)
 DisplayPDF(simSettings, simResults)
 DisplayBER(simSettings, simResults)
 
-# Display final results
-DisplayResults(simSettings, simResults)
-DisplayAdaption(simSettings, simResults)
