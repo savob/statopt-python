@@ -1,4 +1,5 @@
 import time # Used for timing exectution
+import matplotlib.pyplot as plt
 from generateUserSettingsExampleECE1392 import generateUserSettings # Change the 'from' file to desired file
 from generateSettingsLimits import generateSettingsLimits
 from initializeSimulation import initializeSimulation
@@ -13,6 +14,7 @@ from generateBER import generateBER
 from generateResults import generateResults
 from displayResults import displayResults
 from displayChannels import displayChannels
+from displayCTLEResponse import displayCTLEResponse
 
 # Begin simulation
 print('----------Preparing Simulation----------')
@@ -65,7 +67,7 @@ doneSimTime = time.time() # Mark time once data was loaded
 
 # Display responses
 displayChannels(simSettings, simResults)
-
+displayCTLEResponse(simSettings, simResults)
 
 # Display final results
 displayResults(simSettings, simResults)
@@ -81,6 +83,8 @@ print('\t{:6.3f} to prepare fixed system influences'.format(doneFixedTime - done
 print('\t{:6.3f} to run simulation and adaption'.format(doneSimTime - doneFixedTime))
 print('\t{:6.3f} to output data'.format(endTime - doneSimTime))
 
+plt.show() # Show plots after the timers are posted, it blocks the program
+
 quit()
 
     
@@ -91,7 +95,6 @@ quit()
 # Dock all figures in one window
 #set(0,'DefaultFigureWindowStyle','docked')
 
-DisplayCTLEResponse(simSettings, simResults)
 DisplayPulse(simSettings, simResults)
 
 # Display interferences

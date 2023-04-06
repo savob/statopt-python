@@ -55,6 +55,5 @@ def displayChannels(simSettings: simulationSettings, simResults: simulationStatu
 
     plt.xlim(0, freqScale*max(channels.thru.frequencies))
     plt.legend()
-    plt.show()
     
 
