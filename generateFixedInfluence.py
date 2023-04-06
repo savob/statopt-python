@@ -30,7 +30,6 @@ from scipy import io
 from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus
 
-
 class combinedChannel:
 
     def __init__(self):
@@ -85,42 +84,11 @@ def createChannel(simSettings: simulationSettings, simResults: simulationStatus)
         setattr(results, 'next', combinedChannel())
         setattr(results, 'fext', combinedChannel())
         setattr(results, 'xtalk', combinedChannel())
-        
-    
 
     # Load each channel
     for name in chNames:
         if((name == 'next') or (name == 'fext') or (name =='xtalk')):
             continue 
-            
-        '''
-        This code is based on the StatEye fitting a polynomial to the frequency response.
-        Kept for reference if the approach is returned to.
-
-        # Get file information
-        numerator = results.__dict__[name].numerator
-        denominator = results.__dict__[name].denominator
-        D = results.__dict__[name].D
-        delay = results.__dict__[name].delay
-        
-        # Create ideal step response with rise time
-        riseIdx = round(tRise/samplePeriod)
-        time = (0:samplePeriod:1000*symbolPeriod-samplePeriod)
-        idealStep = [linspace(0,1,riseIdx),np.ones(1,len(time)-riseIdx)]
-            
-        # Apply ideal step response
-        if(~addChannel):
-            stepResponse = [np.zeros(1,preCursorCount*samplesPerSymb),idealStep]
-        
-        # Apply step to channel
-        else:
-            H = tf(D,'InputDelay',delay)
-            stepResponse = lsim(H,idealStep,time)
-            for index in range(len(numerator)):
-                H = tf(numerator[index],denominator[index],'InputDelay',delay)
-                step = lsim(H,idealStep,time)
-                stepResponse = stepResponse+step
-                '''
 
         # Get file information
         impulseResponse = results.__dict__[name].impulseResponse
@@ -142,8 +110,6 @@ def createChannel(simSettings: simulationSettings, simResults: simulationStatus)
         else:
             stepResponse = np.convolve(idealStep, impulseResponse)
             stepResponse = stepResponse[:-(len(impulseResponse)-1)] # remove the trailing (falling edge) of the convolution
-            
-        
             
         # Contribute to combined channels based on present channel
         if name[:4] == 'thru':

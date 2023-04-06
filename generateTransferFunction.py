@@ -60,9 +60,6 @@ def generateTransferFunction(simSettings: simulationSettings, simResults: simula
     # Load files
     loadFiles(simSettings, simResults)
 
-    # Create step response
-    #simResults = generateNumDen(simResults) # Going to try and use the actual step response
-
     # Update data files
     updateFile(simSettings, simResults)
     
@@ -204,44 +201,12 @@ def loadFiles(simSettings: simulationSettings, simResults: simulationStatus):
             phase = np.squeeze(phase) * 180 / np.pi
             notchTF = mag * np.exp(np.pi * phase)
             tranFunc = tranFunc * notchTF
-        
-        
-        '''
-        Perform rational fitting
 
-        In the original StatEye tool, it made use of the 'rationalfit' function to find a
-        decent fit for the modified frequency response data stored in 'tranFunc', so that
-        it could be described as a polynomial so that the pulse responses of channels can
-        be easily determined using the built in functions to do so with arbitrary transfer 
-        polynomials. However this function doesn't seem to have any readily found 
-        equivalents, nor is it something easily replicated.
-
-        In place of this polynomial fitting, I have elected to derive the impulse response 
-        of our system using Discrete Fourier Transform techniques and use that as a part 
-        of a convolution in realtime instead.
-
-        It seems that skrf.vectorFitting.VectorFitting should be able to do a decent job
-        of the linear fitting, but it only acts on networks. I attepted using 'curve_fit' 
-        but that doesn't seem to work well when trying to tune complex parameters.
-
-        I have left the partially ported MATLAB code here to be referred to in the future if needed
-        '''
-
-        '''
-        fitTollerence = -50  # rational fitting tolerance in dB
-        initialGuess = np.full((97) ,1 + 1j)
-        initialGuess[-1]= 0
-        rationalFuncCoeffs, convergence = optimize.curve_fit(rationalTestFcn, freqs, tranFunc, p0=initialGuess)
-        nPoles = 48 # Always 48 given function definition
-        '''
-
-        impulseResponse = impulseResponseConvolKernel(tranFunc, freqs, samplePeriod, 6000)
+        impulseResponse = impulseResponseConvolKernel(tranFunc, freqs, samplePeriod, 20000)
 
         # Save results
         temp = channelInfluence(tranFunc, freqs, impulseResponse)
         setattr(simResults.influenceSources.channel, name, temp)
-        #simResults.influenceSources.channel.__dict__[name].nPoles = nPoles
-        #simResults.influenceSources.channel.__dict__[name].rationalFunc = rationalFunc
 
         # Notify user
         print('Channel {0} is loaded'.format(fileName))
@@ -268,15 +233,15 @@ def impulseResponseConvolKernel(frequencyResponse, freqs, samplePeriod: float, w
     freqsExtended = np.concatenate((freqs, padding))
 
     # Pad TF with zeros
-    freqRespPadded = np.concatenate((frequencyResponse, np.zeros((freqsExtended.size-frequencyResponse.size))))
+    freqRespPadded = np.concatenate((frequencyResponse, np.zeros((len(freqsExtended)-len(frequencyResponse),))))
     
     # To create an impulse response the padded frequency response is reflected
     # then put through an inverse Fourier Transform to get the time response
-    tempH = np.concatenate((freqRespPadded, np.conj(np.flip(freqRespPadded[1:freqRespPadded.size-1]))))
+    tempH = np.concatenate((freqRespPadded, np.conj(np.flip(freqRespPadded[1:-1]))))
     impulseResponse = np.real(np.fft.ifft(tempH))
 
     # Trim this convolution to be centered around the peak response if desired
-    if window != 0:
+    if window != 0 and window < len(impulseResponse):
         maxValueIndex = np.argmax(impulseResponse)
 
         # Ensure we stay within bounds and don't go below zero since the response is usually frontward
@@ -286,87 +251,6 @@ def impulseResponseConvolKernel(frequencyResponse, freqs, samplePeriod: float, w
         return impulseResponse[bottomIndex:topIndex]
     else:
         return impulseResponse # Return unchanged response (will be large!)
-
-
-'''
-
-These are additional functions used as part of the polynomial fitting system
-
-###########################################################################
-# This function is used to find the rational fit
-###########################################################################
-def rationalTestFcn(f, a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,
-                    a24,a25,a26,a27,a28,a29,a30,a31,a32,a33,a34,a35,a36,a37,a38,a39,a40,a41,a42,a43,a44,a45,a46,a47,
-                    c0,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,
-                    c24,c25,c26,c27,c28,c29,c30,c31,c32,c33,c34,c35,c36,c37,c38,c39,c40,c41,c42,c43,c44,c45,c46,c47,d):
-    s = 2*np.pi*f
-    
-
-    result = d
-    
-    for x in range(48):
-        result = result + (locals()['c'+str(x)] / (s - locals()['a'+str(x)] ))
-
-    result = result * np.exp(-s*delayFactor)
-    return result
-
-###########################################################################
-# This function creates the numerators and denominators for the channel
-# transfer functions.
-###########################################################################
-def generateNumDen(simResults: simulationStatus):
-
-    # Loop through each channel
-    for channel in simResults.influenceSources.channel.__dict__:
-        name = simResults.influenceSources.channel.__dict__[channel]
-        
-        # Import variables
-        nPoles = simResults.influenceSources.channel.__dict__[name].nPoles
-        A = simResults.influenceSources.channel.__dict__[name].rationalFunc[0:47]
-        C = simResults.influenceSources.channel.__dict__[name].rationalFunc[48:-1]
-        D = simResults.influenceSources.channel.__dict__[name].rationalFunc[-1]
-        #delay = simResults.influenceSources.channel.__dict__[name].rationalFunc.Delay
-        
-        # Create numerators and denominators
-        numerator = np.array([1])
-        denominator = np.array([1])
-
-        index1 = 1 # index of poles and residues
-        index2 = 0 # index of numerators and denominators
-        while index1 <= nPoles:
-            
-            # Real pole
-            if np.isreal(A(index1)):
-                index2 = index2 + 1
-                numerator[index2] = C(index1)
-                denominator[index2] = [1, -A(index1)]
-                index1 = index1 + 1
-                
-            # Complex pole
-            else:
-                index2 = index2 + 1
-                real_a = np.real(A(index1))
-                imag_a = np.imag(A(index1))
-                real_c = np.real(C(index1))
-                imag_c = np.imag(C(index1))
-                numerator[index2] = [2*real_c, -2*(real_a*real_c+imag_a*imag_c)]
-                denominator[index2] = [1, -2*real_a, real_a^2+imag_a^2]
-                index1 = index1 + 2
-            
-        
-        
-        # Remove proprietary RF Toolbox variables
-        # Although not applicable, kept to maintain compatibility with the remainder of the codebase
-        del simResults.influenceSources.channel.__dict__[name].rationalFunc
-        
-        # Save results
-        simResults.influenceSources.channel.__dict__[name].A = A
-        simResults.influenceSources.channel.__dict__[name].C = C
-        simResults.influenceSources.channel.__dict__[name].D = D
-        simResults.influenceSources.channel.__dict__[name].delay = delayFactor
-        simResults.influenceSources.channel.__dict__[name].numerator = numerator
-        simResults.influenceSources.channel.__dict__[name].denominator = denominator
-'''    
 
 
 ###########################################################################
