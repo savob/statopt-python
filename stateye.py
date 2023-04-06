@@ -12,6 +12,7 @@ from generatePDF import generatePDF
 from generateBER import generateBER
 from generateResults import generateResults
 from displayResults import displayResults
+from displayChannels import displayChannels
 
 # Begin simulation
 print('----------Preparing Simulation----------')
@@ -58,6 +59,10 @@ while not simResults.finished:
     simResults.finished = True # Not doing adaptions for now
 
 
+# Display responses
+displayChannels(simSettings, simResults)
+
+
 # Display final results
 displayResults(simSettings, simResults)
 #DisplayAdaption(simSettings, simResults)
@@ -77,8 +82,6 @@ quit()
 # Dock all figures in one window
 #set(0,'DefaultFigureWindowStyle','docked')
 
-# Display responses
-DisplayChannel(simSettings, simResults)
 DisplayCTLEResponse(simSettings, simResults)
 DisplayPulse(simSettings, simResults)
 
