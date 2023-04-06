@@ -32,8 +32,8 @@ def generateUserSettings():
     simSettings.general.targetBER.value = 1e-6 # used for measurement purposes
 
     # Display responses
-    simSettings.general.plotting.channelResponse = True
-    simSettings.general.plotting.CTLEResponse    = True
+    simSettings.general.plotting.channelResponse = False
+    simSettings.general.plotting.CTLEResponse    = False
     simSettings.general.plotting.pulseResponse   = True
     
     # Display inteferences

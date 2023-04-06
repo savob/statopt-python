@@ -15,6 +15,7 @@ from generateResults import generateResults
 from displayResults import displayResults
 from displayChannels import displayChannels
 from displayCTLEResponse import displayCTLEResponse
+from displayJitter import displayJitter
 
 # Begin simulation
 print('----------Preparing Simulation----------')
@@ -69,6 +70,10 @@ doneSimTime = time.time() # Mark time once data was loaded
 displayChannels(simSettings, simResults)
 displayCTLEResponse(simSettings, simResults)
 
+
+# Display interferences
+displayJitter(simSettings, simResults)
+
 # Display final results
 displayResults(simSettings, simResults)
 #DisplayAdaption(simSettings, simResults)
@@ -97,8 +102,6 @@ quit()
 
 DisplayPulse(simSettings, simResults)
 
-# Display interferences
-DisplayJitter(simSettings, simResults)
 DisplayNoise(simSettings, simResults)
 DisplayDistortion(simSettings, simResults)
 
