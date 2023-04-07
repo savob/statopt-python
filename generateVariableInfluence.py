@@ -272,7 +272,7 @@ def generateTXNoise(simSettings: simulationSettings, simResults: simulationStatu
     if(len(totalNoise)<2*supplyVoltage/yIncrement):
        totalNoise = np.concatenate((np.zeros((round(yAxisLength/2),)), totalNoise, np.zeros((round(yAxisLength/2),))))
     
-    voltageScale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise))
+    voltageScale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise)+1)
 
     # Save results
     setattr(simResults.influenceSources, 'TXNoise', nothing())
@@ -296,6 +296,7 @@ def generateChannelNoise(simSettings: simulationSettings, simResults: simulation
     codingGain    = simSettings.general.codingGain.gain.value
     yAxis         = simSettings.general.yAxis.value
     yAxisLength   = simSettings.general.yAxisLength.value
+    yIncrement    = simSettings.general.yIncrement.value
     addNoise      = simSettings.channel.noise.addNoise
     noiseDensity  = simSettings.channel.noise.noiseDensity.value
     usePreAmp     = simSettings.receiver.preAmp.addGain
@@ -340,11 +341,12 @@ def generateChannelNoise(simSettings: simulationSettings, simResults: simulation
     else:
         randNoise = np.concatenate((np.zeros((int(yAxisLength/2),)), 1, np.zeros((int(yAxisLength/2),)))) # perfect impulse
     
+    voltageScale = np.linspace(-(len(randNoise)-1)/2*yIncrement, (len(randNoise)-1)/2*yIncrement, len(randNoise)+1)
 
     # Save results
     setattr(simResults.influenceSources, 'CHNoise', nothing())
     simResults.influenceSources.CHNoise.totalNoise = randNoise
-    simResults.influenceSources.CHNoise.voltageScale = yAxis
+    simResults.influenceSources.CHNoise.voltageScale = voltageScale
 
 
 ###########################################################################
@@ -443,7 +445,7 @@ def generateRXNoise(simSettings: simulationSettings, simResults: simulationStatu
     if len(totalNoise) < 2*supplyVoltage/yIncrement:
        totalNoise = np.concatenate((np.zeros((round(yAxisLength/2),)), totalNoise, np.zeros((round(yAxisLength/2),))))
     
-    voltageScale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise))
+    voltageScale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise)+1)
     
     # Save results
     setattr(simResults.influenceSources, 'RXNoise', nothing())
@@ -467,7 +469,7 @@ def combineInfluences(simSettings: simulationSettings, simResults: simulationSta
     # Combine noise
     totalNoise = np.convolve(TXNoise,CHNoise)
     totalNoise = np.convolve(totalNoise,RXNoise)
-    voltagescale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise))
+    voltagescale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise)+1)
 
     # Save results
     setattr(simResults.influenceSources, 'totalNoise', nothing())

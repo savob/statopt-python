@@ -73,6 +73,73 @@ def displayJitter(simSettings: simulationSettings, simResults: simulationStatus)
 #   For personal use only
 #
 ###########################################################################
+# This function plots the noise source distributions. Sources include the
+# TX noise and RX noise.
+#
+# Inputs:
+#   simSettings: structure containing simulation settings
+#   simResults: structure containing simulation results
+# 
+# Outputs:
+#   A PDF distribution of the two jitter sources.
+#   
+###########################################################################
+def displayNoise (simSettings: simulationSettings, simResults: simulationStatus):
+
+    # Plot only if desired
+    if not simSettings.general.plotting.noiseSource: return 
+    
+    # Import variables
+    yAxis     = simSettings.general.yAxis.value
+    TXNoise      = simResults.influenceSources.TXNoise.totalNoise
+    TXVoltage    = simResults.influenceSources.TXNoise.voltageScale
+    CHNoise      = simResults.influenceSources.CHNoise.totalNoise
+    CHVoltage    = simResults.influenceSources.CHNoise.voltageScale
+    RXNoise      = simResults.influenceSources.RXNoise.totalNoise
+    RXVoltage    = simResults.influenceSources.RXNoise.voltageScale
+    totalNoise   = simResults.influenceSources.totalNoise.histogram
+    totalVoltage = simResults.influenceSources.totalNoise.voltageScale  
+    
+    # Plot noise PDF
+    fig, axs = plt.subplots(nrows=1, ncols=4, sharex='all', sharey='all', dpi = 200, num='Noise Distribution')
+    axs[0].hist(TXVoltage[:-1], TXVoltage, weights=TXNoise, orientation='horizontal')
+    axs[0].set_title('TX Noise Histogram')
+    axs[0].set_xlabel('Normalized Probability') 
+    axs[0].set_ylabel('Amplitude [V]')
+    axs[0].grid()
+    axs[0].set_ylim(yAxis[0], yAxis[-1])
+    axs[0].set_xlim(0, 1)
+    
+    axs[1].hist(CHVoltage[:-1], CHVoltage, weights=CHNoise, orientation='horizontal')
+    axs[1].set_title('CH Noise Histogram')
+    axs[1].set_xlabel('Normalized Probability')
+    axs[1].set_ylabel('Amplitude [V]')
+    axs[1].grid()
+
+    axs[2].hist(RXVoltage[:-1], RXVoltage, weights=RXNoise, orientation='horizontal')
+    axs[2].set_title('RX Noise Histogram')
+    axs[2].set_xlabel('Normalized Probability')
+    axs[2].set_ylabel('Amplitude [V]')
+    axs[2].grid()
+    
+    axs[3].hist(totalVoltage[:-1], totalVoltage, weights=totalNoise, orientation='horizontal')
+    axs[3].set_title('Combined Noise Histogram')
+    axs[3].set_xlabel('Normalized Probability')
+    axs[3].set_ylabel('Amplitude [V]')
+    axs[3].grid()
+
+
+###########################################################################
+#
+#   StatEye Simulator
+#   by Jeremy Cosson-Martin, Jhoan Salinas
+#   Ali Sheikholeslami's group
+#   Department of Electrical and Computer Engineering
+#   University of Toronto
+#   Copyright Material
+#   For personal use only
+#
+###########################################################################
 # This function plots the distortion transfer functions for the transmitter
 # and receiver.
 #

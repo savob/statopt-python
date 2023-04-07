@@ -38,8 +38,8 @@ def generateUserSettings():
     
     # Display inteferences
     simSettings.general.plotting.jitterSource     = False
-    simSettings.general.plotting.noiseSource      = True
-    simSettings.general.plotting.distortionSource = True
+    simSettings.general.plotting.noiseSource      = False
+    simSettings.general.plotting.distortionSource = False
     
     # Display probability distributions
     simSettings.general.plotting.ISI              = False # CAREFUL: CAN BE SLOW TO PLOT!
