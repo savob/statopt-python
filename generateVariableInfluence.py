@@ -272,7 +272,7 @@ def generateTXNoise(simSettings: simulationSettings, simResults: simulationStatu
     if(len(totalNoise)<2*supplyVoltage/yIncrement):
        totalNoise = np.concatenate((np.zeros((round(yAxisLength/2),)), totalNoise, np.zeros((round(yAxisLength/2),))))
     
-    voltageScale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise) + 1)
+    voltageScale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise))
 
     # Save results
     setattr(simResults.influenceSources, 'TXNoise', nothing())
@@ -443,7 +443,7 @@ def generateRXNoise(simSettings: simulationSettings, simResults: simulationStatu
     if len(totalNoise) < 2*supplyVoltage/yIncrement:
        totalNoise = np.concatenate((np.zeros((round(yAxisLength/2),)), totalNoise, np.zeros((round(yAxisLength/2),))))
     
-    voltageScale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise) + 1)
+    voltageScale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise))
     
     # Save results
     setattr(simResults.influenceSources, 'RXNoise', nothing())
@@ -467,7 +467,7 @@ def combineInfluences(simSettings: simulationSettings, simResults: simulationSta
     # Combine noise
     totalNoise = np.convolve(TXNoise,CHNoise)
     totalNoise = np.convolve(totalNoise,RXNoise)
-    voltagescale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise) + 1)
+    voltagescale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise))
 
     # Save results
     setattr(simResults.influenceSources, 'totalNoise', nothing())
