@@ -34,7 +34,7 @@ def generateUserSettings():
     # Display responses
     simSettings.general.plotting.channelResponse = False
     simSettings.general.plotting.CTLEResponse    = False
-    simSettings.general.plotting.pulseResponse   = True
+    simSettings.general.plotting.pulseResponse   = False
     
     # Display inteferences
     simSettings.general.plotting.jitterSource     = False

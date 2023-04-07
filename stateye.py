@@ -13,7 +13,7 @@ from generatePDF import generatePDF
 from generateBER import generateBER
 from generateResults import generateResults
 from displayResults import displayResults
-from displayResponses import displayChannels, displayCTLEResponse
+from displayResponses import displayChannels, displayCTLEResponse, displayPulse
 from displayInterferences import displayJitter, displayDistortion, displayNoise
 
 # Begin simulation
@@ -65,15 +65,23 @@ while not simResults.finished:
 
 doneSimTime = time.time() # Mark time once data was loaded
 
+# Plot Results
+# In MATLAB these were all docked in the main window, however there is no real way to do that in Python that I know of
+
 # Display responses
 displayChannels(simSettings, simResults)
 displayCTLEResponse(simSettings, simResults)
-
+displayPulse(simSettings, simResults)
 
 # Display interferences
 displayJitter(simSettings, simResults)
 displayNoise(simSettings, simResults)
 displayDistortion(simSettings, simResults)
+
+# Display distributions
+#DisplayISI(simSettings, simResults)
+#DisplayPDF(simSettings, simResults)
+#DisplayBER(simSettings, simResults)
 
 # Display final results
 displayResults(simSettings, simResults)
@@ -89,23 +97,4 @@ print('\t{:6.3f} to prepare fixed system influences'.format(doneFixedTime - done
 print('\t{:6.3f} to run simulation and adaption'.format(doneSimTime - doneFixedTime))
 print('\t{:6.3f} to output data'.format(endTime - doneSimTime))
 
-plt.show() # Show plots after the timers are posted, it blocks the program
-
-quit()
-
-    
-
-
-
-# Plot Results
-# Dock all figures in one window
-#set(0,'DefaultFigureWindowStyle','docked')
-
-DisplayPulse(simSettings, simResults)
-
-
-# Display distributions
-DisplayISI(simSettings, simResults)
-DisplayPDF(simSettings, simResults)
-DisplayBER(simSettings, simResults)
-
+plt.show() # Show plots after the timers are posted, it blocks the program and thus messes up timers
