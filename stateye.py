@@ -13,8 +13,7 @@ from generatePDF import generatePDF
 from generateBER import generateBER
 from generateResults import generateResults
 from displayResults import displayResults
-from displayChannels import displayChannels
-from displayCTLEResponse import displayCTLEResponse
+from displayResponses import displayChannels, displayCTLEResponse
 from displayInterferences import displayJitter, displayDistortion, displayNoise
 
 # Begin simulation
