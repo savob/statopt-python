@@ -15,7 +15,7 @@ from generateResults import generateResults
 from displayResults import displayResults
 from displayChannels import displayChannels
 from displayCTLEResponse import displayCTLEResponse
-from displayJitter import displayJitter
+from displayInterferences import displayJitter
 
 # Begin simulation
 print('----------Preparing Simulation----------')
