@@ -15,7 +15,7 @@ from generateResults import generateResults
 from displayResults import displayResults
 from displayChannels import displayChannels
 from displayCTLEResponse import displayCTLEResponse
-from displayInterferences import displayJitter
+from displayInterferences import displayJitter, displayDistortion
 
 # Begin simulation
 print('----------Preparing Simulation----------')
@@ -73,6 +73,7 @@ displayCTLEResponse(simSettings, simResults)
 
 # Display interferences
 displayJitter(simSettings, simResults)
+displayDistortion(simSettings, simResults)
 
 # Display final results
 displayResults(simSettings, simResults)
@@ -103,7 +104,6 @@ quit()
 DisplayPulse(simSettings, simResults)
 
 DisplayNoise(simSettings, simResults)
-DisplayDistortion(simSettings, simResults)
 
 # Display distributions
 DisplayISI(simSettings, simResults)
