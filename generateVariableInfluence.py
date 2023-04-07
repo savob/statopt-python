@@ -341,7 +341,7 @@ def generateChannelNoise(simSettings: simulationSettings, simResults: simulation
     else:
         randNoise = np.concatenate((np.zeros((int(yAxisLength/2),)), 1, np.zeros((int(yAxisLength/2),)))) # perfect impulse
     
-    voltageScale = np.linspace(-(len(randNoise)-1)/2*yIncrement, (len(randNoise)-1)/2*yIncrement, len(randNoise)+1)
+    voltageScale = np.linspace(-(len(randNoise)-1)/2*yIncrement, (len(randNoise)-1)/2*yIncrement, len(randNoise)+1) # +1 needed for histograms
 
     # Save results
     setattr(simResults.influenceSources, 'CHNoise', nothing())
@@ -445,7 +445,7 @@ def generateRXNoise(simSettings: simulationSettings, simResults: simulationStatu
     if len(totalNoise) < 2*supplyVoltage/yIncrement:
        totalNoise = np.concatenate((np.zeros((round(yAxisLength/2),)), totalNoise, np.zeros((round(yAxisLength/2),))))
     
-    voltageScale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise)+1)
+    voltageScale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise)+1) # +1 needed for histograms
     
     # Save results
     setattr(simResults.influenceSources, 'RXNoise', nothing())
@@ -469,7 +469,7 @@ def combineInfluences(simSettings: simulationSettings, simResults: simulationSta
     # Combine noise
     totalNoise = np.convolve(TXNoise,CHNoise)
     totalNoise = np.convolve(totalNoise,RXNoise)
-    voltagescale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise)+1)
+    voltagescale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise)+1) # +1 needed for histograms
 
     # Save results
     setattr(simResults.influenceSources, 'totalNoise', nothing())
