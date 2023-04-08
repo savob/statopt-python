@@ -104,4 +104,4 @@ def displayCOM(simResults: simulationStatus):
     
     # Display eye locations
     print('----------Channel Operating Margin----------')
-    print('COM: {0:1f}dB for BER: {1:.1e}\n'.format(com, ber))
+    print('COM: {0:.1f}dB for BER: {1:.1e}\n'.format(com, ber))
