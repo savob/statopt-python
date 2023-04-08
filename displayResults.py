@@ -53,7 +53,7 @@ def displayDLevs(simResults: simulationStatus):
     # Display data levels
     print('----------Data Level Results----------')
     for index in range(len(dLevs)-1, -1, -1):
-        print('Data level %i: %.2fV\n'% {index, dLevs[index]})
+        print('Data level {0:d}: {1:.3f}V\n'.format(index, dLevs[index]))
 
 
 ###########################################################################
@@ -66,8 +66,11 @@ def displaySamplerLocs(simResults: simulationStatus):
     
     # Display eye locations
     print('----------Sampler Location Results----------')
-    for index in range(len(eyeLocs.level)-1, -1, -1):
-        print('Sampler %i: level: %.2fV, phase: %0.1fdeg\n'% {index, eyeLocs.level[index], eyeLocs.phase})
+    if type(eyeLocs.level) == int:
+        print('Sampler {0:d}: level: {1:.3f}V, phase: {2:3.1f}deg\n'.format(0, eyeLocs.level, eyeLocs.phase)) # Case for single eye
+    else:
+        for index in range(len(eyeLocs.level)-1, -1, -1):
+            print('Sampler {0:d}: level: {1:.3f}V, phase: {2:3.1f}deg\n'.format(index, eyeLocs.level[index], eyeLocs.phase))
 
 
 ###########################################################################
@@ -86,8 +89,8 @@ def displayEyeOpening(simSettings: simulationSettings, simResults: simulationSta
     if bestBER > target:
         print('WARNING: Target BER not met!')
 
-    for index, eye in enumerate(eyeDims):
-        print('Eye %i height: %.3fV, width: %.2fUI for BER: %.1e\n'% {index, eyeDims.__dict__[eye].height, eyeDims.__dict__[eye].widthUI, bestBER})
+    for index, eye in enumerate(eyeDims.__dict__):
+        print('Eye {0:d} height: {1:.3f}V, width: {2:.2f}UI for BER: {3:.1e}\n'.format(index, eyeDims.__dict__[eye].height, eyeDims.__dict__[eye].widthUI, bestBER))
 
 
 ###########################################################################
@@ -101,4 +104,4 @@ def displayCOM(simResults: simulationStatus):
     
     # Display eye locations
     print('----------Channel Operating Margin----------')
-    print('COM: %.1fdB for BER: %.1e\n' % {com, ber})
+    print('COM: {0:1f}dB for BER: {1:.1e}\n'.format(com, ber))
