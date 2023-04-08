@@ -26,7 +26,6 @@ from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.io import loadmat
 
 class nothing:
     def __init__(self):
@@ -50,8 +49,8 @@ def displayISI(simSettings: simulationSettings, simResults: simulationStatus):
 
     # To reduce the discontinuation visibility, ungroup trajectories from their main cursor
     for mainCursor in ISI:
-        for combName in ISI[mainCursor].__dict__:
-            setattr(trajectories, combName, ISI[mainCursor].__dict__[combName].trajectory)
+        for combName in ISI[mainCursor]:
+            setattr(trajectories, combName, ISI[mainCursor][combName]['trajectory'])
     
     # Order trajectories
     orderTraj = nothing()
@@ -79,14 +78,17 @@ def displayISI(simSettings: simulationSettings, simResults: simulationStatus):
 
         # Add additional point to stich eyes together
         trajectory = orderTraj.__dict__[comb]
-        trajectory1 = trajectory[:,int(samplesPerSymb/2)+1:]
+
+        trajectory1 = trajectory[int(samplesPerSymb/2)+1:]
         velocity = trajectory1[-1]-trajectory1[-2]
-        trajectory1 = [trajectory1, trajectory1[-2]+velocity] 
-        trajectory2 = trajectory[:,:int(samplesPerSymb/2)]
-        velocity = trajectory2[2]-trajectory2[1]
-        trajectory2 = [trajectory2(1)-velocity,trajectory2] 
+        trajectory1 = np.concatenate((trajectory1, [trajectory1[-1]+velocity]))
+
+        trajectory2 = trajectory[:int(samplesPerSymb/2)-1]
+        velocity = trajectory2[1]-trajectory2[0]
+        trajectory2 = np.concatenate(([trajectory2[0]-velocity], trajectory2))
+
         velocity = trajectory[-1]-trajectory[-2]
-        trajectory3 = [trajectory, trajectory[-1]+velocity] 
+        trajectory3 = np.concatenate((trajectory, [trajectory[-1]+velocity]))
 
         # Plot multiple eyes adjacent to oneanother, ensure eye is always in the middle
         for symb in range(numbSymb):
