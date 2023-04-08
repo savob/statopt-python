@@ -66,7 +66,7 @@ def displaySamplerLocs(simResults: simulationStatus):
     
     # Display eye locations
     print('----------Sampler Location Results----------')
-    if type(eyeLocs.level) == int:
+    if type(eyeLocs.level) == int or type(eyeLocs.level) == float:
         print('Sampler {0:d}: level: {1:.3f}V, phase: {2:3.1f}deg\n'.format(0, eyeLocs.level, eyeLocs.phase)) # Case for single eye
     else:
         for index in range(len(eyeLocs.level)-1, -1, -1):

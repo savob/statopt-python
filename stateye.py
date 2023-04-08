@@ -4,6 +4,7 @@ from generateUserSettingsExampleECE1392 import generateUserSettings # Change the
 from generateSettingsLimits import generateSettingsLimits
 from initializeSimulation import initializeSimulation
 from checkSettings import checkSettings
+from adaption import displayAdaption
 from generateTransferFunction import generateTransferFunction
 from generateFixedInfluence import generateFixedInfluence
 from generateVariableInfluence import generateVariableInfluence
@@ -86,7 +87,7 @@ displayISI(simSettings, simResults)
 
 # Display final results
 displayResults(simSettings, simResults)
-#DisplayAdaption(simSettings, simResults)
+displayAdaption(simSettings, simResults)
 
 # End Simulation
 print('----------Simulation Complete----------')
