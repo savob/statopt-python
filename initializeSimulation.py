@@ -88,7 +88,7 @@ def addGeneralSettings(simSettings: simulationSettings):
     simSettings.general.yAxis.value = linspace(-simSettings.receiver.signalAmplitude.value, simSettings.receiver.signalAmplitude.value, simSettings.general.yAxisLength.value)
     samplesPerSymbol = simSettings.general.samplesPerSymb.value
     simSettings.general.xAxisCenter.value = linspace(-0.5*samplesPerSymbol, 0.5*samplesPerSymbol, samplesPerSymbol + 1)*simSettings.general.samplePeriod.value
-    simSettings.general.xAxisLong.value = arange(samplesPerSymbol * simSettings.general.numbSymb.value-1) * simSettings.general.samplePeriod.value
+    simSettings.general.xAxisLong.value = arange(samplesPerSymbol * simSettings.general.numbSymb.value) * simSettings.general.samplePeriod.value
 
 
 ###########################################################################
