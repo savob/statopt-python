@@ -116,7 +116,7 @@ def measureEyeSizes(simSettings: simulationSettings, simResults: simulationStatu
         # Find worst BER eye
         BER = targetBER
         for index in range(len(eyeLocs.Y)):
-            BER = np.maximum(BER, bathTubY(eyeLocs.Y[index]))
+            BER = np.maximum(BER, bathTubY[eyeLocs.Y[index]])
         
 
         # Find height and width of each eye
@@ -135,19 +135,20 @@ def measureEyeSizes(simSettings: simulationSettings, simResults: simulationStatu
             # Find size of each eye
             while bathTubY[top]<BER and top<(len(bathTubY)-1): top = top+1 
             while bathTubY[bottom]<BER and bottom>0: bottom = bottom-1 
-            while bathTubX.__dict__[tubLabel][right]<BER and right<(len(bathTubX)-1): right = right+1 
+            while bathTubX.__dict__[tubLabel][right]<BER and right<(len(bathTubX.__dict__[tubLabel])-1): right = right+1 
             while bathTubX.__dict__[tubLabel][left]<BER and left>0: left = left-1 
             height = (top-bottom)*yIncrement
             width = (right-left)*samplePeriod
             widthUI = width/symbolPeriod
             area = height*width
+            eyeDims.__dict__[eyeLabel] = nothing()
             eyeDims.__dict__[eyeLabel].height = height
             eyeDims.__dict__[eyeLabel].width = width
             eyeDims.__dict__[eyeLabel].widthUI = widthUI
             eyeDims.__dict__[eyeLabel].area = area
 
             # Ensure not a false reading
-            if top == (len(bathTubY)-1) or bottom==1:
+            if top == len(bathTubY) or bottom==0:
                 successful = False
                 print('Warning: Cannot determine eye limits.')
 
@@ -187,11 +188,11 @@ def measureEyePositions(simSettings: simulationSettings, simResults: simulationS
 
     if successful:
         eyeLocs = simResults.eyeGeneration.BER.eyeLocs
-        level = np.zeros_like(eyeLocs.Y)
+        level = np.zeros_like(eyeLocs.Y, dtype=float)
         for iter, loc in enumerate(eyeLocs.Y):
             level[iter] = yAxis[loc]
         time = xAxis[eyeLocs.X]
-        phase = round(time/(samplePeriod*samplesPerSymb)*360,1)
+        phase = round(time/(samplePeriod*samplesPerSymb)*360, 1)
     
     # Save results
     simResults.results.eyeLocs = nothing()
@@ -221,7 +222,7 @@ def measureCOM(simResults: simulationStatus):
             
             # Calculate COM for eye
             signalHeight = dLevs[index+1]-dLevs[index]
-            eyeHeight = eyes.__dict__['eye' + str(index-1)].height
+            eyeHeight = eyes.__dict__['eye' + str(index)].height
             noiseHeight = signalHeight-eyeHeight
             comTmp = 20*np.log10(signalHeight/noiseHeight)
             
