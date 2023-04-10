@@ -147,9 +147,9 @@ def clasifyTrajectories(ISI, preCursorCount, signalingMode):
     classifiedISI = nothing()
 
     for name in ISI.__dict__:
-        preCursor  = name[preCursorCount+1]
-        mainCursor = name[preCursorCount+2]
-        postCursor = name[preCursorCount+3]
+        preCursor  = name[preCursorCount+0]
+        mainCursor = name[preCursorCount+1]
+        postCursor = name[preCursorCount+2]
         if signalingMode == '1+D' or signalingMode == '1+0.5D':
             if not ('trans'+postCursor+mainCursor) in classifiedISI.__dict__:
                 setattr(classifiedISI, ('trans'+postCursor+mainCursor), nothing())
