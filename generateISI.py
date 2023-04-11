@@ -28,6 +28,7 @@
 from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus
 import numpy as np
+import copy
 
 class nothing:
     def __init__(self):
@@ -83,7 +84,10 @@ def generateISI(simSettings: simulationSettings, simResults: simulationStatus):
         splitPul = splitPulse(pulses.__dict__[chName], preCursorCount, postCursorCount, samplesPerSymb)
 
         # Apply cursor combinations to the split pulse response
-        result.__dict__[chName] = applyCursorCombination(transitions,splitPul,samplesPerSymb)
+        # Need to make a copy to have seperate objects for each channel
+        temp = applyCursorCombination(transitions,splitPul,samplesPerSymb)
+        temp2 = copy.deepcopy(temp)
+        setattr(result, chName, temp2)
     
     
     # Save results
