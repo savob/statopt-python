@@ -256,7 +256,7 @@ def limitPulse(signal,signalingMode,samplesPerSymb,preCursorCount,postCursorCoun
 
     # Locate signal content greater than 1% of maximum
     minVal = 0.01 * max(abs(signal))
-    start1P = 1
+    start1P = 0
     end1P = len(signal) - 1
     while(abs(signal[start1P]) < minVal):
         start1P = start1P + 1
@@ -270,10 +270,10 @@ def limitPulse(signal,signalingMode,samplesPerSymb,preCursorCount,postCursorCoun
     
     # Chop signal ensuring all desired cursors are included
     if signalingMode == '1+D' or signalingMode == '1+0.5D':
-        startC = round(peakLoc-(preCursorCount+1)*samplesPerSymb)
+        startC = round(peakLoc-(preCursorCount+1)*samplesPerSymb)-1
         endC = round(peakLoc+(postCursorCount+2)*samplesPerSymb) # add additional symbol to allow for delay
     else:
-        startC = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
+        startC = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)-1
         endC = round(peakLoc+(postCursorCount+1.5)*samplesPerSymb) # add additional symbol to allow for delay
     
     signal = signal[min(start1P,startC):max(end1P,endC)]  
@@ -284,15 +284,15 @@ def limitPulse(signal,signalingMode,samplesPerSymb,preCursorCount,postCursorCoun
 # This function is to find the peak in a signal
 ###########################################################################
 def findPeakPulse(signal):
-    peaks, prop = spsig.find_peaks(abs(signal))
+    signal = np.nan_to_num(signal) # Set NaN's to 0. This prevents issues with peak finder
+    peaks, prop = spsig.find_peaks(abs(signal), height=0)
 
     # Break if empty
     if len(peaks) == 0:
         return 0
     
-    temp = signal[peaks]
-    maxPeak = max(temp)
-    peakLoc = int(np.argwhere(signal == maxPeak)[0])
+    maxPeak = np.argmax(prop['peak_heights'])
+    peakLoc = peaks[maxPeak]
 
     return peakLoc
 
@@ -424,8 +424,9 @@ def applyRXCTLE(simSettings: simulationSettings, simResults: simulationStatus):
         
         # Apply CTLE
         inputSignal = inputSignals.__dict__[chName]
-        if(addEqualization):
-            outputSignal = ml.lsim(transferFunc, inputSignal, np.arange(len(inputSignals.__dict__[chName]))*samplePeriod)[0]
+        if addEqualization:
+            times = np.arange(len(inputSignals.__dict__[chName]))*samplePeriod
+            outputSignal, times, _ = ml.lsim(transferFunc, inputSignal, times)
         else:
             outputSignal = inputSignal
         
@@ -494,21 +495,23 @@ def applyRXFFE(simSettings: simulationSettings, simResults: simulationStatus):
         
 
         # Order taps
-        tapNames = list(taps.__dict__).sort()
-        response = taps.main.value
+        tapNames = list(taps.__dict__)
+        tapNames.sort()
+        response = [taps.main.value]
         pre = 1
         post = 1
         for tapName in tapNames:
             if tapName == ('pre' + str(pre)):
-                response = np.concatenate((taps.__dict__[tapName].value, response))
+                response.insert(0, taps.__dict__[tapName].value)
                 pre = pre+1
             elif tapName == ('post' + str(post)):
-                response = np.concatenate((response,taps.__dict__[tapName].value))
+                response.append(taps.__dict__[tapName].value)
                 post = post+1
             
         
 
         # Perform equalization on each channel
+        outputSignals = nothing()
         for chName in inputSignals.__dict__:
             inputSignals.__dict__[chName] = inputSignals.__dict__[chName] # This is likely redundant
 
@@ -523,12 +526,12 @@ def applyRXFFE(simSettings: simulationSettings, simResults: simulationStatus):
                 
             
 
-            # Convolve signal with equalizer
+            # Convolve signal with equalizer (why wasn't 'convole' used here? Will keep as it was for now)
             symbol = 1
             numbCursors = len(tapNames)
             outputSignals.__dict__[chName] = np.zeros((len(inputSignals.__dict__[chName])+(numbCursors-1)*samplesPerSymb,))
             for index in range(len(response)):
-                outputSignals.__dict__[chName] = outputSignals.__dict__[chName] + response(index) * np.concatenate((np.zeros(((symbol-1)*samplesPerSymb,)), inputSignals.__dict__[chName], np.zeros(((numbCursors-symbol)*samplesPerSymb),)))
+                outputSignals.__dict__[chName] = outputSignals.__dict__[chName] + response[index] * np.concatenate((np.zeros(((symbol-1)*samplesPerSymb,)), inputSignals.__dict__[chName], np.zeros(((numbCursors-symbol)*samplesPerSymb),)))
                 symbol = symbol+1
             
         
@@ -587,12 +590,13 @@ def applyRXDFE(simSettings: simulationSettings, simResults: simulationStatus):
         if addEqualization:
 
             # Order taps
-            tapNames = list(taps.__dict__).sort()
+            tapNames = list(taps.__dict__)
+            tapNames.sort()
             response = []
             post = 1
             for tapName in tapNames:
                 if tapName == ('post' + str(post)):
-                    response = np.concatenate((response, taps.__dict__[tapName].value))
+                    response.append(taps.__dict__[tapName].value)
                     post = post+1
 
             
