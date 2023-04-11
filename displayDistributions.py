@@ -51,9 +51,9 @@ def displayISI(simSettings: simulationSettings, simResults: simulationStatus):
     trajectories = nothing()
 
     # To reduce the discontinuation visibility, ungroup trajectories from their main cursor
-    for mainCursor in ISI:
-        for combName in ISI[mainCursor]:
-            setattr(trajectories, combName, ISI[mainCursor][combName]['trajectory'])
+    for mainCursor in ISI.__dict__:
+        for combName in ISI.__dict__[mainCursor].__dict__:
+            setattr(trajectories, combName, ISI.__dict__[mainCursor].__dict__[combName].__dict__['trajectory'])
     
     # Order trajectories
     orderTraj = nothing()
