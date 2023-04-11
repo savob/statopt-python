@@ -223,7 +223,7 @@ def plotDistribution(simSettings,simResults,distribution,name):
     plt.contourf(X, Y, finalDist, contLevels, cmap=newcmp)
     plt.colorbar()
     plt.contour(X, Y, finalDist, contLevels, colors='black', linewidths=[0.2]) # Need to add outlines manually to 'contourf'
-    plt.contour(X,Y,finalDist,[1e-12,1e-9,1e-6,1e-3], edgecolor=[0.8,0.8,0.8], faceColor='none', colors='grey', linewidths=[0.2]) # plot outline
+    plt.contour(X,Y,finalDist,[1e-12,1e-9,1e-6,1e-3], colors=[[0.8,0.8,0.8]], linewidths=[0.2]) # plot outline
     
     plt.title(name)
     plt.grid(True)
