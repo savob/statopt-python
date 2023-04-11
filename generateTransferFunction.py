@@ -43,6 +43,7 @@ import skrf as rf # Used to read Touchstone files and nothing else
 import numpy as np
 from math import isnan
 import control.matlab as ml
+from loadMatlabFiles import objectFromMat
 
 
 def generateTransferFunction(simSettings: simulationSettings, simResults: simulationStatus):
@@ -181,7 +182,7 @@ def loadFiles(simSettings: simulationSettings, simResults: simulationStatus):
        
         # Convolve channel with simulated circuit response
         if modelCircuitTF:
-            circuit = pickle.load(modelCircuitTFName)
+            circuit = objectFromMat(modelCircuitTFName)
 
             # Convert circuit 
             circuit = np.interp(freqs, circuit.frequency, circuit.response)
