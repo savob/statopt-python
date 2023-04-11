@@ -175,8 +175,8 @@ def displayPulse(simSettings: simulationSettings, simResults: simulationStatus):
 
     # Adjust the length of each signal to display only desired cursors
     TXOutput,timeAxis = limitLength(TXOutput, signalingMode, preCursorCount, postCursorCount, samplesPerSymb, samplePeriod, True)
-    chanOutput, meh = limitLength(chanOutput, signalingMode, preCursorCount, postCursorCount, samplesPerSymb, samplePeriod, False)
-    RXOutput, meh = limitLength(RXOutput, signalingMode, preCursorCount, postCursorCount, samplesPerSymb, samplePeriod, False)
+    chanOutput, _ = limitLength(chanOutput, signalingMode, preCursorCount, postCursorCount, samplesPerSymb, samplePeriod, False)
+    RXOutput, _ = limitLength(RXOutput, signalingMode, preCursorCount, postCursorCount, samplesPerSymb, samplePeriod, False)
 
     # Plot transmitter output
     fig, axs = plt.subplots(nrows=3, ncols=1, dpi = 100, num='Pulse Response', sharex='all')
@@ -243,11 +243,11 @@ def limitLength(signal,signalingMode,preCursorCount,postCursorCount,samplesPerSy
         signal = signal[:endIdx]
     
     if startIdx < 0:
-        signal = np.concatenate((np.zeros((abs(startIdx)+1,)), signal))
+        signal = np.concatenate((np.zeros((abs(startIdx),)), signal))
     else:
         signal = signal[startIdx:]
     
-    timeAxis = np.arange(0, len(signal)*samplePeriod, samplePeriod)
+    timeAxis = np.arange(len(signal)) * samplePeriod
 
     return signal,timeAxis
 
