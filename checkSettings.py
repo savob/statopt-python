@@ -326,19 +326,17 @@ def checkSimTime(simSettings: simulationSettings):
     
     # Determine approximate simulation time
     # TODO: #1 Update these coefficients with tests from Python (these are the ones taken from MATLAB)
-    simTime = [0, 0, 0, 0, 0, 0, 0]
-    simTime[0] = 0.8 * chanNumb                                     # Generate sources
-    simTime[1] = 2e-2 * chanNumb                                    # Generate pulse response
-    simTime[2] = 3.2e-4 * chanNumb * calculations                   # Generate ISI
-    simTime[3] = 0.6 * chanNumb * modulation.value                  # Generate PDF
-    simTime[4] = 0.5                                                # Generate BER
-    simTime[5] = 0.7 * chanNumb * totalSimulations.value * adapt    # Adaption
-    simTime[6] = 2.0                                                # Plotting (assumes plotting channel, impulse, CTLE, PDF and BER)
+    simTime = []
+    simTime.append(0.8 * chanNumb)                                     # Generate sources
+    simTime.append(2e-2 * chanNumb)                                    # Generate pulse response
+    simTime.append(3.2e-4 * chanNumb * calculations)                   # Generate ISI
+    simTime.append(0.6 * chanNumb * modulation.value)                  # Generate PDF
+    simTime.append(0.5)                                                # Generate BER
+    simTime.append(0.7 * chanNumb * totalSimulations.value * adapt)    # Adaption
+    simTime.append(2.0)                                                # Plotting (assumes plotting channel, impulse, CTLE, PDF and BER)
     
     # Total the time
-    totalTime = 0
-    for part in simTime:
-        totalTime = totalTime + part
+    totalTime = sum(simTime)
     totalTime = totalTime*5e-5*samplesPerSymb*yAxisLength # Accuracy
     
     # Warn user if required
