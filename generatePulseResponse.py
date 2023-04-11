@@ -105,14 +105,13 @@ def applyTXEQ(simSettings: simulationSettings, simResults: simulationStatus):
     addEqualization = simSettings.transmitter.EQ.addEqualization
     inputSignal = simResults.pulseResponse.transmitter.pulse
     
-    if(addEqualization):
+    if addEqualization:
     
         # Calculate main tap height
         main = 1
         for tapName in taps.__dict__:
             if tapName != 'main':
                 main = main - abs(taps.__dict__[tapName].value)
-            
         
         simSettings.transmitter.EQ.taps.main.value = main
 
@@ -144,8 +143,6 @@ def applyTXEQ(simSettings: simulationSettings, simResults: simulationStatus):
             elif tapName == ('post' + str(post)):
                 response = np.concatenate((response,tapValue))
                 post = post+1
-            
-        
         
         # Convolve input with response
         discreteSignal = np.convolve(inputSignal, response)
@@ -197,13 +194,11 @@ def applyChannel(simSettings: simulationSettings, simResults: simulationStatus):
         if approximate:
             if chName != 'thru' and chName != 'xtalk':
                 continue
-            
         else:
             if chName == 'next' or chName == 'fext' or chName == 'xtalk':
                 continue
-            
-        
-        
+
+
         # Apply custom step response
         if overrideResponse:
             
@@ -331,15 +326,16 @@ def applyRXGain(simSettings: simulationSettings, simResults: simulationStatus):
         # Estimate signal height
         peakLoc = findPeakPulse(abs(inputSignals.thru))
 
-        if signalingMode == '1+D':
-            startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
-            endIdx = round(peakLoc+(postCursorCount-0.5)*samplesPerSymb)
-        elif signalingMode == '1+0.5D':
-            startIdx = round(peakLoc-(preCursorCount+1/6)*samplesPerSymb)
-            endIdx = round(peakLoc+(postCursorCount-1/6)*samplesPerSymb)
-        else:
-            startIdx = round(peakLoc-preCursorCount*samplesPerSymb)
-            endIdx = round(peakLoc+postCursorCount*samplesPerSymb)
+        match signalingMode:
+            case '1+D':
+                startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
+                endIdx = round(peakLoc+(postCursorCount-0.5)*samplesPerSymb)
+            case '1+0.5D':
+                startIdx = round(peakLoc-(preCursorCount+1/6)*samplesPerSymb)
+                endIdx = round(peakLoc+(postCursorCount-1/6)*samplesPerSymb)
+            case _:
+                startIdx = round(peakLoc-preCursorCount*samplesPerSymb)
+                endIdx = round(peakLoc+postCursorCount*samplesPerSymb)
         
         startIdx = max(round(startIdx),1)
         endIdx = min(round(endIdx),len(inputSignals.thru))
@@ -368,10 +364,9 @@ def applyRXGain(simSettings: simulationSettings, simResults: simulationStatus):
     for chName in inputSignals.__dict__:
         
         # Skip required channels
-        if(approximate):
+        if approximate:
             if chName != 'thru' and chName != 'xtalk':
                 continue
-            
         else:
             if chName == 'next' or chName == 'fext' or chName == 'xtalk':
                 continue
@@ -420,10 +415,9 @@ def applyRXCTLE(simSettings: simulationSettings, simResults: simulationStatus):
     for chName in inputSignals.__dict__:
         
         # Skip required channels
-        if(approximate):
+        if approximate:
             if chName != 'thru' and chName != 'xtalk':
                 continue
-            
         else:
             if chName == 'next' or chName == 'fext' or chName == 'xtalk':
                 continue
@@ -470,15 +464,16 @@ def applyRXFFE(simSettings: simulationSettings, simResults: simulationStatus):
             # Estimate signal height
             peakLoc = findPeakPulse(abs(inputSignals.thru))
 
-            if signalingMode == '1+D':
-                startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
-                endIdx = round(peakLoc+(postCursorCount-0.5)*samplesPerSymb)
-            elif signalingMode == '1+0.5D':
-                startIdx = round(peakLoc-(preCursorCount+1/6)*samplesPerSymb)
-                endIdx = round(peakLoc+(postCursorCount-1/6)*samplesPerSymb)
-            else:
-                startIdx = round(peakLoc-preCursorCount*samplesPerSymb)
-                endIdx = round(peakLoc+postCursorCount*samplesPerSymb)
+            match signalingMode:
+                case '1+D':
+                    startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
+                    endIdx = round(peakLoc+(postCursorCount-0.5)*samplesPerSymb)
+                case '1+0.5D':
+                    startIdx = round(peakLoc-(preCursorCount+1/6)*samplesPerSymb)
+                    endIdx = round(peakLoc+(postCursorCount-1/6)*samplesPerSymb)
+                case _:
+                    startIdx = round(peakLoc-preCursorCount*samplesPerSymb)
+                    endIdx = round(peakLoc+postCursorCount*samplesPerSymb)
             
             startIdx = max(round(startIdx),1)
             endIdx = min(round(endIdx),len(inputSignals.thru))
@@ -494,7 +489,7 @@ def applyRXFFE(simSettings: simulationSettings, simResults: simulationStatus):
             simSettings.receiver.FFE.taps.main.value = taps.main.value
             if 'adaption' in simResults.__dict__:
                 simResults.adaption.currentResult.knobs.__dict__['receiver_FFE_taps_main'] = taps.main.value
-                print('receiver_FFE_taps_main: #{0.f}\n'.format(taps.main.value))
+                print('receiver_FFE_taps_main: {0.f}\n'.format(taps.main.value))
             
         
 
@@ -579,12 +574,9 @@ def applyRXDFE(simSettings: simulationSettings, simResults: simulationStatus):
         if approximate:
             if chName != 'thru' and chName != 'xtalk':
                 continue
-            
         else:
             if chName == 'next' or chName == 'fext' or chName == 'xtalk':
                 continue
-            
-        
         
         # Find pulse peak location
         inputSignal = inputSignals.__dict__[chName]
@@ -592,7 +584,7 @@ def applyRXDFE(simSettings: simulationSettings, simResults: simulationStatus):
         
         # Apply DFE
         outputSignal = inputSignal
-        if(addEqualization):
+        if addEqualization:
 
             # Order taps
             tapNames = list(taps.__dict__).sort()
@@ -602,8 +594,7 @@ def applyRXDFE(simSettings: simulationSettings, simResults: simulationStatus):
                 if tapName == ('post' + str(post)):
                     response = np.concatenate((response, taps.__dict__[tapName].value))
                     post = post+1
-                
-            
+
             
             # Apply equalization
             for index in range(len(response)):
@@ -620,8 +611,6 @@ def applyRXDFE(simSettings: simulationSettings, simResults: simulationStatus):
                 startIdx = max(min(startIdx,len(outputSignal)-samplesPerSymb),1)
                 endIdx = max(min(endIdx,len(outputSignal)),samplesPerSymb)
                 outputSignal[startIdx:endIdx] = outputSignal[startIdx:endIdx]+response[index]*supplyVoltage
-            
-        
     
         # Save results
         simResults.pulseResponse.receiver.DFE.inputs.__dict__[chName] = inputSignal
@@ -653,12 +642,9 @@ def limitLength(simSettings,simResults):
         if approximate:
             if chName != 'thru' and chName != 'xtalk':
                 continue
-            
         else:
             if chName == 'next' or chName == 'fext' or chName == 'xtalk':
                 continue
-            
-        
         
         # Locate pulse peak
         pulse = np.round(pulses.__dict__[chName],4)
@@ -671,34 +657,33 @@ def limitLength(simSettings,simResults):
         peakLoc = round(np.mean([peakLoc1, peakLoc2]))
 
         # Limit length
-        if signalingMode == '1+D':
-            startIdx = round(peakLoc-(preCursorCount+1)*samplesPerSymb)
-            endIdx = round(peakLoc+(postCursorCount)*samplesPerSymb)
-        elif signalingMode == '1+0.5D':
-            startIdx = round(peakLoc-(preCursorCount+2/3)*samplesPerSymb)
-            endIdx = round(peakLoc+(postCursorCount+1/3)*samplesPerSymb)
-        else:
-            startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
-            endIdx = round(peakLoc+(postCursorCount+0.5)*samplesPerSymb)
+        match signalingMode:
+            case '1+D':
+                startIdx = round(peakLoc-(preCursorCount+1)*samplesPerSymb)
+                endIdx = round(peakLoc+(postCursorCount)*samplesPerSymb)
+            case '1+0.5D':
+                startIdx = round(peakLoc-(preCursorCount+2/3)*samplesPerSymb)
+                endIdx = round(peakLoc+(postCursorCount+1/3)*samplesPerSymb)
+            case _:
+                startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
+                endIdx = round(peakLoc+(postCursorCount+0.5)*samplesPerSymb)
         
 
         # Adjust 
-        if(endIdx>len(pulses.__dict__[chName])):
+        if endIdx > len(pulses.__dict__[chName]):
             pulses.__dict__[chName] = np.concatenate((pulses.__dict__[chName], np.zeros((endIdx-len(pulses.__dict__[chName]),))))
         else:
             pulses.__dict__[chName] = pulses.__dict__[chName][0:endIdx]
         
         
         # Adjust beginning
-        if (startIdx<1) :
+        if startIdx < 1:
             diff = 1-startIdx
             pulses.__dict__[chName] = np.concatenate((np.zeros((diff,)), pulses.__dict__[chName][0:endIdx]))
             print('Having trouble finding main cursor!\n')
             #successful = False
         else:
             pulses.__dict__[chName] = pulses.__dict__[chName][startIdx:]
-        
-    
     
     # Save results
     simResults.pulseResponse.receiver.outputs = pulses
