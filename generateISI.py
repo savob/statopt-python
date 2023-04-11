@@ -207,7 +207,8 @@ def applyCursorCombination(ISI, splitPulse, samplesPerSymb):
             
             # Loop through cursors while superimposing transformation
             vector = ISI.__dict__[transName].__dict__[comb].cursors
-            ISI.__dict__[transName].__dict__[comb].trajectory = np.zeros((samplesPerSymb,))
+            if 'trajectory' not in ISI.__dict__[transName].__dict__[comb].__dict__:
+                ISI.__dict__[transName].__dict__[comb].trajectory = np.zeros((samplesPerSymb,))
             
             for pos in range(len(vector)):
                 offset = splitPulse.__dict__[cursors[pos]] * vector[pos] # multiply cursor by data levels
