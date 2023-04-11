@@ -26,9 +26,9 @@
 
 import numpy as np
 import scipy.stats as stats
-from scipy import io
 from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus
+from loadMatlabFiles import objectFromMat
 
 class combinedChannel:
 
@@ -216,7 +216,7 @@ def generateTXDistortion(simSettings: simulationSettings, simResults: simulation
     
     # Define gain function
     if(applyDistortion):
-        distortion = io.loadmat(fileName)
+        distortion = objectFromMat(fileName)
         fields = distortion.__dict__
         if 'input' in fields:
             input  = distortion.input
@@ -309,7 +309,7 @@ def generateRXDistortion(simSettings: simulationSettings, simResults: simulation
 
     # Define gain function
     if applyDistortion:
-        distortion = io.loadmat(fileName)
+        distortion = objectFromMat(fileName)
         fields = distortion.__dict__
         if 'input' in fields:
             input  = distortion.input

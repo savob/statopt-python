@@ -248,7 +248,7 @@ def applyDistortion(simSettings: simulationSettings, simResults: simulationStatu
     PDF.distorted = nothing()
 
     # Loop through each transition
-    transitions = PDF.__dict__[plotName].__dict__
+    transitions = list(PDF.__dict__[plotName].__dict__)
     for transName in transitions:
 
         # Initialize distorted PDF
@@ -256,14 +256,18 @@ def applyDistortion(simSettings: simulationSettings, simResults: simulationStatu
 
         # Apply distortion
         for level in range(yAxisLength):
-            newLevel = distortion(level)
-            newLevel = max(newLevel,min(yAxis))
-            newLevel = min(newLevel,max(yAxis))
+            newLevel = distortion[level]
+            newLevel = max([newLevel,min(yAxis)])
+            newLevel = min([newLevel,max(yAxis)])
             newIdx = np.interp(newLevel, yAxis, np.arange(yAxisLength))
             upper = np.mod(newIdx,1)
             lower = 1-upper
-            PDF.distorted.__dict__[transName][np.ceil(newIdx),:] = PDF.distorted.__dict__[transName][np.ceil(newIdx),:]+PDF.__dict__[plotName].__dict__[transName][level,:]*upper
-            PDF.distorted.__dict__[transName][np.floor(newIdx),:] = PDF.distorted.__dict__[transName][np.floor(newIdx),:]+PDF.__dict__[plotName].__dict__[transName][level,:]*lower
+            PDF.distorted.__dict__[transName][int(np.ceil(newIdx)),:] = \
+                PDF.distorted.__dict__[transName][int(np.ceil(newIdx)),:] + \
+                PDF.__dict__[plotName].__dict__[transName][level,:] * upper
+            PDF.distorted.__dict__[transName][int(np.floor(newIdx)),:] = \
+                PDF.distorted.__dict__[transName][int(np.floor(newIdx)),:] + \
+                PDF.__dict__[plotName].__dict__[transName][level,:] * lower
 
     # Save results
     simResults.eyeGeneration.PDF = PDF
