@@ -349,14 +349,14 @@ def applyRXGain(simSettings: simulationSettings, simResults: simulationStatus):
         # Calculate required gain
         saturation = max(abs(distortion))
         gain.value = saturation/cursorSum
-        gain.value = round(gain.value/gain.minIncrement)*gain.minIncrement # round to closest multiple of increment
+        gain.value = round(gain.value/gain.increment)*gain.increment # round to closest multiple of increment
         gain.value = max(min(gain.value,gain.maxValue), gain.minValue) # keep within limits
 
         # Update current adaption setting
         simSettings.receiver.preAmp.gain.value = gain.value
-        if 'adaption' in simResults:
+        if 'adaption' in simResults.__dict__:
             simResults.adaption.currentResult.knobs.__dict__['receiver_preAmp_gain'] = gain.value
-            print('receiver_preAmp_gain: #{0.f}\n'.format(gain.value))
+            print('receiver_preAmp_gain: {0.f}\n'.format(gain.value))
         
         
     # Remove gain

@@ -4,7 +4,7 @@ from generateUserSettingsExampleECE1392 import generateUserSettings # Change the
 from generateSettingsLimits import generateSettingsLimits
 from initializeSimulation import initializeSimulation
 from checkSettings import checkSettings
-from adaption import displayAdaption
+from adaption import displayAdaption, adaptLink
 from generateTransferFunction import generateTransferFunction
 from generateFixedInfluence import generateFixedInfluence
 from generateVariableInfluence import generateVariableInfluence
@@ -62,8 +62,7 @@ while not simResults.finished:
     generateResults(simSettings, simResults)
 
     # Update adaption settings (if required)
-    #AdaptLink(simSettings, simResults)
-    simResults.finished = True # Not doing adaptions for now
+    adaptLink(simSettings, simResults)
 
 doneSimTime = time.time() # Mark time once data was loaded
 

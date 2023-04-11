@@ -96,6 +96,7 @@ def addGeneralSettings(simSettings: simulationSettings):
 ###########################################################################
 def addTransmitterSettings(simSettings: simulationSettings):
 
+    simSettings.transmitter.EQ.taps.main.value = 1; # will be adjusted later
     simSettings.transmitter.cursorCount.value = simSettings.transmitter.preCursorCount.value+simSettings.transmitter.postCursorCount.value+1 # pre+post+main
 
 
