@@ -28,7 +28,7 @@ from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus
 import numpy as np
 import control.matlab as ml
-from scipy import io
+from loadMatlabFiles import objectFromMat
 import scipy.signal as spsig
 
 class nothing:
@@ -211,7 +211,7 @@ def applyChannel(simSettings: simulationSettings, simResults: simulationStatus):
             if chName != 'thru': continue 
             
             # Load data
-            data = io.load(overrideFileName)
+            data = objectFromMat(overrideFileName)
             fields = data.__dict__
             if 'amp' in fields:
                 amplitude = data.amp
