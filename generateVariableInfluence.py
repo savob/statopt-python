@@ -108,17 +108,17 @@ def generateCTLE(simSettings: simulationSettings, simResults: simulationStatus):
             
             # Add first zero
             wz = 2*np.pi*zeroFreq
-            listWz = np.ones((zeroNumb,)) * wz
+            listWz = -np.ones((zeroNumb,)) * wz
             gain = (1/wz) ** zeroNumb
             
             # Add first pole
             wp1 = 2*np.pi*pole1Freq
-            listWp1 = np.ones((pole1Numb,)) * wp1
+            listWp1 = -np.ones((pole1Numb,)) * wp1
             gain = gain * ((wp1) ** pole1Numb)
 
             # Add additional poles
             wp2 = 2*np.pi*pole2Freq
-            listWp2 = np.ones((pole2Numb,)) * wp2
+            listWp2 = -np.ones((pole2Numb,)) * wp2
             gain = gain * ((wp2) ** pole2Numb)
 
             # Combine pole lists
