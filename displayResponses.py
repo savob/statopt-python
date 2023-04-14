@@ -180,6 +180,8 @@ def displayPulse(simSettings: simulationSettings, simResults: simulationStatus):
 
     # Plot transmitter output
     fig, axs = plt.subplots(nrows=3, ncols=1, dpi = 100, num='Pulse Response', sharex='all')
+    fig.suptitle('Pulse Responses')
+    fig.set_tight_layout(True)
     plotResponse(axs[0], TXOutput, timeAxis, True, 'Transmitter Output', samplesPerSymb, samplePeriod, cursorCount, preCursorCount, postCursorCount)
 
     # Plot channel output
