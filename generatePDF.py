@@ -107,13 +107,14 @@ def generateHist(simSettings: simulationSettings, simResults: simulationStatus):
         for transName in transitions:
             for index in range(samplesPerSymb):
                 # Not that in MATLAB the bins are defined by center-points, while in Python they are the edges.
-                yAxisLong = np.concatenate(([yAxis[0]-yIncrement], yAxis, [yAxis[-1]+yIncrement])) + yIncrement/2 # add additional bin to remove clipping
-                histogram, edges = np.histogram(trajectories.__dict__[chName].__dict__[transName][:,index], yAxisLong)#[0]
+                yAxisLong = np.concatenate(([yAxis[0]-yIncrement], yAxis, [yAxis[-1]+yIncrement])) - yIncrement/2 # add additional bin to remove clipping
+                histogram, edges = np.histogram(trajectories.__dict__[chName].__dict__[transName][:,index], yAxisLong)
+                normalized = histogram[:-1] /len(transitions) # Normalize for all transitions
 
                 if PDF.initial.__dict__[chName].__dict__[transName] == []:
-                    PDF.initial.__dict__[chName].__dict__[transName] = histogram[:-1] /len(transitions) # normalize
+                    PDF.initial.__dict__[chName].__dict__[transName] = normalized # normalize
                 else:
-                    PDF.initial.__dict__[chName].__dict__[transName] = np.vstack((PDF.initial.__dict__[chName].__dict__[transName], histogram[:-1]/len(transitions)))
+                    PDF.initial.__dict__[chName].__dict__[transName] = np.vstack((PDF.initial.__dict__[chName].__dict__[transName], normalized))
         
             PDF.initial.__dict__[chName].__dict__[transName] =  np.transpose(PDF.initial.__dict__[chName].__dict__[transName])
                 

@@ -187,10 +187,10 @@ def generateUserSettings():
 # receiver_preAmp_gain: 0.30
     
     # FFE
-    simSettings.receiver.FFE.addEqualization = False
-    simSettings.receiver.FFE.taps.pre3 = valueWithLimits(0.05)
+    simSettings.receiver.FFE.addEqualization = True
+    simSettings.receiver.FFE.taps.pre3 = valueWithLimits(-0.0)
     simSettings.receiver.FFE.taps.pre2 = valueWithLimits(-0.0)
-    simSettings.receiver.FFE.taps.pre1 = valueWithLimits(-0.0)
+    simSettings.receiver.FFE.taps.pre1 = valueWithLimits(0.05)
     simSettings.receiver.FFE.taps.main = valueWithLimits(1.10)   
     simSettings.receiver.FFE.taps.post1 = valueWithLimits(-0.30)
     simSettings.receiver.FFE.taps.post2 = valueWithLimits(-0.05)
