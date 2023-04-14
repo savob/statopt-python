@@ -66,7 +66,7 @@ def displayISI(simSettings: simulationSettings, simResults: simulationStatus):
     plt.figure(dpi = 200, num='ISI Trajectories')
     plt.title('ISI Trajectories')
     plt.ylabel('Amplitude [V]')
-    plt.xlabel('Samples')
+    plt.xlabel('Time (s)')
     plt.grid(True)
 
     if signalingMode == '1+D':
@@ -76,6 +76,8 @@ def displayISI(simSettings: simulationSettings, simResults: simulationStatus):
     else:
         limit = min(outputPeak*2,supplyVoltage)
     plt.ylim(-limit,limit)
+
+    xAxis = 0
 
     for comb in ordered:
 
@@ -112,6 +114,7 @@ def displayISI(simSettings: simulationSettings, simResults: simulationStatus):
                 xAxis = xIndex*samplePeriod
                 plt.plot(xAxis,trajectory3)
 
+    plt.xlim(0, max(xAxis))
 
 
 ###########################################################################
