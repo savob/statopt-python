@@ -51,9 +51,9 @@ def displayDLevs(simResults: simulationStatus):
     dLevs = simResults.results.dLevs
     
     # Display data levels
-    print('----------Data Level Results----------')
+    print('\n----------Data Level Results----------')
     for index in range(len(dLevs)-1, -1, -1):
-        print('Data level {0:d}: {1:.3f}V\n'.format(index, dLevs[index]))
+        print('Data level {0:d}: {1: 3.3f}V'.format(index, dLevs[index]))
 
 
 ###########################################################################
@@ -65,12 +65,12 @@ def displaySamplerLocs(simResults: simulationStatus):
     eyeLocs = simResults.results.eyeLocs
     
     # Display eye locations
-    print('----------Sampler Location Results----------')
+    print('\n----------Sampler Location Results----------')
     if type(eyeLocs.level) == int or type(eyeLocs.level) == float:
-        print('Sampler {0:d}: level: {1:.3f}V, phase: {2:3.1f}deg\n'.format(0, eyeLocs.level, eyeLocs.phase)) # Case for single eye
+        print('Sampler {0:d}: level: {1: .3f}V, phase: {2: 3.1f}deg'.format(0, eyeLocs.level, eyeLocs.phase)) # Case for single eye
     else:
         for index in range(len(eyeLocs.level)-1, -1, -1):
-            print('Sampler {0:d}: level: {1:.3f}V, phase: {2:3.1f}deg\n'.format(index, eyeLocs.level[index], eyeLocs.phase))
+            print('Sampler {0:d}: level: {1: .3f}V, phase: {2: 3.1f}deg'.format(index, eyeLocs.level[index], eyeLocs.phase))
 
 
 ###########################################################################
@@ -84,13 +84,13 @@ def displayEyeOpening(simSettings: simulationSettings, simResults: simulationSta
     bestBER = simResults.results.BER
     
     # Display eye quality
-    print('----------Opening Results----------')
+    print('\n----------Opening Results----------')
 
     if bestBER > target:
         print('WARNING: Target BER not met!')
 
     for index, eye in enumerate(eyeDims.__dict__):
-        print('Eye {0:d} height: {1:.3f}V, width: {2:.2f}UI for BER: {3:.1e}\n'.format(index, eyeDims.__dict__[eye].height, eyeDims.__dict__[eye].widthUI, bestBER))
+        print('Eye {0:d} height: {1:.3f}V, width: {2:.2f}UI for BER: {3:.1e}'.format(index, eyeDims.__dict__[eye].height, eyeDims.__dict__[eye].widthUI, bestBER))
 
 
 ###########################################################################
@@ -103,5 +103,5 @@ def displayCOM(simResults: simulationStatus):
     ber = simResults.results.BER
     
     # Display eye locations
-    print('----------Channel Operating Margin----------')
-    print('COM: {0:.1f}dB for BER: {1:.1e}\n'.format(com, ber))
+    print('\n----------Channel Operating Margin----------')
+    print('COM: {0:.1f}dB for BER: {1:.1e}'.format(com, ber))

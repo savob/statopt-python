@@ -342,7 +342,7 @@ def checkSimTime(simSettings: simulationSettings):
     # Warn user if required
     if totalTime > 5*60 :
         print('\a') # Print bell character to try triggering a notification on the user's end
-        answer = input('The simulation is expected to take {:.0f} minutes. Are you sure you would like to continue? (y/n)'.format(totalTime/60))
+        answer = input('The simulation is expected to take {:.0f} minutes. Are you sure you would like to continue? (y/n) '.format(totalTime/60))
         if answer == 'n' or answer == "" or answer == 'N':
             print('\n----------Simulation Canceled----------')
         
