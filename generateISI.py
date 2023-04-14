@@ -62,10 +62,10 @@ def generateISI(simSettings: simulationSettings, simResults: simulationStatus):
         transitions = simResults.eyeGeneration.ISI.thru
     else:
         # Determine all cursor combinations
-        combinations = generateCursorCombinations(cursorCount,signalingMode,modulation,levelNumb)
+        combinations = generateCursorCombinations(cursorCount, signalingMode, modulation, levelNumb)
         
         # Clasify ISI trajectories classified by transition
-        transitions = clasifyTrajectories(combinations,preCursorCount,signalingMode)
+        transitions = clasifyTrajectories(combinations, preCursorCount, signalingMode)
     
     
     # Loop through each available channel file
@@ -211,8 +211,7 @@ def applyCursorCombination(ISI, splitPulse, samplesPerSymb):
             
             # Loop through cursors while superimposing transformation
             vector = ISI.__dict__[transName].__dict__[comb].cursors
-            if 'trajectory' not in ISI.__dict__[transName].__dict__[comb].__dict__:
-                ISI.__dict__[transName].__dict__[comb].trajectory = np.zeros((samplesPerSymb,))
+            ISI.__dict__[transName].__dict__[comb].trajectory = np.zeros((samplesPerSymb,))
             
             for pos in range(len(vector)):
                 offset = splitPulse.__dict__[cursors[pos]] * vector[pos] # multiply cursor by data levels
