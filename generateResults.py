@@ -227,7 +227,7 @@ def measureCOM(simResults: simulationStatus):
             comTmp = 20*np.log10(signalHeight/noiseHeight)
             
             # Save worst COM
-            if index == 1 or comTmp < com: com = comTmp 
+            if index == 0 or comTmp < com: com = comTmp 
     
     # Save results
     simResults.results.com = com
