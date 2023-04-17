@@ -19,7 +19,7 @@ from displayInterferences import displayJitter, displayDistortion, displayNoise
 from displayDistributions import displayISI, displayPDF, displayBER
 
 # Begin simulation
-print('----------Preparing Simulation----------')
+print('\n----------Preparing Simulation----------')
 startTime = time.time() # Get start (clock) time
 
 simSettings = generateUserSettings()
@@ -97,5 +97,13 @@ print('\t{:6.3f} to load and verify in simulation parameters'.format(doneLoading
 print('\t{:6.3f} to prepare fixed system influences'.format(doneFixedTime - doneLoadingTime))
 print('\t{:6.3f} to run simulation and adaption'.format(doneSimTime - doneFixedTime))
 print('\t{:6.3f} to output data'.format(endTime - doneSimTime))
+
+
+from loadMatlabFiles import objectFromMat
+from comparisons import comparePulse
+
+simResults2 = objectFromMat('simResults')
+comparePulse(simSettings, simResults, simResults2)
+
 
 plt.show() # Show plots after the timers are posted, it blocks the program and thus messes up timers

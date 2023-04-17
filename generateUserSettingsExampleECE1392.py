@@ -32,14 +32,14 @@ def generateUserSettings():
     simSettings.general.targetBER.value = 1e-6 # used for measurement purposes
 
     # Display responses
-    simSettings.general.plotting.channelResponse = False
-    simSettings.general.plotting.CTLEResponse    = False
-    simSettings.general.plotting.pulseResponse   = False
+    simSettings.general.plotting.channelResponse = True
+    simSettings.general.plotting.CTLEResponse    = True
+    simSettings.general.plotting.pulseResponse   = True
     
     # Display inteferences
-    simSettings.general.plotting.jitterSource     = False
-    simSettings.general.plotting.noiseSource      = False
-    simSettings.general.plotting.distortionSource = False
+    simSettings.general.plotting.jitterSource     = True
+    simSettings.general.plotting.noiseSource      = True
+    simSettings.general.plotting.distortionSource = True
     
     # Display probability distributions
     simSettings.general.plotting.ISI              = False # CAREFUL: CAN BE SLOW TO PLOT!
@@ -48,7 +48,7 @@ def generateUserSettings():
     simSettings.general.plotting.PDFDistorted     = False
     simSettings.general.plotting.PDFJitter        = False
     simSettings.general.plotting.PDFNoise         = False
-    simSettings.general.plotting.PDFFinal         = True
+    simSettings.general.plotting.PDFFinal         = False
     
     # Display bit-error rate distributions
     simSettings.general.plotting.BER  = False            # plot BER contour over BER
@@ -107,10 +107,10 @@ def generateUserSettings():
     simSettings.transmitter.EQ.taps.post5 = valueWithLimits(-0.0)
 
     # Jitter
-    simSettings.transmitter.jitter.addJitter = False
-    simSettings.transmitter.jitter.stdDeviation.value = 0.1 # TX random jitter standard diviation [UI]
-    simSettings.transmitter.jitter.amplitude.value = 0.1    # TX deterministic jitter amplitude [UI]
-    simSettings.transmitter.jitter.DCD.value = 0.1          # TX duty-cycle distortion jitter [UI]
+    simSettings.transmitter.jitter.addJitter = True
+    simSettings.transmitter.jitter.stdDeviation.value = 0.01 # TX random jitter standard diviation [UI]
+    simSettings.transmitter.jitter.amplitude.value = 0.01    # TX deterministic jitter amplitude [UI]
+    simSettings.transmitter.jitter.DCD.value = 0.01          # TX duty-cycle distortion jitter [UI]
     
     # Noise
     simSettings.transmitter.noise.addNoise = True
@@ -119,7 +119,7 @@ def generateUserSettings():
     simSettings.transmitter.noise.frequency.value = 1e6  # TX deterministic noise frequency [Hz]
 
     # Distortion
-    simSettings.transmitter.distortion.addDistortion = False
+    simSettings.transmitter.distortion.addDistortion = True
     simSettings.transmitter.distortion.fileName = 'distortionTX.mat'
     
     ########################################
