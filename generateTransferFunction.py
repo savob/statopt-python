@@ -94,7 +94,7 @@ def updateChannelData(simSettings: simulationSettings, simResults: simulationSta
                 
 
         # Ask to voluntarily update (since we are not lacking any data)
-        answer = input('Would you like to update the channel frequency transfer functions? (Y/N)')
+        answer = input('Would you like to update the channel frequency transfer functions? (Y/N) ')
         if answer == 'N' or answer == 'n':
             update = False
         elif answer == 'Y' or answer == 'y':
@@ -131,7 +131,8 @@ def loadFiles(simSettings: simulationSettings, simResults: simulationStatus):
         
         # Import keystone (.s4p) channel data
         if fileName[-4:] == '.s4p':
-            backplane = rf.Network('./touchstone/'+fileName)
+            fileAddress = os.path.join('.', 'touchstone', fileName)
+            backplane = rf.Network(fileAddress)
 
             freqs = backplane.f
             freqPoints = freqs.size
