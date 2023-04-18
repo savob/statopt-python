@@ -42,11 +42,12 @@ The final probability density distribution and analysis.
 
 - [x] Fix up and validate the adaption system
 - [ ] Perform more varied tests of the system
-- [ ] Polish up the figure formatting. E.g. prevent axes labels overlapping adjacent plots when the window is sized smaller.
+- [x] Polish up the figure formatting. E.g. prevent axes labels overlapping adjacent plots when the window is sized smaller.
 - [ ] Port more example configurations for users
 - [ ] Update and upload documentation for operation based on the "readme"s from MATLAB
 - [ ] Clean up comments and disclaimers in files
 - [ ] Verify accuracy of system simulation (pulse and CTLE responses)
+- [ ] Investigate the use of an alternative, more interactive graphics library like [pyqt](https://www.pyqtgraph.org/) or [Altair](https://altair-viz.github.io/index.html)
 
 # Dependancies
 
