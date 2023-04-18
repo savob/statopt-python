@@ -93,10 +93,10 @@ print('\n----------Simulation Complete----------')
 endTime = time.time()
 
 print('{:.3f} seconds elapsed since starting the script:'.format(endTime - startTime))
-print('\t{:6.3f} to load and verify in simulation parameters'.format(doneLoadingTime - startTime))
-print('\t{:6.3f} to prepare fixed system influences'.format(doneFixedTime - doneLoadingTime))
-print('\t{:6.3f} to run simulation and adaption'.format(doneSimTime - doneFixedTime))
-print('\t{:6.3f} to output data'.format(endTime - doneSimTime))
+print('\t{:8.3f} to load and verify in simulation parameters'.format(doneLoadingTime - startTime))
+print('\t{:8.3f} to prepare fixed system influences'.format(doneFixedTime - doneLoadingTime))
+print('\t{:8.3f} to run simulation and adaption'.format(doneSimTime - doneFixedTime))
+print('\t{:8.3f} to output data'.format(endTime - doneSimTime))
 
 
 from loadMatlabFiles import objectFromMat
