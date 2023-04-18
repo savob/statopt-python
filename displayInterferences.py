@@ -39,7 +39,7 @@ def displayJitter(simSettings: simulationSettings, simResults: simulationStatus)
     
     # Plot jitter PDF
     # Something is off about the width of bars, this current configuration makes decent looking graphs though.
-    fig, axs = plt.subplots(nrows=3, ncols=1, sharex='all', dpi = 200, num='Jitter Distribution', layout='constrained')
+    fig, axs = plt.subplots(nrows=3, ncols=1, sharex='all', dpi=100, num='Jitter Distribution', layout='constrained')
     fig.suptitle('Jitter Histograms')
     axs[0].hist(TXTime[:-1], TXTime, weights=TXJitter)
     axs[0].set_title('TX')
@@ -98,7 +98,7 @@ def displayNoise (simSettings: simulationSettings, simResults: simulationStatus)
     totalVoltage = simResults.influenceSources.totalNoise.voltageScale  
     
     # Plot noise PDF
-    fig, axs = plt.subplots(nrows=1, ncols=4, sharey='all', dpi = 200, num='Noise Distribution', layout='constrained')
+    fig, axs = plt.subplots(nrows=1, ncols=4, sharey='all', dpi=100, num='Noise Distribution', layout='constrained')
     fig.suptitle('Noise Histograms')
     axs[0].hist(TXVoltage[:-1], TXVoltage, weights=TXNoise, orientation='horizontal')
     axs[0].set_title('TX')
@@ -164,7 +164,7 @@ def displayDistortion(simSettings: simulationSettings, simResults: simulationSta
     
     # Plot distortion
 
-    fig, axs = plt.subplots(nrows=1, ncols=3, dpi = 200, num='Non-Linearity', layout='constrained')
+    fig, axs = plt.subplots(nrows=1, ncols=3, dpi=100, num='Non-Linearity', layout='constrained')
     fig.suptitle('Distortion')
     axs[0].plot(TXInput, TXOutput, linewidth=2)
     axs[0].set_title('TX')
