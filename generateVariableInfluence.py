@@ -96,7 +96,7 @@ def generateCTLE(simSettings: simulationSettings, simResults: simulationStatus):
             calculated = False
         elif not zeroName in CTLEs.__dict__:
             calculated = False
-        elif not poleName in CTLEs.__dict__[zeroName]:
+        elif not poleName in CTLEs.__dict__[zeroName].__dict__:
             calculated = False
         
         
