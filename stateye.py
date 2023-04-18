@@ -98,12 +98,4 @@ print('\t{:8.3f} to prepare fixed system influences'.format(doneFixedTime - done
 print('\t{:8.3f} to run simulation and adaption'.format(doneSimTime - doneFixedTime))
 print('\t{:8.3f} to output data'.format(endTime - doneSimTime))
 
-
-from loadMatlabFiles import objectFromMat
-from comparisons import comparePulse
-
-simResults2 = objectFromMat('simResults')
-comparePulse(simSettings, simResults, simResults2)
-
-
 plt.show() # Show plots after the timers are posted, it blocks the program and thus messes up timers
