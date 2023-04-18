@@ -352,7 +352,7 @@ def applyRXGain(simSettings: simulationSettings, simResults: simulationStatus):
         simSettings.receiver.preAmp.gain.value = gain.value
         if 'adaption' in simResults.__dict__:
             simResults.adaption.currentResult.knobs.__dict__['receiver_preAmp_gain'] = gain.value
-            print('receiver_preAmp_gain: {0.f}\n'.format(gain.value))
+            print('receiver_preAmp_gain: {0:.2f}\n'.format(gain.value))
         
         
     # Remove gain
@@ -490,7 +490,7 @@ def applyRXFFE(simSettings: simulationSettings, simResults: simulationStatus):
             simSettings.receiver.FFE.taps.main.value = taps.main.value
             if 'adaption' in simResults.__dict__:
                 simResults.adaption.currentResult.knobs.__dict__['receiver_FFE_taps_main'] = taps.main.value
-                print('receiver_FFE_taps_main: {0.f}\n'.format(taps.main.value))
+                print('receiver_FFE_taps_main: {0:.2f}\n'.format(taps.main.value))
             
         
 
