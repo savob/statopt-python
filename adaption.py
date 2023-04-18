@@ -541,7 +541,7 @@ def killDuplicates(simSettings,generations,genNumb):
 
         # Remove people on list
         for name in removeList:
-            currGeneration = delattr(currGeneration, name)
+            delattr(currGeneration, name)
     
     generations.__dict__['generation' + str(genNumb)] = currGeneration
 
@@ -563,10 +563,10 @@ def killOldGeneration(generations,genNumb,totalParents):
             isBetter = compareResults(currGeneration.__dict__[newPersonName],worstResult)
             if not isBetter: worstResult = currGeneration.__dict__[newPersonName]
         
-        currGeneration = delattr(currGeneration, worstResult.name)
+        delattr(currGeneration, worstResult.name)
         people = currGeneration.__dict__
     
-    generations.__dict__['generation'+str(genNumb)] = currGeneration
+    generations.__dict__['generation'+str(genNumb)] = currGeneration # Might not be needed due to passing by reference
 
     return generations
 
@@ -580,20 +580,20 @@ def renameSurvivors(generations,genNumb):
 
     # Rename all to 'instance'
     currGeneration = generations.__dict__['generation'+str(genNumb)]
-    people = currGeneration.__dict__
+    people = list(currGeneration.__dict__)
     for index, personName in enumerate(people):
         currGeneration.__dict__['instance'+str(index)] = currGeneration.__dict__[personName]
-        currGeneration = delattr(currGeneration, personName)
+        delattr(currGeneration, personName)
     
     
     # Rename all to 'parent'
-    people = currGeneration.__dict__
+    people = list(currGeneration.__dict__)
     for index, personName in enumerate(people):
         currGeneration.__dict__['parent'+str(index)] = currGeneration.__dict__[personName]
         currGeneration.__dict__['parent'+str(index)].name = 'parent'+str(index)
-        currGeneration = delattr(currGeneration, personName)
+        delattr(currGeneration, personName)
     
-    generations.__dict__['generation'+str(genNumb)] = currGeneration
+    generations.__dict__['generation'+str(genNumb)] = currGeneration # Might not be needed due to passing by reference
 
     return generations
 
@@ -659,7 +659,7 @@ def createChildren(simSettings,generations,genNumb,childrenPerParent,totalParent
             currGeneration.__dict__['child'+str(child)].name = ['child'+str(child)]
         
     
-    generations.__dict__['generation'+str(genNumb)] = currGeneration
+    generations.__dict__['generation'+str(genNumb)] = currGeneration # Might not be needed due to passing by reference
 
     return generations
 
@@ -719,7 +719,7 @@ def createMutations(simSettings,generations,genNumb,totalPopulation,log):
         currGeneration.__dict__[mutationName].simulated = False
         currGeneration.__dict__[mutationName].name = mutationName
     
-    generations.__dict__['generation'+str(genNumb)] = currGeneration
+    generations.__dict__['generation'+str(genNumb)] = currGeneration # Might not be needed due to passing by reference
 
     return generations
 
