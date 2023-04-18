@@ -40,12 +40,13 @@ The final probability density distribution and analysis.
 
 ## Remaining Work
 
-- [ ] Fix up and validate the adaption system
+- [x] Fix up and validate the adaption system
 - [ ] Perform more varied tests of the system
 - [ ] Polish up the figure formatting. E.g. prevent axes labels overlapping adjacent plots when the window is sized smaller.
 - [ ] Port more example configurations for users
 - [ ] Update and upload documentation for operation based on the "readme"s from MATLAB
 - [ ] Clean up comments and disclaimers in files
+- [ ] Verify accuracy of system simulation (pulse and CTLE responses)
 
 # Dependancies
 
