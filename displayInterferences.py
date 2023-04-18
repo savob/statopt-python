@@ -39,26 +39,22 @@ def displayJitter(simSettings: simulationSettings, simResults: simulationStatus)
     
     # Plot jitter PDF
     # Something is off about the width of bars, this current configuration makes decent looking graphs though.
-    fig, axs = plt.subplots(nrows=3, ncols=1, sharex='all', dpi = 200, num='Jitter Distribution')
+    fig, axs = plt.subplots(nrows=3, ncols=1, sharex='all', dpi = 200, num='Jitter Distribution', layout='constrained')
+    fig.suptitle('Jitter Histograms')
     axs[0].hist(TXTime[:-1], TXTime, weights=TXJitter)
-    axs[0].set_title('TX Jitter Histogram')
+    axs[0].set_title('TX')
     axs[0].set_ylabel('Normalized\nProbability')
     axs[0].set_xlim(TXTime[0], TXTime[-1])
-    axs[0].set_ylim(0, 1)
-    #axs[0].set_xlabel('Time [UI]')
     axs[0].grid()
 
     axs[1].hist(RXTime[:-1], RXTime, weights=RXJitter)
-    axs[1].set_title('CDR Jitter Histogram')
+    axs[1].set_title('Clock Data Recovery (RX CDR)')
     axs[1].set_ylabel('Normalized\nProbability')
-    axs[1].set_ylim(0, 1)
-    #axs[1].set_xlabel('Time [UI]')
     axs[1].grid()
 
     axs[2].hist(totalTime[:-1], totalTime, weights=totalJitter)
-    axs[2].set_title('Combined Jitter Histogram')
+    axs[2].set_title('Combined')
     axs[2].set_ylabel('Normalized\nProbability')
-    axs[2].set_ylim(0, 1)
     axs[2].set_xlabel('Time [UI]')
     axs[2].grid()
 
@@ -102,29 +98,29 @@ def displayNoise (simSettings: simulationSettings, simResults: simulationStatus)
     totalVoltage = simResults.influenceSources.totalNoise.voltageScale  
     
     # Plot noise PDF
-    fig, axs = plt.subplots(nrows=1, ncols=4, sharex='all', sharey='all', dpi = 200, num='Noise Distribution')
+    fig, axs = plt.subplots(nrows=1, ncols=4, sharey='all', dpi = 200, num='Noise Distribution', layout='constrained')
+    fig.suptitle('Noise Histograms')
     axs[0].hist(TXVoltage[:-1], TXVoltage, weights=TXNoise, orientation='horizontal')
-    axs[0].set_title('TX Noise Histogram')
+    axs[0].set_title('TX')
     axs[0].set_xlabel('Normalized\nProbability') 
     axs[0].set_ylabel('Amplitude [V]')
     axs[0].grid()
     axs[0].set_ylim(yAxis[0], yAxis[-1])
-    axs[0].set_xlim(0, 1)
     
     axs[1].hist(CHVoltage[:-1], CHVoltage, weights=CHNoise, orientation='horizontal')
-    axs[1].set_title('CH Noise Histogram')
+    axs[1].set_title('Channel')
     axs[1].set_xlabel('Normalized\nProbability')
     axs[1].set_ylabel('Amplitude [V]')
     axs[1].grid()
 
     axs[2].hist(RXVoltage[:-1], RXVoltage, weights=RXNoise, orientation='horizontal')
-    axs[2].set_title('RX Noise Histogram')
+    axs[2].set_title('RX')
     axs[2].set_xlabel('Normalized\nProbability')
     axs[2].set_ylabel('Amplitude [V]')
     axs[2].grid()
     
     axs[3].hist(totalVoltage[:-1], totalVoltage, weights=totalNoise, orientation='horizontal')
-    axs[3].set_title('Combined Noise Histogram')
+    axs[3].set_title('Combined')
     axs[3].set_xlabel('Normalized\nProbability')
     axs[3].set_ylabel('Amplitude [V]')
     axs[3].grid()
@@ -168,9 +164,10 @@ def displayDistortion(simSettings: simulationSettings, simResults: simulationSta
     
     # Plot distortion
 
-    fig, axs = plt.subplots(nrows=1, ncols=3, dpi = 200, num='Non-Linearity')
+    fig, axs = plt.subplots(nrows=1, ncols=3, dpi = 200, num='Non-Linearity', layout='constrained')
+    fig.suptitle('Distortion')
     axs[0].plot(TXInput, TXOutput, linewidth=2)
-    axs[0].set_title('TX Distortion')
+    axs[0].set_title('TX')
     axs[0].set_ylabel('Output [V]') 
     axs[0].set_xlabel('Input [V]')
     axs[0].set_ylim(min(TXOutput), max(TXOutput))
@@ -178,7 +175,7 @@ def displayDistortion(simSettings: simulationSettings, simResults: simulationSta
     axs[0].grid()
     
     axs[1].plot(RXInput, RXOutput, linewidth=2)
-    axs[1].set_title('RX Distortion')
+    axs[1].set_title('RX')
     axs[1].set_ylabel('Output [V]') 
     axs[1].set_xlabel('Input [V]')
     axs[1].set_ylim(-supplyVoltage, supplyVoltage)
@@ -186,7 +183,7 @@ def displayDistortion(simSettings: simulationSettings, simResults: simulationSta
     axs[1].grid()
 
     axs[2].plot(totalInput, totalOutput, linewidth=2)
-    axs[2].set_title('Combined Distortion')
+    axs[2].set_title('Combined')
     axs[2].set_ylabel('Output [V]') 
     axs[2].set_xlabel('Input [V]')
     axs[2].set_ylim(-supplyVoltage, supplyVoltage)

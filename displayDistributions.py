@@ -63,7 +63,7 @@ def displayISI(simSettings: simulationSettings, simResults: simulationStatus):
     
 
     # Plot all trajectories
-    plt.figure(dpi = 200, num='ISI Trajectories')
+    plt.figure(dpi=100, num='ISI Trajectories', layout="constrained")
     plt.title('ISI Trajectories')
     plt.ylabel('Amplitude [V]')
     plt.xlabel('Time (s)')
@@ -213,7 +213,7 @@ def plotDistribution(simSettings,simResults,distribution,name):
     
     
     # Create figure
-    plt.figure(dpi = 200, num='PDF Plot')
+    plt.figure(dpi=100, num='PDF Plot', layout="constrained")
     if name == 'Constellation Distribution':
         contLevels = contLevels/2
         X, Y = np.meshgrid(yAxis,yAxis)
@@ -362,12 +362,10 @@ def plotBERDistribution(simSettings: simulationSettings, simResults: simulationS
         for symbol in range(numbSymb):
             combinedPDF = np.hstack((combinedPDF, PDF))
             combinedBER = np.hstack((combinedBER, BER))
-        
-    
     
     # Plot BER
     # https://matplotlib.org/stable/tutorials/intermediate/arranging_axes.html
-    fig, axd = plt.subplot_mosaic([['top', 'top'], ['top', 'top'], ['lower left', 'lower right']], layout='constrained', num='BER Plot')
+    fig, axd = plt.subplot_mosaic([['top', 'top'], ['top', 'top'], ['lower left', 'lower right']], layout='constrained', num='BER Plot', dpi=100)
     X, Y = np.meshgrid(xAxisLong, yAxis)
 
     # Prepare colour map
@@ -422,7 +420,7 @@ def plotConstellation(simSettings: simulationSettings, simResults: simulationSta
     samplerLevels = simResults.results.eyeLocs.level
     
     # Plot BER
-    plt.figure(num = 'BER Constellation Plot')  
+    plt.figure(dpi=100, num = 'BER Constellation Plot', layout='constrained')  
     contLevels = contLevels/2
     X, Y = np.meshgrid(yAxis,yAxis)
 
@@ -611,8 +609,6 @@ def plotHorizontalBathtub(simSettings: simulationSettings, simResults: simulatio
         if min(bathTubs.__dict__[tubName]) == 1e-12:
             curPlot.set_yticks([1e-12, 1e-9, 1e-6, 1e-3, 1e-0])
             curPlot.set_ylim(1e-12, 1)
-
-        
     
     curPlot.set_title('Horizontal Bathtub')
     curPlot.set_ylabel('BER')

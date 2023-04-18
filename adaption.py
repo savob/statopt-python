@@ -881,7 +881,8 @@ def displayAdaption(simSettings: simulationSettings, simResults: simulationStatu
     
     
     # Plot single result
-    fig, axs = plt.subplots(nrows=2, ncols=1, dpi = 200, num='Adaption Results')
+    fig, axs = plt.subplots(nrows=2, ncols=1, dpi=100, num='Adaption Results', layout='constrained')
+    fig.suptitle('Adaption Process Summary')
     axs[0].semilogy(np.arange(len(BER)), BER, linewidth=1)
     axs[0].set_title('Optimal BER vs. Adaption Attempt')
     axs[0].set_ylabel('BER (NRZ)')

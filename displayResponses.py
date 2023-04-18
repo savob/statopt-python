@@ -39,8 +39,8 @@ def displayChannels(simSettings: simulationSettings, simResults: simulationStatu
     freqScale = 1e-9 # Use this adjust frequency axis
 
     # Create figure
-    plt.figure(dpi = 200, num='Channel Responses')
-    plt.plot(channels.thru.frequencies * freqScale,20*np.log10(abs(channels.thru.transferFunction)), color = "blue", label = "THRU Channel", linewidth = 1)
+    plt.figure(dpi=100, num='Channel Responses', layout='constrained')
+    plt.plot(channels.thru.frequencies * freqScale,20*np.log10(abs(channels.thru.transferFunction)), color = "blue", label = "THRU Channel", linewidth = 0.5)
     plt.ylabel('Attenuation [dB]')
     plt.xlabel('Frequency [GHz]')
     #plt.axvline(x=simSettings.general.symbolRate.value * freqScale / (simSettings.general.modulation.value), color = 'grey', label = "Nyquist Frequency")
@@ -49,10 +49,10 @@ def displayChannels(simSettings: simulationSettings, simResults: simulationStatu
 
     # Plot channels
     if addCrossTalk and channels.next.channelNumb > 0:
-        plt.plot(channels.thru.frequencies * freqScale,20*np.log10(abs(channels.next.transferFunction)), color = "red", label = "NEXT Combined", linewidth = 1)
+        plt.plot(channels.thru.frequencies * freqScale,20*np.log10(abs(channels.next.transferFunction)), color = "red", label = "NEXT Combined", linewidth = 0.5)
     
     if addCrossTalk and channels.fext.channelNumb > 0:
-        plt.plot(channels.thru.frequencies * freqScale,20*np.log10(abs(channels.fext.transferFunction)), color = "green", label = "FEXT Combined", linewidth = 1)
+        plt.plot(channels.thru.frequencies * freqScale,20*np.log10(abs(channels.fext.transferFunction)), color = "green", label = "FEXT Combined", linewidth = 0.5)
 
     plt.xlim(0, freqScale*max(channels.thru.frequencies))
     plt.legend()
@@ -105,16 +105,16 @@ def displayCTLEResponse(simSettings: simulationSettings, simResults: simulationS
 
 
     # Plot CTLE
-    plt.figure(dpi = 200, num='CTLE Response')
-    plt.semilogx(freqScale*CTLE.frequency, 10*np.log10(abs(CTLE.magnitude)), label = "CTLE responsel")
+    plt.figure(dpi=100, num='CTLE Response', layout='constrained')
+    plt.semilogx(freqScale*CTLE.frequency, 10*np.log10(abs(CTLE.magnitude)), linewidth=0.5, label = "CTLE response")
     plt.grid()
 
     # Plot channel
-    plt.semilogx(freqScale*channel.frequencies, 10*np.log10(abs(channel.transferFunction)), label = "Channel response")
+    plt.semilogx(freqScale*channel.frequencies, 10*np.log10(abs(channel.transferFunction)), linewidth=0.5, label = "Channel response")
     
     # Plot resultant
     resultant = CTLE.magnitude*channel.transferFunction
-    plt.semilogx(freqScale*channel.frequencies, 10*np.log10(abs(resultant)), label = "Resultant response")
+    plt.semilogx(freqScale*channel.frequencies, 10*np.log10(abs(resultant)), linewidth=0.5, label = "Resultant response")
     
     # Plot Nyquist
     plt.axvline(x=freqScale*simSettings.general.symbolRate.value / (simSettings.general.modulation.value),linestyle='dashed',color = 'red', label = "Nyquist Frequency")
@@ -179,9 +179,8 @@ def displayPulse(simSettings: simulationSettings, simResults: simulationStatus):
     RXOutput, _ = limitLength(RXOutput, signalingMode, preCursorCount, postCursorCount, samplesPerSymb, samplePeriod, False)
 
     # Plot transmitter output
-    fig, axs = plt.subplots(nrows=3, ncols=1, dpi = 100, num='Pulse Response', sharex='all')
+    fig, axs = plt.subplots(nrows=3, ncols=1, dpi=100, num='Pulse Response', sharex='all', layout='constrained')
     fig.suptitle('Pulse Responses')
-    fig.set_tight_layout(True)
     plotResponse(axs[0], TXOutput, timeAxis, True, 'Transmitter Output', samplesPerSymb, samplePeriod, cursorCount, preCursorCount, postCursorCount)
 
     # Plot channel output
