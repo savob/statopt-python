@@ -345,6 +345,7 @@ def checkSimTime(simSettings: simulationSettings):
         answer = input('The simulation is expected to take {:.0f} minutes. Are you sure you would like to continue? (y/n) '.format(totalTime/60))
         if answer == 'n' or answer == "" or answer == 'N':
             print('\n----------Simulation Canceled----------')
+            quit()
         
     print('Expected simulation time {:.0f} seconds.\n'.format(totalTime))
 
