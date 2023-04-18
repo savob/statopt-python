@@ -516,13 +516,13 @@ def killUnsuccessfullSims(generations, genNumb):
 def killDuplicates(simSettings,generations,genNumb):
     
     currGeneration = generations.__dict__['generation'+str(genNumb)]
-    people = currGeneration.__dict__
-    if len(people)>1:
+    people = list(currGeneration.__dict__)
+    if len(people) > 1:
         
         # Create remove list
         removeList = []
         knobs = simSettings.adaption.knobs
-        for reference in range(len(people)):
+        for reference, refName in enumerate(people):
             refName = people[reference]
             different = False
             for compare in range(reference+1, len(people)):
@@ -554,7 +554,7 @@ def killDuplicates(simSettings,generations,genNumb):
 def killOldGeneration(generations,genNumb,totalParents):
     
     currGeneration = generations.__dict__['generation'+str(genNumb)]
-    people = currGeneration.__dict__
+    people = list(currGeneration.__dict__)
     while len(people)>totalParents:
         worstPersonName = people[0]
         worstResult = currGeneration.__dict__[worstPersonName]
@@ -564,7 +564,7 @@ def killOldGeneration(generations,genNumb,totalParents):
             if not isBetter: worstResult = currGeneration.__dict__[newPersonName]
         
         delattr(currGeneration, worstResult.name)
-        people = currGeneration.__dict__
+        people = list(currGeneration.__dict__)
     
     generations.__dict__['generation'+str(genNumb)] = currGeneration # Might not be needed due to passing by reference
 
@@ -618,6 +618,7 @@ def createChildren(simSettings,generations,genNumb,childrenPerParent,totalParent
         # Allocate a parent else ignore
         givenParent = int(np.ceil((child+1)/childrenPerParent))
         if ('parent'+str(givenParent)) in currGeneration.__dict__:
+            currGeneration.__dict__['child'+str(child)] = nothing()
             currGeneration.__dict__['child'+str(child)].knobs = currGeneration.__dict__['parent'+str(givenParent)].knobs
         
             # Randomize knobs
@@ -656,7 +657,7 @@ def createChildren(simSettings,generations,genNumb,childrenPerParent,totalParent
                 if goodChild: break 
             
             currGeneration.__dict__['child'+str(child)].simulated = False
-            currGeneration.__dict__['child'+str(child)].name = ['child'+str(child)]
+            currGeneration.__dict__['child'+str(child)].name = 'child' + str(child)
         
     
     generations.__dict__['generation'+str(genNumb)] = currGeneration # Might not be needed due to passing by reference
@@ -851,6 +852,7 @@ def setOptimal(simSettings: simulationSettings, simResults: simulationStatus):
     
     currentResult = optimalResult
     currentResult.name = 'finalCandidate'
+    generations.__dict__['generation'+str(genNumb)] = nothing()
     generations.__dict__['generation'+str(genNumb)].__dict__[currentResult.name] = optimalResult
     
     # Add original user settings
