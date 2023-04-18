@@ -636,9 +636,9 @@ def createChildren(simSettings,generations,genNumb,childrenPerParent,totalParent
                     else:
                         currentValue = currGeneration.__dict__['child'+str(child)].knobs.__dict__[validName]
                         if adaptMode == 1:
-                            value = currentValue+increment* random.range(-3, 3) #(np.mod(1+attempt, 7) - 3) # For testing
+                            value = currentValue + increment * random.randint(-3, 3)
                         else:
-                            value = currentValue+increment* random.range(-1, 1) #(np.mod(1+attempt, 3) - 1) # For testing
+                            value = currentValue + increment * random.randint(-1, 1)
                         
                         value = round(value/increment)*increment
                         value = max(min(value,maxValue),minValue)
@@ -700,7 +700,7 @@ def createMutations(simSettings,generations,genNumb,totalPopulation,log):
                 if knobName == 'receiver.preAmp.gain' or knobName == 'receiver.FFE.taps.main':
                     value = 1 # set automatically
                 else:
-                    value = random.uniform(minValue, maxValue) #minValue + ((1+attempt)/10)*(maxValue-minValue) # For testing
+                    value = random.uniform(minValue, maxValue)
                     value = np.round(value/increment)*increment
                     value = max(min(value,maxValue),minValue)
                 
