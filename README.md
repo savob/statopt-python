@@ -8,7 +8,7 @@ Statistical eye modelling tool, StatEye, ported to Python 3. Uses statistical me
 - Simulating and characterizing the performance of different signalling schemes such as PAM-4
 - Introducing the effects of cross-talk, noise, and distortion
 - Plotting channel and equalizer behaviour curves
-- Optimizing equalizers for a given system configuration using a genetic algorithm (In progress, works in MATLAB)
+- Optimizing equalizers for a given system configuration using a genetic algorithm
 
 ## Example Outputs
 
