@@ -33,6 +33,8 @@ from initializeSimulation import simulationStatus
 import matplotlib.pyplot as plt
 import numpy as np
 import random
+import copy
+import functools
 
 class nothing:
     def __init__(self):
@@ -63,8 +65,6 @@ def adaptLink(simSettings, simResults):
         displayResult(simSettings, simResults, isOptimal)
     else:
         simResults.finished = True
-
-import functools
 
 ###########################################################################
 # This function is used to set a nested field in an object based on a 
@@ -136,7 +136,6 @@ def initializeAdaptionStructure(simSettings: simulationSettings, simResults: sim
     
 # Class used for log entries
 class logEntry:
-    '''
     simNumb: int
     adaptMode: int
     generationNumb: int
@@ -146,7 +145,7 @@ class logEntry:
     optimalBER: float
     optimalEyeHeight: float
     successful: bool
-    '''
+    
     
     def __init__(self, sn: int, am: int, gn:int, cn: str, cber: float, ceh: float, ober: float, oeh: float, suc: bool):
         self.simNumb = sn
@@ -293,10 +292,10 @@ def compareResults(newResult, oldResult):
     
     # Compare results
     if newSuccessful and ((not oldSuccessful) or newBER<oldBER or (newBER==oldBER and newHeight>oldHeight)):
-        bestResult = newResult
+        bestResult = copy.deepcopy(newResult)
         isBetter = True
     else:
-        bestResult = oldResult
+        bestResult = copy.deepcopy(oldResult)
         isBetter = False
     
     return bestResult, isBetter
@@ -328,12 +327,6 @@ def logResults(simResults):
 
     # Save to log
     simResults.adaption.log.append(row)
-    '''
-    if (isempty(log(1).simNumb)):
-        simResults.adaption.log = row
-    else:
-        simResults.adaption.log(end+1) = row
-    '''
     
 
 
