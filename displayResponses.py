@@ -117,7 +117,7 @@ def displayCTLEResponse(simSettings: simulationSettings, simResults: simulationS
     plt.semilogx(freqScale*channel.frequencies, 10*np.log10(abs(resultant)), linewidth=0.5, label = "Resultant response")
     
     # Plot Nyquist
-    plt.axvline(x=freqScale*simSettings.general.symbolRate.value / (simSettings.general.modulation.value),linestyle='dashed',color = 'red', label = "Nyquist Frequency")
+    plt.axvline(x=freqScale*simSettings.general.symbolRate.value / 2,linestyle='dashed',color = 'red', label = "Nyquist Frequency")
 
     # Add legend
     plt.legend()
