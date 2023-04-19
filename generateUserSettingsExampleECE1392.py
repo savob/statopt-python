@@ -1,7 +1,7 @@
 from userSettingsObjects import simulationSettings, valueWithLimits
 from math import sqrt, pow
 
-def generateUserSettings():
+def generateUserSettings() -> simulationSettings:
     simSettings = simulationSettings()
 
     ########################################
@@ -10,7 +10,7 @@ def generateUserSettings():
     # Frequency
     simSettings.general.symbolRate.value = 32e9 # symbol rate [S/s] (or 2x frequency [Hz])
         
-    # Signaling mode ('standard','1+D','1+0.5D','clock')
+    # Signaling mode ('standard','1+D','1+0.5D','clock','QAM')
     simSettings.general.signalingMode = 'standard'
     
     # Coding gain
@@ -32,14 +32,14 @@ def generateUserSettings():
     simSettings.general.targetBER.value = 1e-6 # used for measurement purposes
 
     # Display responses
-    simSettings.general.plotting.channelResponse = True
-    simSettings.general.plotting.CTLEResponse    = True
+    simSettings.general.plotting.channelResponse = False
+    simSettings.general.plotting.CTLEResponse    = False
     simSettings.general.plotting.pulseResponse   = True
     
     # Display inteferences
-    simSettings.general.plotting.jitterSource     = True
-    simSettings.general.plotting.noiseSource      = True
-    simSettings.general.plotting.distortionSource = True
+    simSettings.general.plotting.jitterSource     = False
+    simSettings.general.plotting.noiseSource      = False
+    simSettings.general.plotting.distortionSource = False
     
     # Display probability distributions
     simSettings.general.plotting.ISI              = False # CAREFUL: CAN BE SLOW TO PLOT!
@@ -48,7 +48,7 @@ def generateUserSettings():
     simSettings.general.plotting.PDFDistorted     = False
     simSettings.general.plotting.PDFJitter        = False
     simSettings.general.plotting.PDFNoise         = False
-    simSettings.general.plotting.PDFFinal         = False
+    simSettings.general.plotting.PDFFinal         = True
     
     # Display bit-error rate distributions
     simSettings.general.plotting.BER  = False            # plot BER contour over BER
@@ -207,7 +207,7 @@ def generateUserSettings():
     simSettings.receiver.DFE.taps.post5 = valueWithLimits(-0.0)
     
     # Jitter
-    simSettings.receiver.jitter.addJitter = False
+    simSettings.receiver.jitter.addJitter = True
     simSettings.receiver.jitter.stdDeviation.value = 0.02 # CDR random jitter standard diviation [UI]
     simSettings.receiver.jitter.amplitude.value = 0    # CDR deterministic jitter amplitude [UI]
     simSettings.receiver.jitter.DCD.value = 0          # CDR duty-cycle distortion jitter [UI]
