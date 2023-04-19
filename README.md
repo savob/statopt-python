@@ -147,7 +147,7 @@ There are many knobs that can have an effect on the simulation, here is a comple
 |`Channel.Noise.AddNoise`             |  apply thermal noise |
 |`Channel.Noise.NoiseDensity`         |  specify thermal noise density [V^2/Hz] |
 
-## Reciever Settings |
+## Reciever Settings
 
 | Setting Knob | Explanation |
 | --- | --- |
