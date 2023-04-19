@@ -484,7 +484,7 @@ def applyRXFFE(simSettings: simulationSettings, simResults: simulationStatus):
             # Calculate required gain
             saturation = max(abs(distortion))
             taps.main.value = saturation/cursorSum
-            taps.main.value = round(taps.main.value/taps.main.minIncrement)*taps.main.minIncrement # round to closest multiple of increment
+            taps.main.value = round(taps.main.value/taps.main.increment)*taps.main.increment # round to closest multiple of increment
             taps.main.value = max(min(taps.main.value,taps.main.maxValue),taps.main.minValue) # keep within limits
 
             # Update current adaption setting
