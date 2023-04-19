@@ -185,18 +185,8 @@ def findEyeLocations(simSettings: simulationSettings, simResults: simulationStat
     if len(yLocs) != eyeNumb:
         raise ArithmeticError('WARNING: Program is having trouble finding the eye levels!')
     
-    
-    # Repeat from top-down for symetry
-    spacing = 0
-    yLocs2 = np.zeros((eyeNumb + 1,))
-    
-    while len(yLocs2) > eyeNumb:
-        spacing = spacing+2
-        yLocs2, prop = spsig.find_peaks(-np.flipud(BER[:, eyeLocs.X]), distance=spacing)
+    eyeLocs.Y = yLocs
 
-    # Average to find middle
-    eyeLocs.Y = (np.round((yLocs+np.flipud(yAxisLength-yLocs2+1))/2)).astype(int)
-    
     # Save results
     simResults.eyeGeneration.BER.eyeLocs = eyeLocs
 
