@@ -49,10 +49,12 @@ def displayChannels(simSettings: simulationSettings, simResults: simulationStatu
 
     # Plot channels
     if addCrossTalk and channels.next.channelNumb > 0:
-        plt.plot(channels.thru.frequencies * freqScale,20*np.log10(abs(channels.next.transferFunction)), color = "red", label = "NEXT Combined", linewidth = 0.5)
+        captionText = 'NEXT Combined ({0:d} Aggressors)'.format(channels.next.channelNumb)
+        plt.plot(channels.thru.frequencies * freqScale,20*np.log10(abs(channels.next.transferFunction)), color = "red", label = captionText, linewidth = 0.5)
     
     if addCrossTalk and channels.fext.channelNumb > 0:
-        plt.plot(channels.thru.frequencies * freqScale,20*np.log10(abs(channels.fext.transferFunction)), color = "green", label = "FEXT Combined", linewidth = 0.5)
+        captionText = 'FEXT Combined ({0:d} Aggressors)'.format(channels.fext.channelNumb)
+        plt.plot(channels.thru.frequencies * freqScale,20*np.log10(abs(channels.fext.transferFunction)), color = "green", label = captionText, linewidth = 0.5)
 
     plt.xlim(0, freqScale*max(channels.thru.frequencies))
     plt.legend()
