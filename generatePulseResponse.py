@@ -353,7 +353,7 @@ def applyRXGain(simSettings: simulationSettings, simResults: simulationStatus):
         simSettings.receiver.preAmp.gain.value = gain.value
         if 'adaption' in simResults.__dict__:
             simResults.adaption.currentResult.knobs.__dict__['receiver_preAmp_gain'] = gain.value
-            print('receiver_preAmp_gain: {0:.2f}\n'.format(gain.value))
+            print('receiver_preAmp_gain: {0:.2f}'.format(gain.value))
         
         
     # Remove gain
