@@ -479,7 +479,8 @@ def applyRXFFE(simSettings: simulationSettings, simResults: simulationStatus):
             
             startIdx = max(round(startIdx),1)
             endIdx = min(round(endIdx),len(inputSignals.thru))
-            cursorSum = np.sum(abs(inputSignals.thru[startIdx:samplesPerSymb:endIdx]))
+            section = np.arange(startIdx, endIdx, samplesPerSymb)
+            cursorSum = np.sum(abs(inputSignals.thru[section]))
 
             # Calculate required gain
             saturation = max(abs(distortion))
