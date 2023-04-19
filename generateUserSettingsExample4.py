@@ -1,6 +1,8 @@
 from userSettingsObjects import simulationSettings, valueWithLimits
 from math import sqrt, pow
 
+# Genetic optimization example for adaption system
+
 def generateUserSettings() -> simulationSettings:
     simSettings = simulationSettings()
 

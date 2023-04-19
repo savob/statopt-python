@@ -1,6 +1,8 @@
 from userSettingsObjects import simulationSettings, valueWithLimits
 from math import sqrt, pow
 
+# Example configuration used as the basis for an ECE1392 assignment
+
 def generateUserSettings() -> simulationSettings:
     simSettings = simulationSettings()
 
@@ -32,8 +34,8 @@ def generateUserSettings() -> simulationSettings:
     simSettings.general.targetBER.value = 1e-6 # used for measurement purposes
 
     # Display responses
-    simSettings.general.plotting.channelResponse = False
-    simSettings.general.plotting.CTLEResponse    = False
+    simSettings.general.plotting.channelResponse = True
+    simSettings.general.plotting.CTLEResponse    = True
     simSettings.general.plotting.pulseResponse   = True
     
     # Display inteferences
@@ -96,10 +98,10 @@ def generateUserSettings() -> simulationSettings:
 
     # Pre-emphasis
     simSettings.transmitter.EQ.addEqualization = False
-    simSettings.transmitter.EQ.taps.pre3 = valueWithLimits(-0.0)
-    simSettings.transmitter.EQ.taps.pre2 = valueWithLimits(-0.0)
-    simSettings.transmitter.EQ.taps.pre1 = valueWithLimits(-0.0)
-    simSettings.transmitter.EQ.taps.main = valueWithLimits(-0.0) # calculated automatically
+    simSettings.transmitter.EQ.taps.pre3  = valueWithLimits(-0.0)
+    simSettings.transmitter.EQ.taps.pre2  = valueWithLimits(-0.0)
+    simSettings.transmitter.EQ.taps.pre1  = valueWithLimits(-0.0)
+    simSettings.transmitter.EQ.taps.main  = valueWithLimits(-0.0) # calculated automatically
     simSettings.transmitter.EQ.taps.post1 = valueWithLimits(-0.0)
     simSettings.transmitter.EQ.taps.post2 = valueWithLimits(-0.0)
     simSettings.transmitter.EQ.taps.post3 = valueWithLimits(-0.0)
@@ -107,10 +109,10 @@ def generateUserSettings() -> simulationSettings:
     simSettings.transmitter.EQ.taps.post5 = valueWithLimits(-0.0)
 
     # Jitter
-    simSettings.transmitter.jitter.addJitter = True
-    simSettings.transmitter.jitter.stdDeviation.value = 0.01 # TX random jitter standard diviation [UI]
-    simSettings.transmitter.jitter.amplitude.value = 0.01    # TX deterministic jitter amplitude [UI]
-    simSettings.transmitter.jitter.DCD.value = 0.01          # TX duty-cycle distortion jitter [UI]
+    simSettings.transmitter.jitter.addJitter = False
+    simSettings.transmitter.jitter.stdDeviation.value = 0 # TX random jitter standard diviation [UI]
+    simSettings.transmitter.jitter.amplitude.value = 0    # TX deterministic jitter amplitude [UI]
+    simSettings.transmitter.jitter.DCD.value = 0          # TX duty-cycle distortion jitter [UI]
     
     # Noise
     simSettings.transmitter.noise.addNoise = True
@@ -119,7 +121,7 @@ def generateUserSettings() -> simulationSettings:
     simSettings.transmitter.noise.frequency.value = 1e6  # TX deterministic noise frequency [Hz]
 
     # Distortion
-    simSettings.transmitter.distortion.addDistortion = True
+    simSettings.transmitter.distortion.addDistortion = False
     simSettings.transmitter.distortion.fileName = 'distortionTX.mat'
     
     ########################################
@@ -188,26 +190,26 @@ def generateUserSettings() -> simulationSettings:
     
     # FFE
     simSettings.receiver.FFE.addEqualization = True
-    simSettings.receiver.FFE.taps.pre3 = valueWithLimits(-0.0)
-    simSettings.receiver.FFE.taps.pre2 = valueWithLimits(-0.0)
-    simSettings.receiver.FFE.taps.pre1 = valueWithLimits(0.05)
-    simSettings.receiver.FFE.taps.main = valueWithLimits(1.10)   
+    simSettings.receiver.FFE.taps.pre3  = valueWithLimits(-0.00)
+    simSettings.receiver.FFE.taps.pre2  = valueWithLimits(-0.00)
+    simSettings.receiver.FFE.taps.pre1  = valueWithLimits( 0.05)
+    simSettings.receiver.FFE.taps.main  = valueWithLimits( 1.10)   
     simSettings.receiver.FFE.taps.post1 = valueWithLimits(-0.30)
     simSettings.receiver.FFE.taps.post2 = valueWithLimits(-0.05)
-    simSettings.receiver.FFE.taps.post3 = valueWithLimits(-0.0)
-    simSettings.receiver.FFE.taps.post4 = valueWithLimits(-0.0)
-    simSettings.receiver.FFE.taps.post5 = valueWithLimits(-0.0)
+    simSettings.receiver.FFE.taps.post3 = valueWithLimits(-0.00)
+    simSettings.receiver.FFE.taps.post4 = valueWithLimits(-0.00)
+    simSettings.receiver.FFE.taps.post5 = valueWithLimits(-0.00)
     
     # DFE
     simSettings.receiver.DFE.addEqualization = False
-    simSettings.receiver.DFE.taps.post1 = valueWithLimits(-0.0)
-    simSettings.receiver.DFE.taps.post2 = valueWithLimits(-0.0)
-    simSettings.receiver.DFE.taps.post3 = valueWithLimits(-0.0)
-    simSettings.receiver.DFE.taps.post4 = valueWithLimits(-0.0)
-    simSettings.receiver.DFE.taps.post5 = valueWithLimits(-0.0)
+    simSettings.receiver.DFE.taps.post1 = valueWithLimits(-0.00)
+    simSettings.receiver.DFE.taps.post2 = valueWithLimits(-0.00)
+    simSettings.receiver.DFE.taps.post3 = valueWithLimits(-0.00)
+    simSettings.receiver.DFE.taps.post4 = valueWithLimits(-0.00)
+    simSettings.receiver.DFE.taps.post5 = valueWithLimits(-0.00)
     
     # Jitter
-    simSettings.receiver.jitter.addJitter = True
+    simSettings.receiver.jitter.addJitter = False
     simSettings.receiver.jitter.stdDeviation.value = 0.02 # CDR random jitter standard diviation [UI]
     simSettings.receiver.jitter.amplitude.value = 0    # CDR deterministic jitter amplitude [UI]
     simSettings.receiver.jitter.DCD.value = 0          # CDR duty-cycle distortion jitter [UI]

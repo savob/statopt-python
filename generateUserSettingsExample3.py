@@ -1,6 +1,8 @@
 from userSettingsObjects import simulationSettings, valueWithLimits
 from math import sqrt, pow
 
+# Clock example
+
 def generateUserSettings() -> simulationSettings:
     simSettings = simulationSettings()
 

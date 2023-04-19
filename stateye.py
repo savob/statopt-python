@@ -1,6 +1,6 @@
 import time # Used for timing exectution
 import matplotlib.pyplot as plt
-from generateUserSettingsExampleECE1392 import generateUserSettings # Change the 'from' file to desired file
+from generateUserSettingsExample0 import generateUserSettings # Change the 'from' file to desired file
 from generateSettingsLimits import generateSettingsLimits
 from initializeSimulation import initializeSimulation
 from checkSettings import checkSettings

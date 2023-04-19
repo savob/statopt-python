@@ -12,7 +12,7 @@ Statistical eye modelling tool, StatEye, ported to Python 3. Uses statistical me
 
 ## Example Outputs
 
-The following output plots are generated using the configuration in `generateUserSettingsExampleECE1392.py`.
+The following output plots are generated using the configuration in `generateUserSettingsExample0.py`.
 
 Polots related to the system's characteristics
 

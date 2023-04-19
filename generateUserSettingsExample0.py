@@ -1,6 +1,8 @@
 from userSettingsObjects import simulationSettings, valueWithLimits
 from math import sqrt, pow
 
+# Generate pulse response from channel response for a PAM-4 system
+
 def generateUserSettings() -> simulationSettings:
     simSettings = simulationSettings()
 
