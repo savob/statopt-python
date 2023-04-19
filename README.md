@@ -199,4 +199,4 @@ In addition to Python 3, the following libraries are needed to run this code:
 
 # Credit
 
-Originally written in MATLAB by by Jeremy Cosson-Martin and Jhoan Salinas for Ali Sheikholeslami's research group. Porting to Python was done by Savo Bajic as a projects for Ali Sheikholeslami's wireline course (ECE1392).
+Originally written in MATLAB by Jeremy Cosson-Martin and Jhoan Salinas for Ali Sheikholeslami's research group. Porting to Python was done by Savo Bajic as a project for Ali Sheikholeslami's wireline course, ECE1392, based on version 1.11 of StatEye in MATLAB.
