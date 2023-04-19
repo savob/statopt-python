@@ -130,20 +130,21 @@ def applyTXEQ(simSettings: simulationSettings, simResults: simulationStatus):
         
         simResults.results.successful = successful
 
-        # Order taps
-        response = main
+        # Order taps        
+        tapNames = list(taps.__dict__)
+        tapNames.sort()
+        response = [main]
         pre = 1
         post = 1
-        tapNames = list(taps.__dict__).sort()
         for tapName in tapNames:
             tapValue = taps.__dict__[tapName].value
-            if tapName == ('pre'+ str(pre)):
-                response = np.concatenate((tapValue,response))
-                pre = pre+1
+            if tapName == ('pre' + str(pre)):
+                response.insert(0, tapValue)
+                pre = pre + 1
             elif tapName == ('post' + str(post)):
-                response = np.concatenate((response,tapValue))
-                post = post+1
-        
+                response.append(tapValue)
+                post = post + 1
+
         # Convolve input with response
         discreteSignal = np.convolve(inputSignal, response)
     else:
@@ -503,10 +504,10 @@ def applyRXFFE(simSettings: simulationSettings, simResults: simulationStatus):
         for tapName in tapNames:
             if tapName == ('pre' + str(pre)):
                 response.insert(0, taps.__dict__[tapName].value)
-                pre = pre+1
+                pre = pre + 1
             elif tapName == ('post' + str(post)):
                 response.append(taps.__dict__[tapName].value)
-                post = post+1
+                post = post + 1
             
         
 
@@ -523,8 +524,6 @@ def applyRXFFE(simSettings: simulationSettings, simResults: simulationStatus):
             else:
                 if chName == 'next' or chName == 'fext' or chName == 'xtalk':
                     continue
-                
-            
 
             # Convolve signal with equalizer (why wasn't 'convole' used here? Will keep as it was for now)
             symbol = 1
@@ -533,7 +532,6 @@ def applyRXFFE(simSettings: simulationSettings, simResults: simulationStatus):
             for index in range(len(response)):
                 outputSignals.__dict__[chName] = outputSignals.__dict__[chName] + response[index] * np.concatenate((np.zeros(((symbol-1)*samplesPerSymb,)), inputSignals.__dict__[chName], np.zeros(((numbCursors-symbol)*samplesPerSymb),)))
                 symbol = symbol+1
-            
         
     else:
         outputSignals = inputSignals
