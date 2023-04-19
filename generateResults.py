@@ -86,7 +86,7 @@ def measureDataLevs(simSettings: simulationSettings, simResults: simulationStatu
     # Get values
     dLevs = np.zeros_like(locations, dtype=float)
     for interation, loc in enumerate(locations):
-        dLevs[interation] = yAxis[loc]
+        dLevs[interation] = yAxis[int(loc)]
 
     # Save results
     simResults.results.dLevs = dLevs
