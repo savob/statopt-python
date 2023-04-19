@@ -183,8 +183,7 @@ def findEyeLocations(simSettings: simulationSettings, simResults: simulationStat
         yLocs, prop = spsig.find_peaks(-BER[:, eyeLocs.X], distance=spacing)
     
     if len(yLocs) != eyeNumb:
-        print('Program is having trouble finding the eye levels!') 
-        #quit()
+        raise ArithmeticError('WARNING: Program is having trouble finding the eye levels!')
     
     
     # Repeat from top-down for symetry
