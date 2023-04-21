@@ -232,18 +232,34 @@ def impulseResponseConvolKernel(frequencyResponse, freqs, samplePeriod: float, w
     '''
     
     # Get defining frequencies
-    fStep = freqs[2] - freqs[1]
+    fStep = freqs[1] - freqs[0]
+    fstep2 = freqs[2] - freqs[1]
+    fMin = min(freqs)
     fMax = max(freqs)
+    fSteps = len(freqs)
+    workFrequencyResponse = 0
+
+    # Check that the frequency steps are linear
+    if fStep != fstep2:
+        print('\n------------------------------\nWARNING: Frequency response data not linearly spaced; linearizing for pulse response.\nTHIS MAY REDUCE THE ACCURACY OF RESULTS.\n------------------------------\n')
+        workFreqs = np.linspace(fMin, fMax, fSteps)
+        workFrequencyResponse = np.interp(workFreqs, workFreqs, frequencyResponse)
+
+        fStep = workFreqs[1] - workFreqs[0]
+    else:
+        # Use data as it came in
+        workFreqs = freqs
+        workFrequencyResponse = frequencyResponse
 
     # Max frequency needed to get sample period after IDFT
     fMaxDesired = int(1 / (2 * samplePeriod))
 
     # Extend frequency vector to desired maximum frequency
     padding = np.linspace(fMax, fMaxDesired, int((fMaxDesired-fMax)/fStep))
-    freqsExtended = np.concatenate((freqs, padding))
+    freqsExtended = np.concatenate((workFreqs, padding))
 
     # Pad TF with zeros
-    freqRespPadded = np.concatenate((frequencyResponse, np.zeros((len(freqsExtended)-len(frequencyResponse),))))
+    freqRespPadded = np.concatenate((workFrequencyResponse, np.zeros((len(freqsExtended)-len(workFrequencyResponse),))))
     
     # To create an impulse response the padded frequency response is reflected
     # then put through an inverse Fourier Transform to get the time response
