@@ -134,6 +134,8 @@ def generateCTLE(simSettings: simulationSettings, simResults: simulationStatus):
     # Save results
     magnitude, phase, w = ml.bode(transferFunc, 2*np.pi*channelFreqs, plot=False) # force frequencies to be same as channel
     temp = CTLE(transferFunc, magnitude, phase, channelFreqs)
+    if 'RXCTLE' not in simResults.influenceSources.__dict__:
+        setattr(simResults.influenceSources, 'RXCTLE', nothing())
     setattr(simResults.influenceSources.RXCTLE, zeroName, nothing())
     setattr(simResults.influenceSources.RXCTLE.__dict__[zeroName], poleName, temp)
 
