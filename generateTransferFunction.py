@@ -179,7 +179,15 @@ def loadFiles(simSettings: simulationSettings, simResults: simulationStatus):
             
             tranFunc = sParamsDiff[1,0,:] * (1 + gammaL) * (1 - gammaS) / (1 - sParamsDiff[1,1,:] * gammaL) / (1 - gammaIn * gammaS) 
             tranFunc = tranFunc.reshape(freqPoints,) 
-        
+        elif fileName[-4:] == '.mat':
+            # If it's a .MAT file check for frequency points
+            try:
+                temp = objectFromMat(fileName)
+                tranFunc = temp.response
+                freqs = temp.frequency
+            except AttributeError:
+                print('ERROR: "{:s}" is lacking one or both of "frequencies" and "response" as fields for defining a channel\'s response.\n----------------SIMULATION ABORTING----------------'.format(fileName))
+                quit()
        
         # Convolve channel with simulated circuit response
         if modelCircuitTF:
