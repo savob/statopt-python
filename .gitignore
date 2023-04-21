@@ -130,8 +130,6 @@ dmypy.json
 
 # Don't include the original MATLAB files
 *.m
-*.mat
-StatEye_MATLAB/
 
 # Exclude Touchstone files and pickled summaries
 *.s4p
