@@ -189,7 +189,7 @@ There are many knobs that can have an effect on the simulation, here is a comple
 
 # Dependancies
 
-In addition to Python 3, the following libraries are needed to run this code:
+In addition to running Python 3.10 or newer, the following libraries are needed to run this code:
 
 - [NumPy](https://numpy.org/install/)
 - [SciPy](https://scipy.org/install/)
