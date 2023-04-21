@@ -341,7 +341,7 @@ def generateChannelNoise(simSettings: simulationSettings, simResults: simulation
         randNoise = stats.norm.pdf(yAxis, loc=0, scale=stdDeviationOutput)
         randNoise = randNoise/np.sum(randNoise) # normalize PDF
     else:
-        randNoise = np.concatenate((np.zeros((int(yAxisLength/2),)), 1, np.zeros((int(yAxisLength/2),)))) # perfect impulse
+        randNoise = np.concatenate((np.zeros((int(yAxisLength/2), )), [1], np.zeros((int(yAxisLength/2), )))) # perfect impulse
     
     voltageScale = np.linspace(-(len(randNoise)-1)/2*yIncrement, (len(randNoise)-1)/2*yIncrement, len(randNoise)+1) # +1 needed for histograms
 
