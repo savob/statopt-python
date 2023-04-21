@@ -131,9 +131,6 @@ def generateHist(simSettings: simulationSettings, simResults: simulationStatus):
 # must first combine all levels together before performing the convolution.
 ###########################################################################
 def applyCrossTalk(simSettings: simulationSettings, simResults: simulationStatus):
-
-    # Don't cross-talk if desired
-    if not simSettings.channel.addCrossTalk: return
     
     # Import variables
     samplesPerSymb   = simSettings.general.samplesPerSymb.value
@@ -145,59 +142,62 @@ def applyCrossTalk(simSettings: simulationSettings, simResults: simulationStatus
     # Save initial PDF
     newPDF = nothing()
     newPDF.initial = PDF.initial.thru
-    newPDF.crossTalk = nothing()
-        
-    # Loop through each transition
-    transitions = PDF.initial.thru.__dict__
-    for transName in transitions:
 
-        # Set main channel distribution
-        newPDF.crossTalk.__dict__[transName] = PDF.initial.thru.__dict__[transName]
-
-        # Loop through each channel except main channel
-        for chName in PDF.initial.__dict__:
-
-            # Skip required channels
-            if(approximate):
-                if chName != 'xtalk':
-                    continue
-                
-            else:
-                if chName == 'thru' or chName == 'next' or chName == 'fext' or chName == 'xtalk':
-                    continue
-
-    
-            # Combine all main cursor levels of inteference channel
-            disturbance = np.zeros((yAxisLength,samplesPerSymb))
-            for levelName in transitions:
-                disturbance = disturbance + PDF.initial.__dict__[chName].__dict__[levelName]
+    # Don't cross-talk if desired
+    if simSettings.channel.addCrossTalk:
+        newPDF.crossTalk = nothing()
             
-            
-            # Make channel asnychronous if desired
-            if makeAsynchronous:
-                disturbance = makeAsynch(disturbance,samplesPerSymb,yAxisLength)
-            
+        # Loop through each transition
+        transitions = PDF.initial.thru.__dict__
+        for transName in transitions:
 
-            # Loop through each sample
-            temp = []
-            for time in range(samplesPerSymb):
+            # Set main channel distribution
+            newPDF.crossTalk.__dict__[transName] = PDF.initial.thru.__dict__[transName]
 
-                # Convolute channels together
-                tmpDist = np.convolve(newPDF.crossTalk.__dict__[transName][:,time], disturbance[:,time])
+            # Loop through each channel except main channel
+            for chName in PDF.initial.__dict__:
 
-                # Normalize distribution
-                total = np.sum(tmpDist)
-                if total!=0:
-                    tmpDist = tmpDist/total
-                
-                
-                # Size convolution to match yAxis length
-                if temp == []:
-                    temp = tmpDist[int((len(tmpDist)-yAxisLength)/2) : int(-(len(tmpDist)-yAxisLength)/2)] 
+                # Skip required channels
+                if(approximate):
+                    if chName != 'xtalk':
+                        continue
+                    
                 else:
-                    temp = np.vstack((temp, tmpDist[int((len(tmpDist)-yAxisLength)/2) : int(-(len(tmpDist)-yAxisLength)/2)]))
-            
-            newPDF.crossTalk.__dict__[transName] = np.transpose(temp)
+                    if chName == 'thru' or chName == 'next' or chName == 'fext' or chName == 'xtalk':
+                        continue
+
+        
+                # Combine all main cursor levels of inteference channel
+                disturbance = np.zeros((yAxisLength,samplesPerSymb))
+                for levelName in transitions:
+                    disturbance = disturbance + PDF.initial.__dict__[chName].__dict__[levelName]
+                
+                
+                # Make channel asnychronous if desired
+                if makeAsynchronous:
+                    disturbance = makeAsynch(disturbance,samplesPerSymb,yAxisLength)
+                
+
+                # Loop through each sample
+                temp = []
+                for time in range(samplesPerSymb):
+
+                    # Convolute channels together
+                    tmpDist = np.convolve(newPDF.crossTalk.__dict__[transName][:,time], disturbance[:,time])
+
+                    # Normalize distribution
+                    total = np.sum(tmpDist)
+                    if total!=0:
+                        tmpDist = tmpDist/total
+                    
+                    
+                    # Size convolution to match yAxis length
+                    if temp == []:
+                        temp = tmpDist[int((len(tmpDist)-yAxisLength)/2) : int(-(len(tmpDist)-yAxisLength)/2)] 
+                    else:
+                        temp = np.vstack((temp, tmpDist[int((len(tmpDist)-yAxisLength)/2) : int(-(len(tmpDist)-yAxisLength)/2)]))
+                
+                newPDF.crossTalk.__dict__[transName] = np.transpose(temp)
         
 
     # Save results
