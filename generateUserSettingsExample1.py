@@ -2,7 +2,6 @@ from userSettingsObjects import simulationSettings, valueWithLimits
 from math import sqrt, pow
 
 # Example of using a pre-defined pulse response
-#TODO: #2 Need to get the referenced LNA .MAT files to test this
 
 def generateUserSettings() -> simulationSettings:
     simSettings = simulationSettings()
