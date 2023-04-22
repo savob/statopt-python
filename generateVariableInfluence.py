@@ -134,6 +134,8 @@ def generateCTLE(simSettings: simulationSettings, simResults: simulationStatus):
     # Save results
     magnitude, phase, w = ml.bode(transferFunc, 2*np.pi*channelFreqs, plot=False) # force frequencies to be same as channel
     temp = CTLE(transferFunc, magnitude, phase, channelFreqs)
+    if 'RXCTLE' not in simResults.influenceSources.__dict__:
+        setattr(simResults.influenceSources, 'RXCTLE', nothing())
     setattr(simResults.influenceSources.RXCTLE, zeroName, nothing())
     setattr(simResults.influenceSources.RXCTLE.__dict__[zeroName], poleName, temp)
 
@@ -339,7 +341,7 @@ def generateChannelNoise(simSettings: simulationSettings, simResults: simulation
         randNoise = stats.norm.pdf(yAxis, loc=0, scale=stdDeviationOutput)
         randNoise = randNoise/np.sum(randNoise) # normalize PDF
     else:
-        randNoise = np.concatenate((np.zeros((int(yAxisLength/2),)), 1, np.zeros((int(yAxisLength/2),)))) # perfect impulse
+        randNoise = np.concatenate((np.zeros((int(yAxisLength/2), )), [1], np.zeros((int(yAxisLength/2), )))) # perfect impulse
     
     voltageScale = np.linspace(-(len(randNoise)-1)/2*yIncrement, (len(randNoise)-1)/2*yIncrement, len(randNoise)+1) # +1 needed for histograms
 
