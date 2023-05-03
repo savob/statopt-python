@@ -131,9 +131,5 @@ dmypy.json
 # VS Code Environment
 .vscode/
 
-# Don't include the original MATLAB files
-*.m
-
-# Exclude Touchstone files and pickled summaries
-*.s4p
+# Pickled objects
 *.pkl
