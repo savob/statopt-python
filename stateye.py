@@ -28,7 +28,7 @@ generateSettingsLimits(simSettings)
 print('Simulation settings limits set')
 simResults = initializeSimulation(simSettings) # Really just adds a bunch of settings and prepares simulation result object
 print('User-dependant settings generated')
-checkSettings(simSettings, simResults)
+checkSettings(simSettings)
 
 doneLoadingTime = time.time() # Mark time once data was loaded
 

@@ -16,7 +16,7 @@ def error(message: str):
     print('{:s}'.format(message))
     raise badSettingException
 
-def checkSettings(simSettings: simulationSettings, simResults: simulationStatus):
+def checkSettings(simSettings: simulationSettings):
 
     # Check speed settings
     checkGeneralSettings(simSettings)
