@@ -1,8 +1,8 @@
 '''
-I used this file to load in test data for the development of the program.
+This file is used to load in test data for the development of the program.
 Originally to test the output portion of the code (plots/print statements)
-before I worked to tune the simulation itself so I could trust that the output
-was going to reflect data accurately.
+before Savo worked to tune the simulation itself so one could trust that 
+the output statements and figures reflect the data provided accurately.
 
 It was then used to read in some of the .mat files used to store values for
 different system parameters such as distortion since those are easier to prepare 

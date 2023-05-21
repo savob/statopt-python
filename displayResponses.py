@@ -1,8 +1,9 @@
 ###########################################################################
 #
 #   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
+#   by Jeremy Cosson-Martin, Jhoan Salinas of
 #   Ali Sheikholeslami's group
+#   Ported to Python 3 by Savo Bajic
 #   Department of Electrical and Computer Engineering
 #   University of Toronto
 #   Copyright Material
@@ -21,6 +22,7 @@
 #   A plot of the channel transfer function
 #   
 ###########################################################################
+
 from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus
 import matplotlib.pyplot as plt
@@ -60,16 +62,6 @@ def displayChannels(simSettings: simulationSettings, simResults: simulationStatu
     plt.legend()
     
 
-###########################################################################
-#
-#   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
-#   Ali Sheikholeslami's group
-#   Department of Electrical and Computer Engineering
-#   University of Toronto
-#   Copyright Material
-#   For personal use only
-#
 ###########################################################################
 # This function plots the transfer function of the CTLE. It also
 # superimposes the channel plot to use as comparison. Finally, it plots the
@@ -129,16 +121,6 @@ def displayCTLEResponse(simSettings: simulationSettings, simResults: simulationS
     plt.xlim(freqScale*1e9, max(freqScale*CTLE.frequency))
 
 
-###########################################################################
-#
-#   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
-#   Ali Sheikholeslami's group
-#   Department of Electrical and Computer Engineering
-#   University of Toronto
-#   Copyright Material
-#   For personal use only
-#
 ###########################################################################
 # This function plots the transmitter output, channel output and receiver
 # output. The TX response is post equalization. All responses are not 

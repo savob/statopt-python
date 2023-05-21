@@ -1,8 +1,9 @@
 ###########################################################################
 #
 #   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
+#   by Jeremy Cosson-Martin, Jhoan Salinas of
 #   Ali Sheikholeslami's group
+#   Ported to Python 3 by Savo Bajic
 #   Department of Electrical and Computer Engineering
 #   University of Toronto
 #   Copyright Material
@@ -21,9 +22,6 @@
 #
 # Inputs:
 #   simSettings: structure containing simulation settings
-#   simResults: structure containing simulation results
-# 
-# Outputs:
 #   simResults: structure containing simulation results
 #   
 ###########################################################################
@@ -59,7 +57,6 @@ def generateBER(simSettings: simulationSettings, simResults: simulationStatus):
     except:
         # Create empty structure
         createEmptyStruct(simResults)
-    
 
 
 ###########################################################################
@@ -118,6 +115,7 @@ def generateBERContours(simSettings: simulationSettings, simResults: simulationS
     simResults.eyeGeneration.BER = nothing()
     simResults.eyeGeneration.BER.contours = BER
 
+
 ###########################################################################
 # The following functions takes all transition-classified PDF and
 # classifies them by main-cursor level(s).
@@ -152,6 +150,7 @@ def combineTransitions(PDF,signalingMode,levelNumb,yAxisLength,samplesPerSymb):
         combined.__dict__['level' + str(level)] = combined.__dict__['level' + str(level)] + PDF.__dict__[transName]/len(transitions)         
     
     return combined
+
 
 ###########################################################################
 # This function finds the location of each eye center. The horizontal
@@ -224,6 +223,7 @@ def generateHorizontalBathtub(simResults: simulationStatus):
     # Save results
     simResults.eyeGeneration.BER.bathTubX = bathTubX
 
+
 ###########################################################################
 # The following functions takes all constellation PDF points and
 # classifies them by main-cursor level(s) in the I and Q directions.
@@ -249,6 +249,7 @@ def combineConstellations(PDF,levelNumb,yAxisLength):
         combined.__dict__[QLevel] = combined.__dict__[QLevel] + PDF.__dict__[pointName]/len(pointNames)      
     
     return combined
+
 
 ###########################################################################
 # This function generates a BER result structure with empty values.

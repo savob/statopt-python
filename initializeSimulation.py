@@ -1,3 +1,27 @@
+###########################################################################
+#
+#   StatEye Simulator
+#   by Jeremy Cosson-Martin, Jhoan Salinas of
+#   Ali Sheikholeslami's group
+#   Ported to Python 3 by Savo Bajic
+#   Department of Electrical and Computer Engineering
+#   University of Toronto
+#   Copyright Material
+#   For personal use only
+#
+###########################################################################
+# Initalizes the simulation by preparing the results object as well as 
+# adding the values used in simulation derived from user input to the 
+# settings object.
+#
+# Inputs:
+#   simSettings: structure containing simulation settings
+#
+# Outputs:
+#   simResults: structure containing simulation results
+#   
+###########################################################################
+
 from userSettingsObjects import simulationSettings
 from numpy import linspace, arange, array
 from dataclasses import dataclass
@@ -16,6 +40,7 @@ class channelInfluence:
         self.transferFunction = tf
         self.frequencies = freq
         self.impulseResponse = impResp
+
 
 class channelsThatInfluence:
     thru: channelInfluence
@@ -39,10 +64,7 @@ class simulationStatus:
         self.channelData = channelsThatInfluence() # will have a 'thru' channel but I think that's fine
 
 
-        
-
-
-def initializeSimulation(simSettings: simulationSettings):
+def initializeSimulation(simSettings: simulationSettings) -> simulationResults:
     
     # Initialize result structure
     simResults = simulationStatus()

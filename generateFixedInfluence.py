@@ -1,8 +1,9 @@
 ###########################################################################
 #
 #   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
+#   by Jeremy Cosson-Martin, Jhoan Salinas of
 #   Ali Sheikholeslami's group
+#   Ported to Python 3 by Savo Bajic
 #   Department of Electrical and Computer Engineering
 #   University of Toronto
 #   Copyright Material
@@ -19,9 +20,6 @@
 #   simSettings: structure containing simulation settings
 #   simResults: structure containing simulation results
 # 
-# Outputs:
-#   simResults: structure containing simulation results
-#   
 ###########################################################################
 
 import numpy as np
@@ -147,6 +145,7 @@ class distortionClass:
     def __init__(self, input, output):
         self.input = input
         self.output = output
+
 
 ###########################################################################
 # This function creates a probability distribution for the transmitter
@@ -296,6 +295,7 @@ def generateRXJitter(simSettings: simulationSettings, simResults: simulationStat
     temp = jitter(randJitter, sineJitter, DCDJitter, totalJitter, timeScale, UIScale)
     setattr(simResults.influenceSources, 'RXJitter', temp)
 
+
 ###########################################################################
 # This function creates a transfer function used to add distortion to
 # the pulse response. This represents the non-linearity of the receiver.
@@ -333,7 +333,6 @@ def generateRXDistortion(simSettings: simulationSettings, simResults: simulation
     # Save results
     temp = distortionClass(input, output)
     setattr(simResults.influenceSources, 'RXDistortion', temp)
-
 
 
 ###########################################################################

@@ -1,8 +1,9 @@
 ###########################################################################
 #
 #   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
+#   by Jeremy Cosson-Martin, Jhoan Salinas of
 #   Ali Sheikholeslami's group
+#   Ported to Python 3 by Savo Bajic
 #   Department of Electrical and Computer Engineering
 #   University of Toronto
 #   Copyright Material
@@ -20,6 +21,7 @@
 #   A PDF distribution of the two jitter sources.
 #   
 ###########################################################################
+
 from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus
 import matplotlib.pyplot as plt
@@ -59,16 +61,6 @@ def displayJitter(simSettings: simulationSettings, simResults: simulationStatus)
     axs[2].grid()
 
 
-###########################################################################
-#
-#   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
-#   Ali Sheikholeslami's group
-#   Department of Electrical and Computer Engineering
-#   University of Toronto
-#   Copyright Material
-#   For personal use only
-#
 ###########################################################################
 # This function plots the noise source distributions. Sources include the
 # TX noise and RX noise.
@@ -125,17 +117,6 @@ def displayNoise (simSettings: simulationSettings, simResults: simulationStatus)
     axs[3].set_ylabel('Amplitude [V]')
     axs[3].grid()
 
-
-###########################################################################
-#
-#   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
-#   Ali Sheikholeslami's group
-#   Department of Electrical and Computer Engineering
-#   University of Toronto
-#   Copyright Material
-#   For personal use only
-#
 ###########################################################################
 # This function plots the distortion transfer functions for the transmitter
 # and receiver.

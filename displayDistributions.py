@@ -1,8 +1,9 @@
 ###########################################################################
 #
 #   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
+#   by Jeremy Cosson-Martin, Jhoan Salinas of
 #   Ali Sheikholeslami's group
+#   Ported to Python 3 by Savo Bajic
 #   Department of Electrical and Computer Engineering
 #   University of Toronto
 #   Copyright Material
@@ -117,16 +118,6 @@ def displayISI(simSettings: simulationSettings, simResults: simulationStatus):
     plt.xlim(0, max(xAxis))
 
 
-###########################################################################
-#
-#   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
-#   Ali Sheikholeslami's group
-#   Department of Electrical and Computer Engineering
-#   University of Toronto
-#   Copyright Material
-#   For personal use only
-#
 ###########################################################################
 # This function generates an eye diagram from the probability distribution.
 # The post-cross-talk, post-jitter and post-noise probability distribution 
@@ -262,16 +253,6 @@ def plotDistribution(simSettings,simResults,distribution,name):
     
 
 
-###########################################################################
-#
-#   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
-#   Ali Sheikholeslami's group
-#   Department of Electrical and Computer Engineering
-#   University of Toronto
-#   Copyright Material
-#   For personal use only
-#
 ###########################################################################
 # This function plots the BER distribution. Contour lines are added at BERs
 # levels of 1e-3, 1e-6, 1e-9, and 1e-12 if possible. It also plots the

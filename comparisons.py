@@ -1,3 +1,16 @@
+'''
+This file was prepared to compare the pulse responses between the MATLAB and Python
+versions of the tool since they are calculated using different methods. The MATLAB 
+version uses the fitted version of the transfer function, while the Python 
+implementation uses zero-padding and discrete time analysis.
+
+To compare the results, the results object from MATLAB needs to be saved as a .mat
+object to be then read by this function. It is assumed that the pusles are from an
+identical simulation configuration.
+
+This code is a modified version of the functions used for displaying the pulse 
+responses, so that the two pulses are imposed over one another.
+'''
 
 from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus
@@ -52,11 +65,6 @@ def comparePulse(simSettings: simulationSettings, simResults: simulationStatus, 
     plotResponse2(axs[2], relative, absolute, timeAxis, True, 'Comparison of RX Output (Relative)', samplesPerSymb, samplePeriod, cursorCount, preCursorCount, postCursorCount)
 
 
-###########################################################################
-# This function artificially adds rise and fall slope to the signal. This
-# is infact added when the signal passes through the channel, however
-# allows for a visual representation.
-###########################################################################
 def addRiseFallSlope(TXOutput, tRise, sampleRate):
 
     diffSignal = np.diff(TXOutput)
@@ -70,12 +78,6 @@ def addRiseFallSlope(TXOutput, tRise, sampleRate):
     return TXOutput
 
 
-###########################################################################
-# This function adjusts the length of the signal to display only desired
-# cursors. If the TX output is being plotted, a slight offset is added to
-# allow for the signal to apear in the middle of the symbol period, even
-# with its exponential slope.
-###########################################################################
 def limitLength(signal,signalingMode,preCursorCount,postCursorCount,samplesPerSymb,samplePeriod,isTX):
 
     # Locate pulse peak location
@@ -115,9 +117,6 @@ def limitLength(signal,signalingMode,preCursorCount,postCursorCount,samplesPerSy
     return signal,timeAxis
 
 
-###########################################################################
-# This function plots the response.
-###########################################################################
 def plotResponse(subplot: plt.Axes, response, response2, timeAxis,addLegend,name,samplesPerSymb,samplePeriod,cursorCount,preCursorCount,postCursorCount):
    
     # Add response

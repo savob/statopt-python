@@ -1,5 +1,10 @@
+'''
+This file is used to define the data objects used for the simulation
+so that functions can know what to expect and to ensure that the 
+configuration data is accessed properly.
+'''
+
 from dataclasses import dataclass, field
-from typing import List
 from numpy import ndarray, empty
 
 # Generic dataclass for any value that may have an associated increment and limits for both.

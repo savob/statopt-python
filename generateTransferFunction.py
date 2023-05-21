@@ -1,8 +1,9 @@
 ###########################################################################
 #
 #   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
+#   by Jeremy Cosson-Martin, Jhoan Salinas of
 #   Ali Sheikholeslami's group
+#   Ported to Python 3 by Savo Bajic
 #   Department of Electrical and Computer Engineering
 #   University of Toronto
 #   Copyright Material
@@ -11,18 +12,15 @@
 ###########################################################################
 # This function is used to import new keystone (.s4p) files or matfile 
 # (.mat) transfer function data into the StatEye program. This function is
-# not a part of the main program. It must be run only when importing new 
+# not a part of the main program. It is to be run only when importing new 
 # channel files. This script finds all .s4p files in the local directory 
-# and saves the information into ChannelData.mat. Once this file is 
-# generated, the StatEye no longer requires the use of the MathWorks 
-# RF-Toolbox(TM). This script also has the option to convolve the channel 
-# with an additional transfer function (such as an extracted circuit 
-# frequency response) and additionally to add a notch at a particular 
-# frequency. This additional data must come from a .mat file containing a 
-# structure with directories named "response" and "frequency". Each should 
-# be a vector containing the same number of elements. To save structure 
-# type: 
-# save('<FILENAME>.mat','-struct','<STRUCTURENAME>')
+# and saves the information into ChannelData.pkl. This script also has 
+# the option to convolve the channel # with an additional transfer function 
+# (such as an extracted circuit frequency response) and additionally to add
+# a notch at a particular frequency. This additional data must come from a 
+# .mat file containing a structure with directories named "response" and 
+# "frequency". Each should be a vector containing the same number of 
+# elements.
 #
 # Inputs:
 #   simSettings: structure containing simulation settings
@@ -31,10 +29,10 @@
 #   matfile (.mat) channel files
 #
 # Outputs:
-#   simResults: structure containing simulation results
 #   ChannelData.mat file containing channel information
 #   
 ###########################################################################
+
 from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus, channelInfluence
 import pickle # Used to load and unload Python objects (.pkl)
@@ -104,8 +102,7 @@ def updateChannelData(simSettings: simulationSettings, simResults: simulationSta
             quit()
     
     return update
-        
-    
+
 
 ###########################################################################
 # This function reads the available keystone files to generate the channel 
@@ -221,15 +218,19 @@ def loadFiles(simSettings: simulationSettings, simResults: simulationStatus):
         # Notify user
         print('Channel {0} is loaded'.format(fileName))
     
+
+###########################################################################
+# Generates the convolution kernel for an impulse given a system's 
+# frequency response.
+#
+# Pads discrete time transfer frequency response with data in the frequency
+# domain to reach the needed step in time domain when an inverse Fourier
+# Transform is performed.
+#
+# This kernel is generally quite large so there is the option to have a 
+# window around the peak.
+###########################################################################
 def impulseResponseConvolKernel(frequencyResponse, freqs, samplePeriod: float, window: int = 0):
-    '''
-    Generates the convolution kernel for an impulse given a transfer function / frequency response.
-
-    Pads discrete time transfer function / frequency response with data in the frequency domain
-    to reach the needed step in time domain when an inverse Fourier Transform is performed.
-
-    This kernel is generally quite large so there is the option to have a window around the peak.
-    '''
     
     # Get defining frequencies
     fStep = freqs[1] - freqs[0]

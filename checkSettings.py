@@ -1,3 +1,25 @@
+###########################################################################
+#
+#   StatEye Simulator
+#   by Jeremy Cosson-Martin, Jhoan Salinas of
+#   Ali Sheikholeslami's group
+#   Ported to Python 3 by Savo Bajic
+#   Department of Electrical and Computer Engineering
+#   University of Toronto
+#   Copyright Material
+#   For personal use only
+#
+###########################################################################
+# Checks the user's settings to verify if they fall within the expected 
+# limits for given values as well as if they match the prescribed 
+# increments for said value. Should any be found out of range an error is 
+# raised detailing the issue and the simulation is halted.
+#
+# Inputs:
+#   simSettings: structure containing simulation settings
+#   
+###########################################################################
+
 from userSettingsObjects import simulationSettings, valueWithLimits
 from initializeSimulation import simulationStatus
 from warnings import warn

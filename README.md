@@ -183,9 +183,10 @@ There are many knobs that can have an effect on the simulation, here is a comple
 - [x] Polish up the figure formatting. E.g. prevent axes labels overlapping adjacent plots when the window is sized smaller.
 - [x] Port more example configurations for users
 - [x] Update and upload documentation for operation based on the "readme"s from MATLAB
-- [ ] Clean up comments and disclaimers in files
+- [x] Clean up comments and disclaimers in files
 - [ ] Verify accuracy of system simulation (pulse and CTLE responses)
 - [ ] Investigate the use of an alternative, more interactive graphics library like [pyqt](https://www.pyqtgraph.org/) or [Altair](https://altair-viz.github.io/index.html)
+- [ ] Improve installation process. Perhaps preparing this as a package for Anaconda or pip.
 
 # Dependancies
 

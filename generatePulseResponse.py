@@ -1,8 +1,9 @@
 ###########################################################################
 #
 #   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
+#   by Jeremy Cosson-Martin, Jhoan Salinas of
 #   Ali Sheikholeslami's group
+#   Ported to Python 3 by Savo Bajic
 #   Department of Electrical and Computer Engineering
 #   University of Toronto
 #   Copyright Material
@@ -17,9 +18,6 @@
 #
 # Inputs:
 #   simSettings: structure containing simulation settings
-#   simResults: structure containing simulation results
-# 
-# Outputs:
 #   simResults: structure containing simulation results
 #   
 ###########################################################################
@@ -245,7 +243,6 @@ def applyChannel(simSettings: simulationSettings, simResults: simulationStatus):
         # Save results
         simResults.pulseResponse.channel.input = inputSignal
         simResults.pulseResponse.channel.outputs.__dict__[chName] = outputSignal
-    
 
 
 ###########################################################################
@@ -281,6 +278,7 @@ def limitPulse(signal,signalingMode,samplesPerSymb,preCursorCount,postCursorCoun
 
     return signal
 
+
 ###########################################################################
 # This function is to find the peak in a signal
 ###########################################################################
@@ -296,6 +294,7 @@ def findPeakPulse(signal):
     peakLoc = peaks[maxPeak]
 
     return peakLoc
+
 
 ###########################################################################
 # This function increases the gain of the received signal by a constant.
@@ -385,7 +384,6 @@ def applyRXGain(simSettings: simulationSettings, simResults: simulationStatus):
         simResults.pulseResponse.receiver.preAmp.inputs.__dict__[chName] = inputSignal
         simResults.pulseResponse.receiver.preAmp.outputs.__dict__[chName] = outputSignal       
         simResults.pulseResponse.receiver.preAmp.outputPeak.__dict__[chName] = amplitude
-    
 
 
 ###########################################################################
@@ -618,7 +616,6 @@ def applyRXDFE(simSettings: simulationSettings, simResults: simulationStatus):
         # Save results
         simResults.pulseResponse.receiver.DFE.inputs.__dict__[chName] = inputSignal
         simResults.pulseResponse.receiver.DFE.outputs.__dict__[chName] = outputSignal
-    
 
 
 ###########################################################################
@@ -713,7 +710,5 @@ def applyCodingGain(simSettings,simResults):
         if chName != 'thru':
             pulses.__dict__[chName] = pulses.__dict__[chName]/np.sqrt(10**(codingGain/10))
         
-    
-    
     # Save results
     simResults.pulseResponse.receiver.outputs = pulses

@@ -1,6 +1,38 @@
+###########################################################################
+#
+#   StatEye Simulator
+#   by Jeremy Cosson-Martin, Jhoan Salinas of
+#   Ali Sheikholeslami's group
+#   Ported to Python 3 by Savo Bajic
+#   Department of Electrical and Computer Engineering
+#   University of Toronto
+#   Copyright Material
+#   For personal use only
+#
+###########################################################################
+# This is the file that runs the statistical simulation of a wireline link 
+# based on a selected set of user specified parameters from a file. In 
+# addition to performing an analysis of a given wireline configuration to 
+# provide information such as the probability distribution and expected 
+# eye dimensions, this system can also work to tune a wireline system using
+# a genetic algorithm for optimal performance.
+#
+# To adjust the simulation, only the simulation settings file needs to be
+# adjusted. The simulation system files themselves do not need to be edited
+# themselves to enable or disable parts of the system's behaviour. The only 
+# exception being the selection of which setting file to use explained below.
+#
+# To enable quicker swapping between simulation configurations they can be 
+# prepared in different files that are then selected by editing where the
+# generateUserSettings function is imported from a few lines below.
+#   
+###########################################################################
+
 import time # Used for timing exectution
 import matplotlib.pyplot as plt
+
 from generateUserSettingsExample0 import generateUserSettings # Change the 'from' file to desired file
+
 from generateSettingsLimits import generateSettingsLimits
 from initializeSimulation import initializeSimulation
 from checkSettings import checkSettings
@@ -67,7 +99,7 @@ while not simResults.finished:
 doneSimTime = time.time() # Mark time once data was loaded
 
 # Plot Results
-# In MATLAB these were all docked in the main window, however there is no real way to do that in Python that I know of
+# In MATLAB these were all docked in the main window, however there is no to ensure that with matplotlib
 
 # Display responses
 displayChannels(simSettings, simResults)

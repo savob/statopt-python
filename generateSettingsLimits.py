@@ -1,3 +1,24 @@
+###########################################################################
+#
+#   StatEye Simulator
+#   by Jeremy Cosson-Martin, Jhoan Salinas of
+#   Ali Sheikholeslami's group
+#   Ported to Python 3 by Savo Bajic
+#   Department of Electrical and Computer Engineering
+#   University of Toronto
+#   Copyright Material
+#   For personal use only
+#
+###########################################################################
+# These functions are responsible for adding limits to the simulation knobs
+# which are used to later verify that the user's configuration is valid for
+# the simulation.
+#
+# Inputs:
+#   simSettings: structure containing simulation settings
+# 
+###########################################################################
+
 from userSettingsObjects import simulationSettings, valueWithLimits
 
 def generateSettingsLimits(simSettings: simulationSettings):

@@ -1,8 +1,9 @@
 ###########################################################################
 #
 #   StatEye Simulator
-#   by Jeremy Cosson-Martin, Jhoan Salinas
+#   by Jeremy Cosson-Martin, Jhoan Salinas of
 #   Ali Sheikholeslami's group
+#   Ported to Python 3 by Savo Bajic
 #   Department of Electrical and Computer Engineering
 #   University of Toronto
 #   Copyright Material
@@ -20,10 +21,6 @@
 #
 # Inputs:
 #   simSettings: structure containing simulation settings
-#   simResults: structure containing simulation results
-#
-# Outputs:
-#   simSettings: structure containing simualation settings
 #   simResults: structure containing simulation results
 #   
 ###########################################################################
