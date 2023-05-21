@@ -404,54 +404,6 @@ def plotBERDistribution(simSettings: simulationSettings, simResults: simulationS
 
 
 ###########################################################################
-# This function plots the 2d BER constellation for complex signals
-###########################################################################
-def plotConstellation(simSettings: simulationSettings, simResults: simulationStatus):
-    
-    # Plot only for complex signals
-    if not simSettings.general.signalingMode == 'QAM': return 
-    
-    # Import variables
-    yAxis          = simSettings.general.yAxis.value
-    contLevels     = simSettings.general.contLevels.value
-    supplyVoltage  = simSettings.receiver.signalAmplitude.value
-    outputPeak    = max(simResults.pulseResponse.receiver.outputs.thru)
-    constellation = simResults.eyeGeneration.PDF.constellation.combined
-    samplerLevels = simResults.results.eyeLocs.level
-    
-    # Plot BER
-    plt.figure(dpi=100, num = 'BER Constellation Plot', layout='constrained')  
-    contLevels = contLevels/2
-    X, Y = np.meshgrid(yAxis,yAxis)
-
-    # Prepare colour map
-    temp_big = mpl.colormaps['gray_r']
-    newcmp = colours.ListedColormap(temp_big(np.linspace(0, 0.5, 2*contLevels)))
-
-    plt.contourf(X, Y, constellation, contLevels, cmap=newcmp)
-    plt.contourf(X, Y, constellation, contLevels, edgecolors=[[0.6,0.6,0.6]])
-    plt.colorbar()
-    plt.title('BER Constellation Plot')
-    plt.ylabel('I Amplitude [V]')
-    plt.xlabel('Q Amplitude [V]')
-    limit = min(2*outputPeak, supplyVoltage)
-    plt.xlim(-limit, limit)
-    plt.ylim(-limit, limit)  
-    plt.grid(True)
-    
-    
-    # Add ticks to seperate constellation bits
-    if len(samplerLevels) > 1:
-        delta = samplerLevels[-1] - samplerLevels[-2]
-        samplerLevels = np.concatenate(([-limit, samplerLevels[0]-delta], samplerLevels, [samplerLevels[-1] + delta ,limit]))
-    else:
-        samplerLevels = np.concatenate(([-limit], samplerLevels, [limit]))
-    
-    plt.yticks(samplerLevels)
-    plt.xticks(samplerLevels)
-
-
-###########################################################################
 # This function plots the eye contours at BER levels of 1e-3, 1e-6, 1e-9
 # and 1e-12 if possible. It also adds a legend which labels each contour.
 ###########################################################################

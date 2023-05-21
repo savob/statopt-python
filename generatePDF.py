@@ -285,8 +285,7 @@ def applyJitter(simSettings: simulationSettings, simResults: simulationStatus):
 
     # Add jitter only if desired
     if not simSettings.transmitter.jitter.addJitter and \
-            not simSettings.receiver.jitter.addJitter or \
-            simSettings.general.signalingMode == 'QAM':
+            not simSettings.receiver.jitter.addJitter:
         return 
     
     

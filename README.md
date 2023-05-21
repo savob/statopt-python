@@ -6,7 +6,7 @@ By default, an equalized PAM-4 link has been created. This link is ready to simu
 
 ## Features 
 
-- Reading in Touchstone (.s4p) files for channel data
+- Reading in Touchstone (`.s4p`) files for channel data
 - Simulating and characterizing the performance of different modulation schemes such as PAM-4, with different signalling (including 1+D and 1+0.5D)
 - Introducing the impairment effects of cross-talk, jitter, noise, and distortion
 - Plotting channel and equalizer behaviour curves
@@ -16,7 +16,7 @@ By default, an equalized PAM-4 link has been created. This link is ready to simu
 
 Operation of the StatEye tool is meant to be simple. The majority of user effort is in configuring the simulation to suit one's needs. The general flow for setting up and running a simulation is as follows.
 
-1. Upload desired Touchstone (.s40) files and/or .mat files to describe distortion or pulses. *Note: Touchstone files for channels need to go into the `/touchstone/` folder.*
+1. Upload desired Touchstone (`.s4p`) files and/or `.mat` files to describe distortion or pulses. *Note: Touchstone files for channels need to go into the `/touchstone/` folder.*
 2. Configure simulation settings to match desired parameters. Check the example files for baseline configurations.
    - Refer to desired files for channels
    - Set desired output plots

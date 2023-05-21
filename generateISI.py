@@ -97,7 +97,7 @@ def generateISI(simSettings: simulationSettings, simResults: simulationStatus):
 ###########################################################################
 # The following functions returns a structure containing all possible 
 # cursor combinations. The number of levels is dictated by the modulation 
-# scheme and the number of cursors. If a signaling mode such as QAM is
+# scheme and the number of cursors. If a signaling mode such as clock is
 # selected, combinations which do not have DC components will be created.
 ###########################################################################
 def generateCursorCombinations(cursorCount, signalingMode, modulation, levelNumb):

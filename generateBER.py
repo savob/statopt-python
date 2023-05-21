@@ -56,8 +56,6 @@ def generateBER(simSettings: simulationSettings, simResults: simulationStatus):
         # Generate horizontal tub
         generateHorizontalBathtub(simResults)
         
-        # Generate BER constellation
-        generateBERConstellation(simSettings, simResults)
     except:
         # Create empty structure
         createEmptyStruct(simResults)
@@ -225,66 +223,6 @@ def generateHorizontalBathtub(simResults: simulationStatus):
     
     # Save results
     simResults.eyeGeneration.BER.bathTubX = bathTubX
-
-
-###########################################################################
-# This function generates the two-dimentional constellation for QAM
-# signals. For this plot, jitter must be excluded from the signal as its
-# effect is correlated with the rotation of the constellation and 
-# therefore must be added here.
-###########################################################################
-def generateBERConstellation(simSettings: simulationSettings, simResults: simulationStatus):
-    
-    # Do not generate if QAM not selected
-    if simSettings.general.signalingMode != 'QAM': return 
-
-    # Import variables
-    yAxisLength = simSettings.general.yAxisLength.value
-    samplerNumb = simSettings.general.samplerNumb.value
-    levelNumb   = simSettings.general.levelNumb.value
-    PDF       = simResults.eyeGeneration.PDF.constellation
-
-    BER = nothing()
-    multiThreadData = np.zeros((samplerNumb, yAxisLength, yAxisLength)) # Not sure this is needed right now until we multithread again
-    
-    # Combine constellation to main-cursor classified levels
-    combinedPDF = combineConstellations(PDF,levelNumb,yAxisLength)
-    
-    # Generate BER for each sampler (use multi-threading)
-    for sampler in range(samplerNumb):
-        errorArea = np.zeros((yAxisLength,yAxisLength))
-        for voltage in np.arange(1, yAxisLength, 1):
-            aboveVth = np.vstack(np.zeros((voltage,yAxisLength)), np.ones((yAxisLength-voltage,yAxisLength)))
-            belowVth = np.vstack(np.ones((voltage,yAxisLength)), np.zeros((yAxisLength-voltage,yAxisLength)))
-            
-            # Determine area of PDF incorrectly above threshold
-            levelsBelowTh = sampler+1
-            for level in range(levelsBelowTh):
-                errorArea[voltage,:] = errorArea[voltage,:]+np.sum(aboveVth*combinedPDF.__dict__['ILevel'+str(level)], 0)
-
-            # Determine area of PDF incorrectly below threshold
-            for level in np.arange(levelsBelowTh, samplerNumb + 1, 1):
-                errorArea[voltage,:] = errorArea[voltage,:]+np.sum(belowVth*combinedPDF.__dict__['ILevel'+str(level)], 0)
-                  
-        
-        multiThreadData[sampler,:,:] = errorArea
-    
-    for sampler in range(samplerNumb):
-        BER.__dict__['sampler' + str(sampler)] = np.squeeze(multiThreadData[sampler,:,:])
-    
-    
-    # Combine sampler BERs into one
-    BER.combined = np.ones((yAxisLength,yAxisLength))
-    for sampler in range(samplerNumb):
-        BER.combined = min(BER.combined, BER.__dict__['sampler' + str(sampler)])
-    
-#     BER.combined = np.minimum(BER.combined,rot90(BER.combined))
-    BER.combined = BER.combined+np.rot90(BER.combined)
-        
-    # Save results
-    simResults.eyeGeneration.PDF.constellation = PDF
-    simResults.eyeGeneration.BER.constellation = BER
-
 
 ###########################################################################
 # The following functions takes all constellation PDF points and

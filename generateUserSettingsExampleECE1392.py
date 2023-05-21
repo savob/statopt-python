@@ -12,7 +12,7 @@ def generateUserSettings() -> simulationSettings:
     # Frequency
     simSettings.general.symbolRate.value = 32e9 # symbol rate [S/s] (or 2x frequency [Hz])
         
-    # Signaling mode ('standard','1+D','1+0.5D','clock','QAM')
+    # Signaling mode ('standard','1+D','1+0.5D','clock')
     simSettings.general.signalingMode = 'standard'
     
     # Coding gain

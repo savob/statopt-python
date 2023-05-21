@@ -64,7 +64,7 @@ def checkGeneralSettings(simSettings: simulationSettings):
     checkLimits(simSettings.general.samplerNumb, 'general.samplerNumb')
     checkLimits(simSettings.general.numbSymb, 'general.numbSymb')
 
-    allowedSignalingModes = ['standard', '1+D', '1+0.5D', 'clock', 'QAM']
+    allowedSignalingModes = ['standard', '1+D', '1+0.5D', 'clock']
     if not simSettings.general.signalingMode in allowedSignalingModes:
         print('Allowed signalling modes:')
         print(allowedSignalingModes)
@@ -318,7 +318,7 @@ def checkSimTime(simSettings: simulationSettings):
     
         
     # Determine number of calculations
-    if signalingMode == 'QAM' or signalingMode == 'clock':
+    if signalingMode == 'clock':
         calculations = 2*modulation.value
     else:
         calculations = pow(modulation.value, cursorCount.value)
