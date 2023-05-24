@@ -147,11 +147,11 @@ def generateUserSettings() -> simulationSettings:
     
     # Add pulse response (convolve all channels with additional transfer function, must update transfer function)
     simSettings.channel.modelCircuitTF = False
-    simSettings.channel.modelCircuitTFName = "LNATransferFunction.mat"
+    simSettings.channel.modelCircuitTFName = 'FrontendTransferFunction.mat'
     
     # Override channel pulse response (must have same over-sampling frequency)
     simSettings.channel.overrideResponse = False
-    simSettings.channel.overrideFileName = 'LNAPulseResponse.mat'   
+    simSettings.channel.overrideFileName = 'FrontEndPulseResponse.mat'   
     
     # Approximate cross-talk to speed up simulation
     simSettings.channel.approximate = True
