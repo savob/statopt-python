@@ -198,16 +198,15 @@ def extractNewResults(simSettings: simulationSettings, simResults: simulationSta
         
         # Estimate signal height
         peakLoc = np.argmax(np.abs(pulse))
-        match signalingMode: 
-            case '1+D':
-                startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
-                endIdx = round(peakLoc+(postCursorCount-0.5)*samplesPerSymb)
-            case '1+0.5D':
-                startIdx = round(peakLoc-(preCursorCount+1/6)*samplesPerSymb)
-                endIdx = round(peakLoc+(postCursorCount-1/6)*samplesPerSymb)
-            case _:
-                startIdx = round(peakLoc-preCursorCount*samplesPerSymb)
-                endIdx = round(peakLoc+postCursorCount*samplesPerSymb)
+        if signalingMode == '1+D':
+            startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
+            endIdx = round(peakLoc+(postCursorCount-0.5)*samplesPerSymb)
+        elif signalingMode == '1+0.5D':
+            startIdx = round(peakLoc-(preCursorCount+1/6)*samplesPerSymb)
+            endIdx = round(peakLoc+(postCursorCount-1/6)*samplesPerSymb)
+        else:
+            startIdx = round(peakLoc-preCursorCount*samplesPerSymb)
+            endIdx = round(peakLoc+postCursorCount*samplesPerSymb)
         
         startIdx = np.max([startIdx, 0])
         endIdx = np.min([endIdx, len(pulse)-1])

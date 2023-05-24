@@ -86,16 +86,15 @@ def initializeSimulation(simSettings: simulationSettings) -> simulationResults:
 def addGeneralSettings(simSettings: simulationSettings):
 
     # Determine number of data levels
-    match(simSettings.general.signalingMode):
-        case '1+D':
-            simSettings.general.levelNumb.value = 2*simSettings.general.modulation.value-1
-        case '1+0.5D':
-            simSettings.general.levelNumb.value = 3*simSettings.general.modulation.value-2
-        case 'clock':
-            simSettings.general.modulation.value = 2
-            simSettings.general.levelNumb.value = simSettings.general.modulation.value
-        case _:
-            simSettings.general.levelNumb.value = simSettings.general.modulation.value
+    if simSettings.general.signalingMode == '1+D':
+        simSettings.general.levelNumb.value = 2*simSettings.general.modulation.value-1
+    elif simSettings.general.signalingMode == '1+0.5D':
+        simSettings.general.levelNumb.value = 3*simSettings.general.modulation.value-2
+    elif simSettings.general.signalingMode == 'clock':
+        simSettings.general.modulation.value = 2
+        simSettings.general.levelNumb.value = simSettings.general.modulation.value
+    else:
+        simSettings.general.levelNumb.value = simSettings.general.modulation.value
     
     simSettings.general.samplerNumb.value = simSettings.general.levelNumb.value-1
     
@@ -147,19 +146,18 @@ def addAdaptionSettings(simSettings: simulationSettings):
         simSettings.adaption.savedSettings.cursorCount     = simSettings.transmitter.cursorCount
         
         # Set adaption defaults
-        match(simSettings.general.signalingMode):
-            case '1+D':
-                simSettings.general.modulation.value = 2
-                simSettings.general.levelNumb.value = 2*simSettings.general.modulation.value-1
-            case '1+0.5D':
-                simSettings.general.modulation.value = 2
-                simSettings.general.levelNumb.value = 3*simSettings.general.modulation.value-2
-            case 'clock':
-                simSettings.general.modulation.value = 2
-                simSettings.general.levelNumb.value = simSettings.general.modulation.value
-            case _:
-                simSettings.general.modulation.value = 2
-                simSettings.general.levelNumb.value = simSettings.general.modulation.value
+        if simSettings.general.signalingMode == '1+D':
+            simSettings.general.modulation.value = 2
+            simSettings.general.levelNumb.value = 2*simSettings.general.modulation.value-1
+        elif simSettings.general.signalingMode == '1+0.5D':
+            simSettings.general.modulation.value = 2
+            simSettings.general.levelNumb.value = 3*simSettings.general.modulation.value-2
+        elif simSettings.general.signalingMode == 'clock':
+            simSettings.general.modulation.value = 2
+            simSettings.general.levelNumb.value = simSettings.general.modulation.value
+        else:
+            simSettings.general.modulation.value = 2
+            simSettings.general.levelNumb.value = simSettings.general.modulation.value
         
         simSettings.general.samplerNumb.value = simSettings.general.levelNumb.value-1
         simSettings.transmitter.preCursorCount.value = 2 

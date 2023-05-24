@@ -326,16 +326,15 @@ def applyRXGain(simSettings: simulationSettings, simResults: simulationStatus):
         # Estimate signal height
         peakLoc = findPeakPulse(abs(inputSignals.thru))
 
-        match signalingMode:
-            case '1+D':
-                startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
-                endIdx = round(peakLoc+(postCursorCount-0.5)*samplesPerSymb)
-            case '1+0.5D':
-                startIdx = round(peakLoc-(preCursorCount+1/6)*samplesPerSymb)
-                endIdx = round(peakLoc+(postCursorCount-1/6)*samplesPerSymb)
-            case _:
-                startIdx = round(peakLoc-preCursorCount*samplesPerSymb)
-                endIdx = round(peakLoc+postCursorCount*samplesPerSymb)
+        if signalingMode == '1+D':
+            startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
+            endIdx = round(peakLoc+(postCursorCount-0.5)*samplesPerSymb)
+        elif signalingMode == '1+0.5D':
+            startIdx = round(peakLoc-(preCursorCount+1/6)*samplesPerSymb)
+            endIdx = round(peakLoc+(postCursorCount-1/6)*samplesPerSymb)
+        else:
+            startIdx = round(peakLoc-preCursorCount*samplesPerSymb)
+            endIdx = round(peakLoc+postCursorCount*samplesPerSymb)
         
         startIdx = max(round(startIdx),1)
         endIdx = min(round(endIdx),len(inputSignals.thru))
@@ -464,16 +463,15 @@ def applyRXFFE(simSettings: simulationSettings, simResults: simulationStatus):
             # Estimate signal height
             peakLoc = findPeakPulse(abs(inputSignals.thru))
 
-            match signalingMode:
-                case '1+D':
-                    startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
-                    endIdx = round(peakLoc+(postCursorCount-0.5)*samplesPerSymb)
-                case '1+0.5D':
-                    startIdx = round(peakLoc-(preCursorCount+1/6)*samplesPerSymb)
-                    endIdx = round(peakLoc+(postCursorCount-1/6)*samplesPerSymb)
-                case _:
-                    startIdx = round(peakLoc-preCursorCount*samplesPerSymb)
-                    endIdx = round(peakLoc+postCursorCount*samplesPerSymb)
+            if signalingMode == '1+D':
+                startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
+                endIdx = round(peakLoc+(postCursorCount-0.5)*samplesPerSymb)
+            elif signalingMode == '1+0.5D':
+                startIdx = round(peakLoc-(preCursorCount+1/6)*samplesPerSymb)
+                endIdx = round(peakLoc+(postCursorCount-1/6)*samplesPerSymb)
+            else:
+                startIdx = round(peakLoc-preCursorCount*samplesPerSymb)
+                endIdx = round(peakLoc+postCursorCount*samplesPerSymb)
             
             startIdx = max(round(startIdx),1)
             endIdx = min(round(endIdx),len(inputSignals.thru))
@@ -657,16 +655,15 @@ def limitLength(simSettings,simResults):
         peakLoc = round(np.mean([peakLoc1, peakLoc2]))
 
         # Limit length
-        match signalingMode:
-            case '1+D':
-                startIdx = round(peakLoc-(preCursorCount+1)*samplesPerSymb)
-                endIdx = round(peakLoc+(postCursorCount)*samplesPerSymb)
-            case '1+0.5D':
-                startIdx = round(peakLoc-(preCursorCount+2/3)*samplesPerSymb)
-                endIdx = round(peakLoc+(postCursorCount+1/3)*samplesPerSymb)
-            case _:
-                startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
-                endIdx = round(peakLoc+(postCursorCount+0.5)*samplesPerSymb)
+        if signalingMode == '1+D':
+            startIdx = round(peakLoc-(preCursorCount+1)*samplesPerSymb)
+            endIdx = round(peakLoc+(postCursorCount)*samplesPerSymb)
+        elif signalingMode == '1+0.5D':
+            startIdx = round(peakLoc-(preCursorCount+2/3)*samplesPerSymb)
+            endIdx = round(peakLoc+(postCursorCount+1/3)*samplesPerSymb)
+        else:
+            startIdx = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)
+            endIdx = round(peakLoc+(postCursorCount+0.5)*samplesPerSymb)
         
 
         # Adjust 

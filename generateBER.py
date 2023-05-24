@@ -135,17 +135,16 @@ def combineTransitions(PDF,signalingMode,levelNumb,yAxisLength,samplesPerSymb):
         
         level = 0
 
-        match signalingMode:
-            case '1+D':
-                dLev1 = int(transName[5]) # post
-                dLev2 = int(transName[6]) # main
-                level = dLev1+dLev2
-            case '1+0.5D':
-                dLev1 = int(transName[5]) # post
-                dLev2 = int(transName[6]) # main
-                level = dLev1+2*dLev2
-            case _:
-                level = int(transName[6])
+        if signalingMode == '1+D':
+            dLev1 = int(transName[5]) # post
+            dLev2 = int(transName[6]) # main
+            level = dLev1+dLev2
+        elif signalingMode == '1+0.5D':
+            dLev1 = int(transName[5]) # post
+            dLev2 = int(transName[6]) # main
+            level = dLev1+2*dLev2
+        else:
+            level = int(transName[6])
 
         combined.__dict__['level' + str(level)] = combined.__dict__['level' + str(level)] + PDF.__dict__[transName]/len(transitions)         
     

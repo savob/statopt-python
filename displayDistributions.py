@@ -139,31 +139,30 @@ def displayPDF(simSettings: simulationSettings, simResults: simulationStatus):
 
         title = ''
 
-        match plotName: 
-            case 'initial':
-                if not simSettings.general.plotting.PDFInitial: continue 
-                title = 'Probability Distribution Initial'
-            case 'crossTalk':
-                if not simSettings.general.plotting.PDFCrossTalk: continue 
-                title = 'Probability Distribution after Cross-Talk'
-            case 'distorted':
-                if not simSettings.general.plotting.PDFDistorted: continue 
-                title = 'Probability Distribution after Distortion'
-            case 'jitter':
-                if not simSettings.general.plotting.PDFJitter: continue 
-                title = 'Probability Distribution after Jitter'
-            case 'noise':
-                if not simSettings.general.plotting.PDFNoise: continue 
-                title = 'Probability Distribution after Noise'
-            case 'final':
-                if not simSettings.general.plotting.PDFFinal: continue 
-                title = 'Probability Distribution'
-            case 'constellation':
-                if not simSettings.general.plotting.PDFConstellation: continue 
-                title = 'Constellation Distribution'
-            case _:
-                print('ERROR: Unknown plot found for probability distribution plot')
-                quit()
+        if plotName == 'initial':
+            if not simSettings.general.plotting.PDFInitial: continue 
+            title = 'Probability Distribution Initial'
+        elif plotName == 'crossTalk':
+            if not simSettings.general.plotting.PDFCrossTalk: continue 
+            title = 'Probability Distribution after Cross-Talk'
+        elif plotName == 'distorted':
+            if not simSettings.general.plotting.PDFDistorted: continue 
+            title = 'Probability Distribution after Distortion'
+        elif plotName == 'jitter':
+            if not simSettings.general.plotting.PDFJitter: continue 
+            title = 'Probability Distribution after Jitter'
+        elif plotName == 'noise':
+            if not simSettings.general.plotting.PDFNoise: continue 
+            title = 'Probability Distribution after Noise'
+        elif plotName == 'final':
+            if not simSettings.general.plotting.PDFFinal: continue 
+            title = 'Probability Distribution'
+        elif plotName == 'constellation':
+            if not simSettings.general.plotting.PDFConstellation: continue 
+            title = 'Constellation Distribution'
+        else:
+            print('ERROR: Unknown plot found for probability distribution plot')
+            quit()
         
         plotDistribution(simSettings, simResults,simResults.eyeGeneration.PDF.__dict__[plotName].combined, title)
 
@@ -240,13 +239,13 @@ def plotDistribution(simSettings,simResults,distribution,name):
     else:
         plt.ylabel('Amplitude [V]')
         plt.xlabel('Time [s]')
-        match signalingMode:
-            case '1+D':
-                limit = min(outputPeak*4,supplyVoltage)
-            case '1+0.5D':
-                limit = min(outputPeak*3,supplyVoltage)
-            case _:
-                limit = min(outputPeak*2,supplyVoltage)
+        
+        if signalingMode == '1+D':
+            limit = min(outputPeak*4,supplyVoltage)
+        elif signalingMode == '1+0.5D':
+            limit = min(outputPeak*3,supplyVoltage)
+        else:
+            limit = min(outputPeak*2,supplyVoltage)
         
         plt.ylim(-limit, limit)
         plt.xticks(np.linspace(0, symbolPeriod*numbSymb, 7))
@@ -368,13 +367,12 @@ def plotBERDistribution(simSettings: simulationSettings, simResults: simulationS
     axd['top'].set_title('BER Plot')
     axd['top'].set_ylabel('Amplitude [V]')
     axd['top'].set_xlabel('Time [s]')
-    match signalingMode:
-        case '1+D':
-            limit = min(outputPeak*4,supplyVoltage)
-        case '1+0.5D':
-            limit = min(outputPeak*3,supplyVoltage)
-        case _:
-            limit = min(outputPeak*2,supplyVoltage)
+    if signalingMode == '1+D':
+        limit = min(outputPeak*4,supplyVoltage)
+    elif signalingMode == '1+0.5D':
+        limit = min(outputPeak*3,supplyVoltage)
+    else:
+        limit = min(outputPeak*2,supplyVoltage)
     
     axd['top'].set_ylim(-limit,limit)
     axd['top'].set_yticks(np.linspace(-limit, limit, 11))
@@ -505,13 +503,13 @@ def plotVerticalBathtub(simSettings: simulationSettings, simResults: simulationS
     curPlot.set_title('Vertical Bathtub')
     curPlot.set_ylabel('Amplitude [V]')
     curPlot.set_xlabel('BER')
-    match(signalingMode):
-        case '1+D':
-            limit = min(outputPeak*4,supplyVoltage)
-        case '1+0.5D':
-            limit = min(outputPeak*3,supplyVoltage)
-        case _:
-            limit = min(outputPeak*2,supplyVoltage)
+    
+    if signalingMode == '1+D':
+        limit = min(outputPeak*4,supplyVoltage)
+    elif signalingMode == '1+0.5D':
+        limit = min(outputPeak*3,supplyVoltage)
+    else:
+        limit = min(outputPeak*2,supplyVoltage)
     
     curPlot.set_ylim(-limit, limit)
     curPlot.grid(True)
