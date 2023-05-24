@@ -1,0 +1,5 @@
+control>=0.9.3.post2
+matplotlib>=3.7.0
+numpy>=1.21.5
+scikit_rf>=0.26.0
+scipy>=1.10.0

@@ -186,7 +186,7 @@ There are many knobs that can have an effect on the simulation, here is a comple
 - [x] Clean up comments and disclaimers in files
 - [ ] Verify accuracy of system simulation (pulse and CTLE responses)
 - [ ] Investigate the use of an alternative, more interactive graphics library like [pyqt](https://www.pyqtgraph.org/) or [Altair](https://altair-viz.github.io/index.html)
-- [ ] Improve installation process. Perhaps preparing this as a package for Anaconda or pip.
+- [x] Improve installation process. Perhaps preparing this as a package for Anaconda or pip.
 
 # Dependancies
 
@@ -197,6 +197,12 @@ In addition to running Python 3.10 or newer, the following libraries are needed 
 - [matplotlib](https://matplotlib.org/stable/users/getting_started/index.html#installation-quick-start)
 - [scikit-rf](https://github.com/scikit-rf/scikit-rf)
 - [Python Control Library](https://python-control.readthedocs.io/en/0.9.3.post2/intro.html)
+
+These can all be automatically installed/verified to be the right versions using the following command in the project directory:
+
+`pip install -r requirements.txt`
+
+*NOTE: This may run on earlier versions of the packages and Python, but it has only been extensively tested on Python 3.10 with the package versions specified as the minimums in `requirements.txt`.*
 
 # Credit
 
