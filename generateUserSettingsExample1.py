@@ -160,7 +160,7 @@ def generateUserSettings() -> simulationSettings:
     simSettings.channel.makeAsynchronous = True
 
     # Channel file names
-    simSettings.channel.fileNames.thru = ' FrontendTransferFunction.mat'
+    simSettings.channel.fileNames.thru = 'FrontendTransferFunction.mat'
     
     # Noise
     simSettings.channel.noise.addNoise = False
