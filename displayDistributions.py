@@ -311,7 +311,7 @@ def displayBER(simSettings: simulationSettings, simResults: simulationStatus):
 # This function plots the 2d contour of the BER eye diagram. The number of
 # adjacent eyes is determined by variable "numbSymb".
 ###########################################################################
-def plotBERDistribution(simSettings: simulationSettings, simResults: simulationStatus, plotPDF: bool):
+def plotBERDistribution(simSettings: simulationSettings, simResults: simulationStatus, onEyeDiagram: bool) -> plt.Axes:
     
     # Import variables
     signalingMode  = simSettings.general.signalingMode
@@ -343,15 +343,21 @@ def plotBERDistribution(simSettings: simulationSettings, simResults: simulationS
             combinedPDF = np.hstack((combinedPDF, PDF))
             combinedBER = np.hstack((combinedBER, BER))
     
+    # Generate unique figure number
+    # This is needed so both BER charts can be drawn without overlapping on the same figure
+    figTitle = 'BER Plot'
+    if onEyeDiagram == True:
+        figTitle = 'BER Plot (on PDF)'
+
     # Plot BER
     # https://matplotlib.org/stable/tutorials/intermediate/arranging_axes.html
-    fig, axd = plt.subplot_mosaic([['top', 'top'], ['top', 'top'], ['lower left', 'lower right']], layout='constrained', num='BER Plot', dpi=100)
+    fig, axd = plt.subplot_mosaic([['top', 'top'], ['top', 'top'], ['lower left', 'lower right']], layout='constrained', num=figTitle, dpi=100)
     X, Y = np.meshgrid(xAxisLong, yAxis)
 
     # Prepare colour map
     temp_big = mpl.colormaps['gray_r']
 
-    if plotPDF:
+    if onEyeDiagram:
         newcmp = colours.ListedColormap(temp_big(np.linspace(0, 0.5, 2*contLevels)))
         axd['top'].contourf(X,Y,combinedPDF, contLevels, cmap=newcmp)
         axd['top'].contour(X,Y,combinedPDF, contLevels, colors=[[0.6, 0.6, 0.6]], linewidths=[0.5])
