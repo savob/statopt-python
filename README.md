@@ -35,7 +35,7 @@ Operation of the StatEye tool is meant to be simple. The majority of user effort
 
 The following output plots are generated using the configuration in `generateUserSettingsExample0.py`.
 
-Polots related to the system's characteristics
+Plots related to the system's characteristics
 
 ![Channel responses](./media/Channel_Responses.png)
 ![CTLE Responses](./media/CTLE_Response.png)
@@ -67,114 +67,114 @@ There are many knobs that can have an effect on the simulation, here is a comple
 
 | Setting Knob | Explanation |
 | --- | --- |
-|`General.SymbolRate`                 |  the system sampling rate [samples/second] |
-|`General.SignalingMode`              |  the modulation scheme ('standard': conventional baseband, '1+D' and '1+0.5D': partial signalling, 'clock': a clock signal) |
-|`General.CodingGain`                 |  apply coding gain (possible when using MLSD decoding with partial signalling schemes) |
-|`General.Modulation`                 |  number of modulation levels (2: NRZ, 4: PAM4) |
-|`General.SamplesPerSymb`             |  time-domain resolution of the eye diagram |
-|`General.xAxisLength`                |  voltage-domain resolution of the eye diagram |
-|`General.NumbSymb`                   |  number of periods to display in the eye diagram |
-|`General.ContLevels`                 |  number of BER contour levels in the eye diagram |
-|`General.TargetBER`                  |  bit-error-rate level to perform eye measurements |
-|`General.Plotting.ChannelResponse`   |  display channel response |
-|`General.Plotting.CTLEResponse`      |  display CTLE response |
-|`General.Plotting.PulseResponse`     |  display pulse response |
-|`General.Plotting.JitterSource`      |  display jitter distribution |
-|`General.Plotting.NoiseSource`       |  display noise distribution |
-|`General.Plotting.DistortionSource`  |  display linear distortion |
-|`General.Plotting.ISI`               |  display trace eye diagram (CAREFUL: THIS CAN TAKE A LONG TIME TO DISPLAY) |
-|`General.Plotting.PDFInitial`        |  display initial eye diagram |
-|`General.Plotting.PDFCrossTalk`      |  display eye diagram after adding cross-talk |
-|`General.Plotting.PDFDistorted`      |  display eye diagram after adding linear distortion |
-|`General.Plotting.PDFJitter`         |  display eye diagram after adding jitter |
-|`General.Plotting.PDFNoise`          |  display eye diagram after adding noise |
-|`General.Plotting.PDFFinal`          |  display final eye diagram |
-|`General.Plotting.BER`               |  display BER contour levels superimposed over BER plot |
-|`General.Plotting.BER2`              |  display BER contour levels superimposed over eye diagram |
-|`General.Plotting.Results`           |  display eye measurement results |
+|`General.SymbolRate`                 |  The system sampling rate [samples/second] |
+|`General.SignalingMode`              |  The modulation scheme ('standard': conventional baseband, '1+D' and '1+0.5D': partial signaling, 'clock': a clock signal) **NOTE: Adaption is primarily tuned for standard signaling.** |
+|`General.CodingGain`                 |  Apply coding gain (possible when using MLSD decoding with partial signalling schemes) |
+|`General.Modulation`                 |  Number of modulation levels (2: NRZ, 4: PAM4) |
+|`General.SamplesPerSymb`             |  Time-domain resolution of the eye diagram |
+|`General.yAxisLength`                |  Voltage-domain resolution of the eye diagram |
+|`General.NumbSymb`                   |  Number of periods to display in the eye diagram |
+|`General.ContLevels`                 |  Number of contour levels in the eye diagram |
+|`General.TargetBER`                  |  Bit-error-rate level to perform eye measurements (Verical/horizontal eye opening, COM, also used as target for adaption) |
+|`General.Plotting.ChannelResponse`   |  Display channel response |
+|`General.Plotting.CTLEResponse`      |  Display CTLE response |
+|`General.Plotting.PulseResponse`     |  Display pulse response |
+|`General.Plotting.JitterSource`      |  Display jitter distribution |
+|`General.Plotting.NoiseSource`       |  Display noise distribution |
+|`General.Plotting.DistortionSource`  |  Display linear distortion |
+|`General.Plotting.ISI`               |  Display trace eye diagram (CAREFUL: THIS CAN TAKE A LONG TIME TO DISPLAY) |
+|`General.Plotting.PDFInitial`        |  Display impairment-free eye diagram |
+|`General.Plotting.PDFCrossTalk`      |  Display eye diagram after adding cross-talk |
+|`General.Plotting.PDFDistorted`      |  Display eye diagram after adding linear distortion |
+|`General.Plotting.PDFJitter`         |  Display eye diagram after adding jitter |
+|`General.Plotting.PDFNoise`          |  Display eye diagram after adding noise |
+|`General.Plotting.PDFFinal`          |  Display final eye diagram |
+|`General.Plotting.BER`               |  Display BER contour levels superimposed over BER plot |
+|`General.Plotting.BER2`              |  Display BER contour levels superimposed over eye diagram (final PDF) |
+|`General.Plotting.Results`           |  Display eye measurement results |
 
 ## Adaption
 
 | Setting Knob | Explanation |
 | --- | --- |
-|`Adaption.Adapt`                     |  run adaption algorithm |
-|`Adaption.TotalParents`              |  number best candidates to keep from previous generation |
-|`Adaption.ChildrenPerParent`         |  number of new candidates to generate per parent |
-|`Adaption.TotalMutations`            |  number of randomly generated candidates |
-|`Adaption.Mode1Generations`          |  number of generations to run while applying coarse adjustment |
-|`Adaption.Mode2Generations`          |  number of generations to run while applying fine adjustment |
-|`Adaption.Knobs`                     |  specify which knobs to optimize (must provide full path i.e.: transmitter.EQ.taps.pre1) |
+|`Adaption.Adapt`                     |  Run adaption algorithm **NOTE: Adaption is primarily tuned for standard signaling.** |
+|`Adaption.TotalParents`              |  Number best candidates to keep from previous generation |
+|`Adaption.ChildrenPerParent`         |  Number of new candidates to generate per parent |
+|`Adaption.TotalMutations`            |  Number of randomly generated candidates |
+|`Adaption.Mode1Generations`          |  Number of generations to run while applying coarse adjustment |
+|`Adaption.Mode2Generations`          |  Number of generations to run while applying fine adjustment |
+|`Adaption.Knobs`                     |  Specify which knobs to optimize (must provide full path i.e.: `'transmitter.EQ.taps.pre1'`) |
 
 ## Transmitter Settings
 
 | Setting Knob | Explanation |
 | --- | --- |
-|`Transmitter.SignalAmplitude`        |  transmitter supply voltage [V] |
-|`Transmitter.IncludeSourceImpedance` |  include 50ohm source impedance (halves transmit signal voltage) |
-|`Transmitter.TRise`                  |  signal rise time |
-|`Transmitter.TXBandwidth`            |  transmitter analog bandwidth [Hz] |
-|`Transmitter.PreCursorCount`         |  number of pre-cursors to consider in eye diagram |
-|`Transmitter.PostCursorCount`        |  number of post-cursors to consider in eye diagram |
-|`Transmitter.EQ.AddEqualization`     |  apply FIR equalization |
-|`Transmitter.EQ.Taps`                |  specify FIR equalization tap values |
-|`Transmitter.Jitter.AddJitter`       |  apply transmitter jitter |
-|`Transmitter.Jitter.STDDeviation`    |  specify random jitter standard deviation [UI] |
-|`Transmitter.Jitter.Amplitude`       |  specify deterministic jitter amplitude [UI] |
-|`Transmitter.Jitter.DCD`             |  specify duty-cycle distortion jitter [UI] |
-|`Transmitter.Noise.AddNoise`         |  apply transmitter noise |
-|`Transmitter.Noise.StdDeviation`     |  specify random noise standard deviation [V] |
-|`Transmitter.Noise.Amplitude`        |  specify deterministic noise amplitude [V] |
-|`Transmitter.Noise.Frequency`        |  specify deterministic noise frequency [Hz] |
-|`Transmitter.Distortion.AddDistortion` | add transmitter linear distortion |
-|`Transmitter.Distortion.FileName`    |  file specifying 1-to-1 voltage mapping (structure containing "input" and "output" vectors of same length) |
+|`Transmitter.SignalAmplitude`        |  Transmitter supply voltage (peak differential) [V] |
+|`Transmitter.IncludeSourceImpedance` |  Include 50ohm source impedance (halves transmit signal voltage). **NOTE: this just scales the output, the simulation does not handle reflections.** |
+|`Transmitter.TRise`                  |  Signal rise time [s] |
+|`Transmitter.TXBandwidth`            |  Transmitter analog bandwidth [Hz] |
+|`Transmitter.PreCursorCount`         |  Number of ISI pre-cursors to consider in eye diagram generation |
+|`Transmitter.PostCursorCount`        |  Number of ISI post-cursors to consider in eye diagram generation |
+|`Transmitter.EQ.AddEqualization`     |  Apply FIR equalization |
+|`Transmitter.EQ.Taps`                |  Specify FIR equalization tap values |
+|`Transmitter.Jitter.AddJitter`       |  Apply transmitter jitter |
+|`Transmitter.Jitter.STDDeviation`    |  Specify random jitter standard deviation [UI] |
+|`Transmitter.Jitter.Amplitude`       |  Specify deterministic jitter amplitude [UI] |
+|`Transmitter.Jitter.DCD`             |  Specify duty-cycle distortion jitter [UI] |
+|`Transmitter.Noise.AddNoise`         |  Apply transmitter noise |
+|`Transmitter.Noise.StdDeviation`     |  Specify random noise standard deviation [V] |
+|`Transmitter.Noise.Amplitude`        |  Specify deterministic noise amplitude [V] |
+|`Transmitter.Noise.Frequency`        |  Specify deterministic noise frequency [Hz] |
+|`Transmitter.Distortion.AddDistortion` | Add transmitter linear distortion |
+|`Transmitter.Distortion.FileName`    |  File specifying 1-to-1 voltage mapping (structure containing "input" and "output" vectors of same length) |
 
 ## Channel Settings
 
 | Setting Knob | Explanation |
 | --- | --- |
-|`Channel.AddChannel`                 |  apply channel to link |
-|`Channel.AddCrossTalk`               |  apply crosstalk |
-|`Channel.AddNotch`                   |  apply a notch to channel transfer function |
-|`Channel.NotchFreq`                  |  specify notch frequency [Hz] |
-|`Channel.NotchAttenuation`           |  specify notch attenuation [dB] |
-|`Channel.ModelCircuitTF`             |  convolve link response with an additional pulse response to model a circuit who's response is known |
-|`Channel.ModelCircuitTFName`         |  specify additional pulse response file |
-|`Channel.OverrideResponse`           |  override transmitter and channel response with a custom pulse response (can still apply receiver equalization) |
-|`Channel.OverrideFileName`           |  specify custom pulse response file |
-|`Channel.Approximate`                |  approximate cross-talk as a noise source to speed up simulation |
-|`Channel.MakeAsynchronous`           |  assume aggressor channels are not synchronized with victim channel and thus impairment is applyed to all sampling phases equally ||
-|`Channel.FileNames`                  |  specify channel files (includes THRU, NEXT and FEXT channels) |
-|`Channel.Noise.AddNoise`             |  apply thermal noise |
-|`Channel.Noise.NoiseDensity`         |  specify thermal noise density [V^2/Hz] |
+|`Channel.AddChannel`                 |  Apply channel to link |
+|`Channel.AddCrossTalk`               |  Apply crosstalk |
+|`Channel.AddNotch`                   |  Apply a notch to channel transfer function |
+|`Channel.NotchFreq`                  |  Specify notch frequency [Hz] |
+|`Channel.NotchAttenuation`           |  Specify notch attenuation [dB] |
+|`Channel.ModelCircuitTF`             |  Convolve link response with an additional pulse response to model a circuit who's response is known |
+|`Channel.ModelCircuitTFName`         |  Specify additional pulse response file |
+|`Channel.OverrideResponse`           |  Override transmitter and channel response with a custom pulse response (can still apply receiver equalization) |
+|`Channel.OverrideFileName`           |  Specify custom pulse response file |
+|`Channel.Approximate`                |  Approximate cross-talk as a noise source to speed up simulation |
+|`Channel.MakeAsynchronous`           |  Assume aggressor channels are not synchronized with victim channel and thus impairment is applyed to all sampling phases equally ||
+|`Channel.FileNames`                  |  Specify channel files (includes THRU, NEXT and FEXT channels) |
+|`Channel.Noise.AddNoise`             |  Apply thermal noise |
+|`Channel.Noise.NoiseDensity`         |  Specify thermal noise density [V^2/Hz] |
 
-## Reciever Settings
+## Receiver Settings
 
 | Setting Knob | Explanation |
 | --- | --- |
-|`Receiver.SignalAmplitude`           |  specify receiver supply voltage [V] |
-|`Receiver.PreAmp.AddGain`            |  apply pre-amplification |
-|`Receiver.PreAmp.Gain`               |  specify pre-amplification gain |
-|`Receiver.CTLE.AddEqualization`      |  apply continuous-time linear equalization |
-|`Receiver.CTLE.ZeroFreq`             |  specify CTLE transfer function zero frequency [Hz] |
-|`Receiver.CTLE.ZeroNumb`             |  specify number of zeros to apply to CTLE transfer function  |
-|`Receiver.CTLE.Pole1Freq`            |  specify primary CTLE transfer function pole frequency [Hz] |
-|`Receiver.CTLE.Pole1Numb`            |  specify number of primary poles to apply to CTLE transfer function |
-|`Receiver.CTLE.Pole2Freq`            |  specify secondary CTLE transfer function pole frequency [Hz] |
-|`Receiver.CTLE.Pole2Numb`            |  specify number of secondary poles to apply to CTLE transfer function |
-|`Receiver.FFE.AddEqualization`       |  apply FFE equalization |
-|`Receiver.FFE.Taps`                  |  specify FFE tap values |
-|`Receiver.DFE.AddEqualization`       |  apply DFE equalization |
-|`Receiver.DFE.Taps`                  |  specify DFE tap values |
-|`Receiver.Jitter.AddJitter`          |  apply receiver jitter |
-|`Receiver.Jitter.STDDeviation`       |  specify random jitter standard deviation [UI] |
-|`Receiver.Jitter.Amplitude`          |  specify deterministic jitter amplitude [UI] |
-|`Receiver.Jitter.DCD`                |  specify duty-cycle distortion jitter [UI] |
-|`Receiver.Noise.AddNoise`            |  apply receiver noise |
-|`Receiver.Noise.StdDeviation`        |  specify random noise standard deviation [V] |
-|`Receiver.Noise.Amplitude`           |  specify deterministic noise amplitude [V] |
-|`Receiver.Noise.Frequency`           |  specify deterministic noise frequency [Hz] |
-|`Receiver.Distortion.AddDistortion`  |  add receiver linear distortion |
-|`Receiver.Distortion.FileName`       |  file specifying 1-to-1 voltage mapping (structure containing "input" and "output" vectors of same length) |
+|`Receiver.SignalAmplitude`           |  Specify receiver supply voltage [V] (Y-limits of receiver plots) |
+|`Receiver.PreAmp.AddGain`            |  Apply pre-amplification |
+|`Receiver.PreAmp.Gain`               |  Specify pre-amplification gain |
+|`Receiver.CTLE.AddEqualization`      |  Apply continuous-time linear equalization |
+|`Receiver.CTLE.ZeroFreq`             |  Specify CTLE transfer function zero frequency [Hz] |
+|`Receiver.CTLE.ZeroNumb`             |  Specify number of zeros to apply to CTLE transfer function  |
+|`Receiver.CTLE.Pole1Freq`            |  Specify primary CTLE transfer function pole frequency [Hz] |
+|`Receiver.CTLE.Pole1Numb`            |  Specify number of primary poles to apply to CTLE transfer function |
+|`Receiver.CTLE.Pole2Freq`            |  Specify secondary CTLE transfer function pole frequency [Hz] |
+|`Receiver.CTLE.Pole2Numb`            |  Specify number of secondary poles to apply to CTLE transfer function |
+|`Receiver.FFE.AddEqualization`       |  Apply FFE equalization |
+|`Receiver.FFE.Taps`                  |  Specify FFE tap values |
+|`Receiver.DFE.AddEqualization`       |  Apply DFE equalization |
+|`Receiver.DFE.Taps`                  |  Specify DFE tap values |
+|`Receiver.Jitter.AddJitter`          |  Apply receiver jitter |
+|`Receiver.Jitter.STDDeviation`       |  Specify random jitter standard deviation [UI] |
+|`Receiver.Jitter.Amplitude`          |  Specify deterministic jitter amplitude [UI] |
+|`Receiver.Jitter.DCD`                |  Specify duty-cycle distortion jitter [UI] |
+|`Receiver.Noise.AddNoise`            |  Apply receiver noise |
+|`Receiver.Noise.StdDeviation`        |  Specify random noise standard deviation [V] |
+|`Receiver.Noise.Amplitude`           |  Specify deterministic noise amplitude [V] |
+|`Receiver.Noise.Frequency`           |  Specify deterministic noise frequency [Hz] |
+|`Receiver.Distortion.AddDistortion`  |  Add receiver linear distortion |
+|`Receiver.Distortion.FileName`       |  File specifying 1-to-1 voltage mapping (structure containing "input" and "output" vectors of same length) |
 
 # Remaining Work
 
