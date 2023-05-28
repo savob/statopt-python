@@ -60,7 +60,6 @@ def addGeneralSettings(simSettings: simulationSettings):
     addLimits(simSettings.general.contLevels,15,5,1)
 
     # Other limits
-    addLimits(simSettings.general.codingGain.gain,[],0,[])
     addLimits(simSettings.general.modulation,16,2,1)
     addLimits(simSettings.general.levelNumb,[],2,1)
     addLimits(simSettings.general.samplerNumb,15,1,1)

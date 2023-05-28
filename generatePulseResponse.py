@@ -59,9 +59,6 @@ def generatePulseResponse(simSettings: simulationSettings, simResults: simulatio
     # Limit length of pulse
     limitLength(simSettings, simResults)
     
-    # Apply Coding Gain
-    applyCodingGain(simSettings, simResults)
-
 
 ###########################################################################
 # This function generates an ideal pulse with a total length of 3 symbols 
@@ -686,26 +683,3 @@ def limitLength(simSettings,simResults):
     simResults.pulseResponse.receiver.outputs = pulses
     simResults.results.successful = successful
 
-
-###########################################################################
-# This function simulates the effects of coding gain by reducing the
-# cross-talk power accordingly.
-###########################################################################
-def applyCodingGain(simSettings,simResults):
-
-    # Import variables
-    addCoding  = simSettings.general.codingGain.addCoding
-    codingGain = simSettings.general.codingGain.gain.value
-    pulses = simResults.pulseResponse.receiver.outputs
-    
-    if not addCoding: return 
-    
-    # Perform to each channel
-    chNames = pulses.__dict__
-    for chName in chNames:
-        # Apply coding gain only to xtalk channels
-        if chName != 'thru':
-            pulses.__dict__[chName] = pulses.__dict__[chName]/np.sqrt(10**(codingGain/10))
-        
-    # Save results
-    simResults.pulseResponse.receiver.outputs = pulses

@@ -15,10 +15,6 @@ def generateUserSettings() -> simulationSettings:
     # Signaling mode ('standard','1+D','1+0.5D','clock')
     simSettings.general.signalingMode = '1+D'
 
-    # Coding gain
-    simSettings.general.codingGain.addCoding = False
-    simSettings.general.codingGain.gain.value = 3 # coding gain [dB]
-    
     # Modulation (M-PAM)
     simSettings.general.modulation.value = 4
 

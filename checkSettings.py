@@ -80,7 +80,6 @@ def checkGeneralSettings(simSettings: simulationSettings):
     checkLimits(simSettings.general.contLevels, 'general.contLevels')
     
     # Other limits
-    checkLimits(simSettings.general.codingGain.gain, 'general.codingGain.gain')
     checkLimits(simSettings.general.modulation, 'general.modulation')
     checkLimits(simSettings.general.levelNumb, 'general.levelNumb')
     checkLimits(simSettings.general.samplerNumb, 'general.samplerNumb')

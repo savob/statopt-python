@@ -56,11 +56,6 @@ class plottingSettings:
     # Display measurement results
     results: bool = False
 
-@dataclass
-class codingGainSettings:
-    addCoding: bool = False
-    gain: valueWithLimits = valueWithLimits()
-    
 
 @dataclass
 class generalSettings:
@@ -71,9 +66,6 @@ class generalSettings:
 
     # Signaling mode ('standard','1+D','1+0.5D','clock')
     signalingMode: str = 'standard'
-    
-    # Coding gain
-    codingGain: codingGainSettings = codingGainSettings()
     
     # Modulation (M-PAM)
     modulation: valueWithLimits = valueWithLimits()

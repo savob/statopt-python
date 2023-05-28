@@ -177,8 +177,6 @@ def calculateFFERMS(simSettings: simulationSettings, simResults: simulationStatu
 def generateTXNoise(simSettings: simulationSettings, simResults: simulationStatus):
     
     # Import variables
-    addCoding     = simSettings.general.codingGain.addCoding
-    codingGain    = simSettings.general.codingGain.gain.value
     yAxis         = simSettings.general.yAxis.value
     yAxisLength   = simSettings.general.yAxisLength.value
     yIncrement    = simSettings.general.yIncrement.value
@@ -228,11 +226,6 @@ def generateTXNoise(simSettings: simulationSettings, simResults: simulationStatu
         outputPower = np.sum(powerDistribution)*freqIncrement
         stdDeviationOutput = np.sqrt(outputPower)
 
-        # Apply coding gain
-        if(addCoding):
-            stdDeviationOutput = stdDeviationOutput/(10.0**(codingGain/10.0))
-        
-        
         # Create noise distribution
         randNoise = stats.norm.pdf(yAxis, loc=0, scale=stdDeviationOutput)
         randNoise = randNoise/np.sum(randNoise) # normalize PDF
@@ -254,12 +247,6 @@ def generateTXNoise(simSettings: simulationSettings, simResults: simulationStatu
         
         if(useFFE):
             sineAmp = sineAmp*FFERMS**2
-        
-        
-        # Apply coding gain
-        if(addCoding):
-            sineAmp = sineAmp/(10.0 ** (codingGain/10.0))
-        
         
         # Generate sine distribution
         sine = sineAmp*np.sin(2*np.pi*np.arange(0, 1, 0.0001))
@@ -294,8 +281,6 @@ def generateTXNoise(simSettings: simulationSettings, simResults: simulationStatu
 def generateChannelNoise(simSettings: simulationSettings, simResults: simulationStatus):
     
     # Import variables
-    addCoding     = simSettings.general.codingGain.addCoding
-    codingGain    = simSettings.general.codingGain.gain.value
     yAxis         = simSettings.general.yAxis.value
     yAxisLength   = simSettings.general.yAxisLength.value
     yIncrement    = simSettings.general.yIncrement.value
@@ -331,11 +316,6 @@ def generateChannelNoise(simSettings: simulationSettings, simResults: simulation
         
         outputPower = np.sum(powerDistribution)
         stdDeviationOutput = np.sqrt(outputPower)
-
-        # Apply coding gain
-        if(addCoding):
-            stdDeviationOutput = stdDeviationOutput/(10.0**(codingGain/10.0))
-        
         
         # Create noise distribution
         randNoise = stats.norm.pdf(yAxis, loc=0, scale=stdDeviationOutput)
@@ -360,8 +340,6 @@ def generateChannelNoise(simSettings: simulationSettings, simResults: simulation
 def generateRXNoise(simSettings: simulationSettings, simResults: simulationStatus):
     
     # Import variables
-    addCoding     = simSettings.general.codingGain.addCoding
-    codingGain    = simSettings.general.codingGain.gain.value
     yAxis         = simSettings.general.yAxis.value
     yAxisLength   = simSettings.general.yAxisLength.value
     yIncrement    = simSettings.general.yIncrement.value
@@ -400,11 +378,6 @@ def generateRXNoise(simSettings: simulationSettings, simResults: simulationStatu
         
         outputPower = np.sum(powerDistribution)
         stdDeviationOutput = np.sqrt(outputPower)
-
-        # Apply coding gain
-        if(addCoding):
-            stdDeviationOutput = stdDeviationOutput/(10.0 ** (codingGain/10.0))
-        
         
         # Create noise distribution
         randNoise = stats.norm.pdf(yAxis, loc=0, scale=stdDeviationOutput)
@@ -427,12 +400,6 @@ def generateRXNoise(simSettings: simulationSettings, simResults: simulationStatu
         
         if(useFFE):
             sineAmp = sineAmp * (FFERMS ** 2)
-        
-    
-        # Apply coding gain
-        if(addCoding):
-            sineAmp = sineAmp / (10.0 ** (codingGain / 10.0))
-        
         
         # Generate sine distribution
         sine = sineAmp*np.sin(2*np.pi*np.arange(0, 1, 0, 0.0001))

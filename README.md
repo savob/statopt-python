@@ -69,7 +69,6 @@ There are many knobs that can have an effect on the simulation, here is a comple
 | --- | --- |
 |`General.SymbolRate`                 |  The system sampling rate [samples/second] |
 |`General.SignalingMode`              |  The modulation scheme ('standard': conventional baseband, '1+D' and '1+0.5D': partial signaling, 'clock': a clock signal) **NOTE: Adaption is primarily tuned for standard signaling.** |
-|`General.CodingGain`                 |  Apply coding gain (possible when using MLSD decoding with partial signalling schemes) |
 |`General.Modulation`                 |  Number of modulation levels (2: NRZ, 4: PAM4) |
 |`General.SamplesPerSymb`             |  Time-domain resolution of the eye diagram |
 |`General.yAxisLength`                |  Voltage-domain resolution of the eye diagram |
