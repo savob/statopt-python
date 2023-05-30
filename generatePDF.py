@@ -161,7 +161,7 @@ def applyCrossTalk(simSettings: simulationSettings, simResults: simulationStatus
                         continue
                     
                 else:
-                    if chName == 'thru' or chName == 'next' or chName == 'fext' or chName == 'xtalk':
+                    if chName == 'next' or chName == 'fext' or chName == 'xtalk':
                         continue
 
         

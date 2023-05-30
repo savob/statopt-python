@@ -105,9 +105,9 @@ def generateUserSettings() -> simulationSettings:
     simSettings.transmitter.EQ.addEqualization = True
     simSettings.transmitter.EQ.taps.pre3  = valueWithLimits(-0.00)
     simSettings.transmitter.EQ.taps.pre2  = valueWithLimits(-0.00)
-    simSettings.transmitter.EQ.taps.pre1  = valueWithLimits(-0.05)
+    simSettings.transmitter.EQ.taps.pre1  = valueWithLimits( 0.15)
     simSettings.transmitter.EQ.taps.main  = valueWithLimits( 1.00) # calculated automatically
-    simSettings.transmitter.EQ.taps.post1 = valueWithLimits(-0.20)
+    simSettings.transmitter.EQ.taps.post1 = valueWithLimits( 0.15)
     simSettings.transmitter.EQ.taps.post2 = valueWithLimits(-0.00)
     simSettings.transmitter.EQ.taps.post3 = valueWithLimits(-0.00)
     simSettings.transmitter.EQ.taps.post4 = valueWithLimits(-0.00)
@@ -173,17 +173,17 @@ def generateUserSettings() -> simulationSettings:
     # Receiver settings
     ########################################
     # Maximum amplitude [V]
-    simSettings.receiver.signalAmplitude.value = 1.0
+    simSettings.receiver.signalAmplitude.value = 0.2
     
     # PreAmp
     simSettings.receiver.preAmp.addGain = True
-    simSettings.receiver.preAmp.gain.value = 1.5
+    simSettings.receiver.preAmp.gain.value = 0.4
 
     # CTLE
     simSettings.receiver.CTLE.addEqualization = True    
-    simSettings.receiver.CTLE.zeroFreq.value  = 20.0e9 # frequency of first zero [Hz]
+    simSettings.receiver.CTLE.zeroFreq.value  = 3.5e9  # frequency of first zero [Hz]
     simSettings.receiver.CTLE.zeroNumb.value  = 1      # number of zeros
-    simSettings.receiver.CTLE.pole1Freq.value = 29.0e9 # frequency of first pole [Hz]
+    simSettings.receiver.CTLE.pole1Freq.value = 24.0e9 # frequency of first pole [Hz]
     simSettings.receiver.CTLE.pole1Numb.value = 1      # number of first poles
     simSettings.receiver.CTLE.pole2Freq.value = 30.0e9 # frequency of additional poles [Hz]
     simSettings.receiver.CTLE.pole2Numb.value = 3      # number of additional poles
@@ -192,20 +192,20 @@ def generateUserSettings() -> simulationSettings:
     simSettings.receiver.FFE.addEqualization = True
     simSettings.receiver.FFE.taps.pre3  = valueWithLimits(-0.00)
     simSettings.receiver.FFE.taps.pre2  = valueWithLimits(-0.00)
-    simSettings.receiver.FFE.taps.pre1  = valueWithLimits(-0.00)
+    simSettings.receiver.FFE.taps.pre1  = valueWithLimits(-0.05)
     simSettings.receiver.FFE.taps.main  = valueWithLimits( 1.00)
-    simSettings.receiver.FFE.taps.post1 = valueWithLimits(-0.00)
-    simSettings.receiver.FFE.taps.post2 = valueWithLimits( 0.05)
+    simSettings.receiver.FFE.taps.post1 = valueWithLimits( 0.25)
+    simSettings.receiver.FFE.taps.post2 = valueWithLimits( 0.15)
     simSettings.receiver.FFE.taps.post3 = valueWithLimits(-0.00)
     simSettings.receiver.FFE.taps.post4 = valueWithLimits(-0.00)
     simSettings.receiver.FFE.taps.post5 = valueWithLimits(-0.00)
     
     # DFE
-    simSettings.receiver.DFE.addEqualization = False
-    simSettings.receiver.DFE.taps.post1 = valueWithLimits(-0.40)
-    simSettings.receiver.DFE.taps.post2 = valueWithLimits(-0.00)
-    simSettings.receiver.DFE.taps.post3 = valueWithLimits(-0.00)
-    simSettings.receiver.DFE.taps.post4 = valueWithLimits(-0.00)
+    simSettings.receiver.DFE.addEqualization = True
+    simSettings.receiver.DFE.taps.post1 = valueWithLimits(-0.00)
+    simSettings.receiver.DFE.taps.post2 = valueWithLimits(-0.20)
+    simSettings.receiver.DFE.taps.post3 = valueWithLimits(-0.10)
+    simSettings.receiver.DFE.taps.post4 = valueWithLimits(-0.05)
     simSettings.receiver.DFE.taps.post5 = valueWithLimits(-0.00)
     
     # Jitter

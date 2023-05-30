@@ -78,9 +78,7 @@ def generateUserSettings() -> simulationSettings:
         'receiver.FFE.taps.pre1',\
         'receiver.FFE.taps.main',\
         'receiver.FFE.taps.post1',\
-        'receiver.FFE.taps.post2',\
-        'receiver.DFE.taps.post1',\
-        'receiver.DFE.taps.post2']
+        'receiver.FFE.taps.post2']
         
     ########################################
     # Transmitter settings 
@@ -192,7 +190,7 @@ def generateUserSettings() -> simulationSettings:
     simSettings.receiver.FFE.addEqualization = True
     simSettings.receiver.FFE.taps.pre3  = valueWithLimits(-0.00)
     simSettings.receiver.FFE.taps.pre2  = valueWithLimits(-0.00)
-    simSettings.receiver.FFE.taps.pre1  = valueWithLimits( 0.05)
+    simSettings.receiver.FFE.taps.pre1  = valueWithLimits(-0.05)
     simSettings.receiver.FFE.taps.main  = valueWithLimits( 1.10)
     simSettings.receiver.FFE.taps.post1 = valueWithLimits(-0.30)
     simSettings.receiver.FFE.taps.post2 = valueWithLimits(-0.05)

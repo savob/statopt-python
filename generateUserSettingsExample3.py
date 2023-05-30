@@ -102,10 +102,10 @@ def generateUserSettings() -> simulationSettings:
     simSettings.transmitter.postCursorCount.value = 4
 
     # Pre-emphasis
-    simSettings.transmitter.EQ.addEqualization = True
+    simSettings.transmitter.EQ.addEqualization = False
     simSettings.transmitter.EQ.taps.pre3  = valueWithLimits(-0.00)
     simSettings.transmitter.EQ.taps.pre2  = valueWithLimits(-0.00)
-    simSettings.transmitter.EQ.taps.pre1  = valueWithLimits(-0.10)
+    simSettings.transmitter.EQ.taps.pre1  = valueWithLimits(-0.00)
     simSettings.transmitter.EQ.taps.main  = valueWithLimits( 1.00) # calculated automatically
     simSettings.transmitter.EQ.taps.post1 = valueWithLimits(-0.00)
     simSettings.transmitter.EQ.taps.post2 = valueWithLimits(-0.00)
@@ -189,13 +189,13 @@ def generateUserSettings() -> simulationSettings:
     simSettings.receiver.CTLE.pole2Numb.value = 3      # number of additional poles
     
     # FFE
-    simSettings.receiver.FFE.addEqualization = True
+    simSettings.receiver.FFE.addEqualization = False
     simSettings.receiver.FFE.taps.pre3  = valueWithLimits(-0.00)
     simSettings.receiver.FFE.taps.pre2  = valueWithLimits(-0.00)
-    simSettings.receiver.FFE.taps.pre1  = valueWithLimits( 0.05)
-    simSettings.receiver.FFE.taps.main  = valueWithLimits( 1.10)
-    simSettings.receiver.FFE.taps.post1 = valueWithLimits(-0.30)
-    simSettings.receiver.FFE.taps.post2 = valueWithLimits(-0.05)
+    simSettings.receiver.FFE.taps.pre1  = valueWithLimits( 0.00)
+    simSettings.receiver.FFE.taps.main  = valueWithLimits( 1.00)
+    simSettings.receiver.FFE.taps.post1 = valueWithLimits(-0.00)
+    simSettings.receiver.FFE.taps.post2 = valueWithLimits(-0.00)
     simSettings.receiver.FFE.taps.post3 = valueWithLimits(-0.00)
     simSettings.receiver.FFE.taps.post4 = valueWithLimits(-0.00)
     simSettings.receiver.FFE.taps.post5 = valueWithLimits(-0.00)
