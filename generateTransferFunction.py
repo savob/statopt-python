@@ -183,7 +183,7 @@ def loadFiles(simSettings: simulationSettings, simResults: simulationStatus):
                 tranFunc = temp.response
                 freqs = temp.frequency
             except AttributeError:
-                print('ERROR: "{:s}" is lacking one or both of "frequencies" and "response" as fields for defining a channel\'s response.\n----------------SIMULATION ABORTING----------------'.format(fileName))
+                print('ERROR: "{:s}" is lacking one or both of "frequency" and/or "response" as fields for defining a channel\'s response.\n----------------SIMULATION ABORTING----------------'.format(fileName))
                 quit()
        
         # Convolve channel with simulated circuit response
