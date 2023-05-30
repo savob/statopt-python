@@ -133,11 +133,11 @@ def createChannel(simSettings: simulationSettings, simResults: simulationStatus)
 
 # Classes used to easily append jitter and distortion data 
 class jitter:
-    def __init__(self, rj, sj, dcdj, tj, ts, uis):
+    def __init__(self, rj, sj, dcdj, hist, ts, uis):
         self.random = rj
         self.deterministic = sj
         self.DCD = dcdj
-        self.totalJitter = tj
+        self.histogram = hist
         self.timeScale = ts
         self.UIScale = uis
 
@@ -350,8 +350,8 @@ def combineInfluences(simSettings: simulationSettings, simResults: simulationSta
     TXDistOutput  = simResults.influenceSources.TXDistortion.output
     RXDistInput   = simResults.influenceSources.RXDistortion.input
     RXDistOutput  = simResults.influenceSources.RXDistortion.output
-    TXJitter      = simResults.influenceSources.TXJitter.totalJitter
-    RXJitter      = simResults.influenceSources.RXJitter.totalJitter
+    TXJitter      = simResults.influenceSources.TXJitter.histogram
+    RXJitter      = simResults.influenceSources.RXJitter.histogram
 
     # Combine distortion
     totalDistortionInput = yAxis

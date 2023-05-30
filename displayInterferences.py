@@ -32,11 +32,11 @@ def displayJitter(simSettings: simulationSettings, simResults: simulationStatus)
     if not simSettings.general.plotting.jitterSource: return 
     
     # Import variables
-    TXJitter    = simResults.influenceSources.TXJitter.totalJitter
+    TXJitter    = simResults.influenceSources.TXJitter.histogram
     TXTime      = simResults.influenceSources.TXJitter.UIScale
-    RXJitter    = simResults.influenceSources.RXJitter.totalJitter
+    RXJitter    = simResults.influenceSources.RXJitter.histogram
     RXTime      = simResults.influenceSources.RXJitter.UIScale  
-    totalJitter = simResults.influenceSources.totalJitter.totalJitter
+    totalJitter = simResults.influenceSources.totalJitter.histogram
     totalTime   = simResults.influenceSources.totalJitter.UIScale  
     
     # Plot jitter PDF

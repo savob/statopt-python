@@ -292,7 +292,7 @@ def applyJitter(simSettings: simulationSettings, simResults: simulationStatus):
     samplesPerSymb = simSettings.general.samplesPerSymb.value
     yAxisLength    = simSettings.general.yAxisLength.value
     xAxis          = simSettings.general.xAxisCenter.value
-    jitter = simResults.influenceSources.totalJitter.totalJitter
+    jitter = simResults.influenceSources.totalJitter.histogram
     PDF    = simResults.eyeGeneration.PDF
     
     # Use last created plot
