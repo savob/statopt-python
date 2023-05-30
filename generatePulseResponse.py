@@ -240,9 +240,9 @@ def applyChannel(simSettings: simulationSettings, simResults: simulationStatus):
 
 
 ###########################################################################
-# This function is to find the peak in a signal
+# This function is to find the peak index in a signal
 ###########################################################################
-def findPeakPulse(signal):
+def findPeakPulse(signal) -> int:
     signal = np.nan_to_num(signal) # Set NaN's to 0. This prevents issues with peak finder
     peaks, prop = spsig.find_peaks(abs(signal), height=0)
 
@@ -251,7 +251,7 @@ def findPeakPulse(signal):
         return 0
     
     maxPeak = np.argmax(prop['peak_heights'])
-    peakLoc = peaks[maxPeak]
+    peakLoc = int(peaks[maxPeak])
 
     return peakLoc
 
