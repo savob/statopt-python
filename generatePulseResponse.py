@@ -529,12 +529,10 @@ def applyRXDFE(simSettings: simulationSettings, simResults: simulationStatus):
     for chName in inputSignals.__dict__:
         
         # Skip required channels
-        if approximate:
-            if chName != 'thru' and chName != 'xtalk':
-                continue
-        else:
-            if chName == 'next' or chName == 'fext' or chName == 'xtalk':
-                continue
+        if chName != 'thru':
+            simResults.pulseResponse.receiver.DFE.inputs.__dict__[chName] = inputSignals.__dict__[chName]
+            simResults.pulseResponse.receiver.DFE.outputs.__dict__[chName] = inputSignals.__dict__[chName]
+            continue
         
         # Find pulse peak location
         inputSignal = inputSignals.__dict__[chName]
@@ -605,7 +603,7 @@ def limitLength(simSettings,simResults):
                 continue
         
         # Locate pulse peak
-        pulse = np.round(pulses.__dict__[chName],4)
+        pulse = np.round(pulses.__dict__[chName], 6)
 
         # I feel like this logic just results in finding the middle of the pulse everytime but it is like this in StatEye, since 
         peakLoc1 = findPeakPulse(pulse)
