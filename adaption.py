@@ -11,9 +11,9 @@
 #
 ###########################################################################
 # This function updates the adaption simulation. This algorithm has three 
-# modes. The first allows for a wide range of random children. The second 
-# restricts the randomness to likely candidates. The third resets general 
-# settings to the user's specifications and run the optimal solution.
+# modes. The first allows for a wide range of children. The second 
+# restricts to the likely candidates. The third resets general settings to 
+# the user's specifications and run the optimal solution.
 #
 # IMPORTANT: to increase adaption speed, the modulation scheme and cursor
 # count is temporarily reduced. As a result, the optimal log results may
@@ -29,7 +29,6 @@ from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus
 import matplotlib.pyplot as plt
 import numpy as np
-import random
 import copy
 import functools
 
@@ -92,9 +91,6 @@ def initializeAdaptionStructure(simSettings: simulationSettings, simResults: sim
     if 'adaption' in simResults.__dict__: return
 
     simResults.adaption = nothing()
-    
-    # Chose a new random seed
-    random.seed()
 
     # Initialize the log structure
     #generateNewLog(simSettings,simResults)
@@ -626,9 +622,9 @@ def createChildren(simSettings,generations,genNumb,childrenPerParent,totalParent
                     else:
                         currentValue = currGeneration.__dict__['child'+str(child)].knobs.__dict__[validName]
                         if adaptMode == 1:
-                            value = currentValue + increment * random.randint(-3, 3)
+                            value = currentValue + increment * (np.mod(attempt, 7) - 3)
                         else:
-                            value = currentValue + increment * random.randint(-1, 1)
+                            value = currentValue + increment * (np.mod(attempt, 7) - 3)
                         
                         value = round(value/increment)*increment
                         value = max(min(value,maxValue),minValue)
@@ -655,8 +651,7 @@ def createChildren(simSettings,generations,genNumb,childrenPerParent,totalParent
 
 
 ###########################################################################
-# This function will randomly select a new set of settings. It the
-# limitRandomness input is set to True, the randomness will be restricted.
+# This function will select a new set of settings.
 # To ensure the same knob combination is not resimulated, each combination 
 # is compared with previous simulations.
 ###########################################################################
@@ -690,9 +685,9 @@ def createMutations(simSettings,generations,genNumb,totalPopulation,log):
                 if knobName == 'receiver.preAmp.gain' or knobName == 'receiver.FFE.taps.main':
                     value = 1 # set automatically
                 else:
-                    value = random.uniform(minValue, maxValue)
-                    value = np.round(value/increment)*increment
-                    value = max(min(value,maxValue),minValue)
+                    value = minValue + (attempt/10) * (maxValue-minValue)
+                    value = np.round(value/increment) * increment
+                    value = max(min(value,maxValue), minValue)
                 
                 currGeneration.__dict__[mutationName].knobs.__dict__[validName] = value
             
