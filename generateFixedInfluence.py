@@ -32,7 +32,7 @@ class combinedChannel:
 
     def __init__(self):
         self.transferFunction = 0
-        self.stepResponse = 0
+        self.pulseResponse = 0
         self.channelNumb = 0
 
 def generateFixedInfluence(simSettings: simulationSettings, simResults: simulationStatus):
@@ -98,36 +98,36 @@ def createChannel(simSettings: simulationSettings, simResults: simulationStatus)
         time = np.linspace(0, numSymbols*symbolPeriod-samplePeriod, numSymbols * samplesPerSymb)
         idealStep = np.concatenate((np.linspace(0, 1, riseIdx), np.ones((len(time)-riseIdx,))))
 
-        stepResponse = 0
+        pulseResponse = 0
             
         # Apply ideal step response if not adding channel
         if not addChannel:
-            stepResponse = np.concatenate((np.zeros((preCursorCount*samplesPerSymb,)), idealStep))
+            pulseResponse = np.concatenate((np.zeros((preCursorCount*samplesPerSymb,)), idealStep))
         
         # Apply step to channel convolution
         else:
-            stepResponse = np.convolve(idealStep, impulseResponse)
-            stepResponse = stepResponse[:-(len(impulseResponse)-1)] # remove the trailing (falling edge) of the convolution
+            pulseResponse = np.convolve(idealStep, impulseResponse)
+            pulseResponse = pulseResponse[:-(len(impulseResponse)-1)] # remove the trailing (falling edge) of the convolution
             
         # Contribute to combined channels based on present channel
         if name[:4] == 'thru':
-            results.thru.stepResponse = stepResponse
+            results.thru.pulseResponse = pulseResponse
         elif name[:4] == 'next':
             results.next.transferFunction = np.sqrt(results.next.transferFunction**2+transFunc**2)
-            results.next.stepResponse = results.next.stepResponse+stepResponse
+            results.next.pulseResponse = results.next.pulseResponse+pulseResponse
             results.next.frequencies = results.__dict__[name].frequencies
             results.next.channelNumb = results.next.channelNumb+1
             results.xtalk.transferFunction = np.sqrt(results.xtalk.transferFunction**2+transFunc**2)
-            results.xtalk.stepResponse = results.xtalk.stepResponse+stepResponse
+            results.xtalk.pulseResponse = results.xtalk.pulseResponse+pulseResponse
             results.xtalk.frequencies = results.__dict__[name].frequencies
             results.xtalk.channelNumb = results.xtalk.channelNumb+1
         elif name[:4] == 'fext':
             results.fext.transferFunction = np.sqrt(results.fext.transferFunction**2+transFunc**2)
-            results.fext.stepResponse = results.fext.stepResponse+stepResponse
+            results.fext.pulseResponse = results.fext.pulseResponse+pulseResponse
             results.fext.frequencies = results.__dict__[name].frequencies
             results.fext.channelNumb = results.fext.channelNumb+1
             results.xtalk.transferFunction = np.sqrt(results.xtalk.transferFunction**2+transFunc**2)
-            results.xtalk.stepResponse = results.xtalk.stepResponse+stepResponse
+            results.xtalk.pulseResponse = results.xtalk.pulseResponse+pulseResponse
             results.xtalk.frequencies = results.__dict__[name].frequencies
             results.xtalk.channelNumb = results.xtalk.channelNumb+1
 

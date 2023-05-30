@@ -225,13 +225,13 @@ def applyChannel(simSettings: simulationSettings, simResults: simulationStatus):
         # Apply channel response
         else:
             diffSignal = np.diff(inputSignal)
-            signalLength = len(channels.__dict__[chName].stepResponse)+len(diffSignal)-1
+            signalLength = len(channels.__dict__[chName].pulseResponse)+len(diffSignal)-1
             outputSignal = np.zeros((signalLength,))
             for index in range(len(diffSignal)):
                 if(diffSignal[index]==0): continue 
-                tailLength = signalLength-len(channels.__dict__[chName].stepResponse)-index
-                tailAmplitude = channels.__dict__[chName].stepResponse[-1]*diffSignal[index]
-                outputSignal = outputSignal + np.concatenate((np.zeros((index,)), channels.__dict__[chName].stepResponse*diffSignal[index], np.ones((tailLength,))*tailAmplitude))
+                tailLength = signalLength-len(channels.__dict__[chName].pulseResponse)-index
+                tailAmplitude = channels.__dict__[chName].pulseResponse[-1]*diffSignal[index]
+                outputSignal = outputSignal + np.concatenate((np.zeros((index,)), channels.__dict__[chName].pulseResponse*diffSignal[index], np.ones((tailLength,))*tailAmplitude))
             
 
         # Limit signal length
