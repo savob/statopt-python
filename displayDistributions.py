@@ -276,7 +276,7 @@ def displayBER(simSettings: simulationSettings, simResults: simulationStatus):
         axd = plotBERDistribution(simSettings, simResults, False)
 
         # Add eye contour lines
-        plotEyeContours(simSettings, simResults, True, False, axd['top'])
+        plotEyeContours(simSettings, simResults, True, axd['top'])
         
         # Add sampler targets
         plotSampleTarget(simSettings, simResults, axd['top'])
@@ -294,7 +294,7 @@ def displayBER(simSettings: simulationSettings, simResults: simulationStatus):
         axd = plotBERDistribution(simSettings, simResults, True)
         
         # Add eye contour lines
-        plotEyeContours(simSettings, simResults, False, False, axd['top'])
+        plotEyeContours(simSettings, simResults, False, axd['top'])
         
         # Add sampler targets
         plotSampleTarget(simSettings, simResults, axd['top'])
@@ -392,7 +392,7 @@ def plotBERDistribution(simSettings: simulationSettings, simResults: simulationS
 # This function plots the eye contours at BER levels of 1e-3, 1e-6, 1e-9
 # and 1e-12 if possible. It also adds a legend which labels each contour.
 ###########################################################################
-def plotEyeContours(simSettings: simulationSettings, simResults: simulationStatus, darkLegend: bool, plotConstellation: bool, curPlot: plt.Axes):
+def plotEyeContours(simSettings: simulationSettings, simResults: simulationStatus, darkLegend: bool, curPlot: plt.Axes):
 
     # Import variables
     yAxis          = simSettings.general.yAxis.value
@@ -402,24 +402,20 @@ def plotEyeContours(simSettings: simulationSettings, simResults: simulationStatu
     BER           = simResults.eyeGeneration.BER.contours.combined
     
     # Combine eyes
-    if not plotConstellation:
-        if np.mod(numbSymb, 2) == 0:
-            combinedBER = BER[:, int(samplesPerSymb/2)+1:]
-            for symbol in range(numbSymb-1):
-                combinedBER = np.hstack((combinedBER, BER)) 
-            
-            combinedBER = np.hstack((combinedBER, BER[:, :int(samplesPerSymb/2)+1])) 
-        else:
-            combinedBER=[]
-            for symbol in range(numbSymb):
-                combinedBER = np.hstack((combinedBER, BER)) 
-            
+    if np.mod(numbSymb, 2) == 0:
+        combinedBER = BER[:, int(samplesPerSymb/2)+1:]
+        for symbol in range(numbSymb-1):
+            combinedBER = np.hstack((combinedBER, BER)) 
         
-        distribution = combinedBER
-        X, Y = np.meshgrid(xAxisLong, yAxis)
+        combinedBER = np.hstack((combinedBER, BER[:, :int(samplesPerSymb/2)+1])) 
     else:
-        distribution = simResults.eyeGeneration.BER.constellation.combined
-        X, Y = np.meshgrid(yAxis, yAxis)
+        combinedBER=[]
+        for symbol in range(numbSymb):
+            combinedBER = np.hstack((combinedBER, BER)) 
+        
+    
+    distribution = combinedBER
+    X, Y = np.meshgrid(xAxisLong, yAxis)
     
     #handles = []
     labels = []
