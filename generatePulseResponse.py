@@ -26,7 +26,6 @@ from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus
 import numpy as np
 import control.matlab as ml
-from loadMatlabFiles import objectFromMat
 import scipy.signal as spsig
 
 class nothing:
@@ -168,14 +167,8 @@ def applyTXEQ(simSettings: simulationSettings, simResults: simulationStatus):
 def applyChannel(simSettings: simulationSettings, simResults: simulationStatus):
         
     # Import variables
-    signalingMode    = simSettings.general.signalingMode
-    samplePeriod     = simSettings.general.samplePeriod.value
     samplesPerSymb   = simSettings.general.samplesPerSymb.value
-    preCursorCount   = simSettings.transmitter.preCursorCount.value
-    postCursorCount  = simSettings.transmitter.postCursorCount.value
     approximate      = simSettings.channel.approximate
-    overrideResponse = simSettings.channel.overrideResponse
-    overrideFileName = simSettings.channel.overrideFileName
     inputSignal = simResults.pulseResponse.transmitter.output  
     channels    = simResults.influenceSources.channel
 
@@ -188,51 +181,15 @@ def applyChannel(simSettings: simulationSettings, simResults: simulationStatus):
     
         # Skip required channels
         if approximate:
-            if chName != 'thru' and chName != 'xtalk':
+            if chName not in ['thru', 'xtalk']:
                 continue
         else:
-            if chName == 'next' or chName == 'fext' or chName == 'xtalk':
+            if chName in ['next', 'fext', 'xtalk']:
                 continue
 
-
-        # Apply custom step response
-        if overrideResponse:
-            
-            # Only apply to thru channel
-            if chName != 'thru': continue 
-            
-            # Load data
-            data = objectFromMat(overrideFileName)
-            fields = data.__dict__
-            if 'amp' in fields:
-                amplitude = data.amp
-            elif 'amplitude' in fields:
-                amplitude = data.amplitude
-            
-            time = data.time
-
-            # Override pulse response
-            channelPulse = np.interp(np.arange(0,time[len(time)-1],samplePeriod), time, amplitude)
-            channelPulse = np.concatenate((np.zeros((preCursorCount*samplesPerSymb,)), channelPulse, np.zeros((postCursorCount*samplesPerSymb,))))
-
-            # Apply pulse response
-            maxLoc = np.argmax(inputSignal)
-            inputPulses = np.zeros((len(inputSignal),))
-            locs = np.arange(maxLoc-preCursorCount*samplesPerSymb, maxLoc+postCursorCount*samplesPerSymb, samplesPerSymb)
-            inputPulses[locs] = inputSignal[locs]
-            outputSignal = np.convolve(inputPulses,channelPulse)
-            
         # Apply channel response
-        else:
-            diffSignal = np.diff(inputSignal)
-            signalLength = len(channels.__dict__[chName].pulseResponse)+len(diffSignal)-1
-            outputSignal = np.zeros((signalLength,))
-            for index in range(len(diffSignal)):
-                if(diffSignal[index]==0): continue 
-                tailLength = signalLength-len(channels.__dict__[chName].pulseResponse)-index
-                tailAmplitude = channels.__dict__[chName].pulseResponse[-1]*diffSignal[index]
-                outputSignal = outputSignal + np.concatenate((np.zeros((index,)), channels.__dict__[chName].pulseResponse*diffSignal[index], np.ones((tailLength,))*tailAmplitude))
-            
+        indecies = np.arange(0, len(inputSignal), samplesPerSymb).astype(int)
+        outputSignal = np.convolve(channels.__dict__[chName].pulseResponse, inputSignal[indecies],'same')
 
         # Save results
         simResults.pulseResponse.channel.input = inputSignal

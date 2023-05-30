@@ -27,6 +27,10 @@ import scipy.stats as stats
 from userSettingsObjects import simulationSettings
 from initializeSimulation import simulationStatus
 from loadMatlabFiles import objectFromMat
+import control.matlab as ml
+from math import isnan
+import os
+import skrf as rf # Used to read Touchstone files and nothing else
 
 class combinedChannel:
 
@@ -36,6 +40,8 @@ class combinedChannel:
         self.channelNumb = 0
 
 def generateFixedInfluence(simSettings: simulationSettings, simResults: simulationStatus):
+
+    ml.use_matlab_defaults() # Needed to ensure compatibility with MATLAB expectations for control code
 
     # Load channel data
     createChannel(simSettings, simResults)
@@ -67,15 +73,23 @@ def createChannel(simSettings: simulationSettings, simResults: simulationStatus)
     samplesPerSymb   = simSettings.general.samplesPerSymb.value
     tRise            = simSettings.transmitter.tRise.value
     preCursorCount   = simSettings.transmitter.preCursorCount.value
+    postCursorCount  = simSettings.transmitter.postCursorCount.value
     importChannels   = simSettings.channel.fileNames
     addChannel       = simSettings.channel.addChannel
     addCrossTalk     = simSettings.channel.addCrossTalk
+    overrideResponse = simSettings.channel.overrideResponse
+    overrideFileName = simSettings.channel.overrideFileName
+    modelCircuitTF     = simSettings.channel.modelCircuitTF
+    modelCircuitTFName = simSettings.channel.modelCircuitTFName
+    addNotch           = simSettings.channel.addNotch
+    notchFreq          = simSettings.channel.notchFreq.value
+    notchAttenuation   = simSettings.channel.notchAttenuation.value
     results = simResults.influenceSources.channel
     
     chNames = {'thru'} # Default (no crosstalk)
 
-    # Remove xtalk channels if not required
-    if(addCrossTalk):
+    # Add xtalk channels if required
+    if addCrossTalk:
         chNames = list(importChannels.__dict__)
         
         # Initialize combined channels structure
@@ -83,53 +97,240 @@ def createChannel(simSettings: simulationSettings, simResults: simulationStatus)
         setattr(results, 'fext', combinedChannel())
         setattr(results, 'xtalk', combinedChannel())
 
-    # Load each channel
-    for name in chNames:
-        if((name == 'next') or (name == 'fext') or (name =='xtalk')):
-            continue 
 
-        # Get file information
-        impulseResponse = results.__dict__[name].impulseResponse
-        transFunc = results.__dict__[name].transferFunction
-        
-        # Create ideal step response with rise time
-        riseIdx = round(tRise/samplePeriod)
-        numSymbols = 1000  # Number of symbols to run step for
-        time = np.linspace(0, numSymbols*symbolPeriod-samplePeriod, numSymbols * samplesPerSymb)
-        idealStep = np.concatenate((np.linspace(0, 1, riseIdx), np.ones((len(time)-riseIdx,))))
+    # Apply custom pulse response
+    if overrideResponse:
+        # Load data
+        data = objectFromMat(overrideFileName)
+        fields = data.__dict__
+        if 'amp' in fields:
+            amplitude = data.amp
+        elif 'amplitude' in fields:
+            amplitude = data.amplitude
+        elif 'amplitudes' in fields:
+            amplitude = data.amplitudes
 
-        pulseResponse = 0
-            
-        # Apply ideal step response if not adding channel
-        if not addChannel:
-            pulseResponse = np.concatenate((np.zeros((preCursorCount*samplesPerSymb,)), idealStep))
+        time = data.time
+
+        # Override pulse response
+        pulseResponse = np.interp(np.arange(0,time[-1] + samplePeriod,samplePeriod), time, amplitude)
+        pulseResponse = np.concatenate((np.zeros((preCursorCount*samplesPerSymb,)), pulseResponse, np.zeros((postCursorCount*samplesPerSymb,))))
+
+        # Create frequency response
+        tranFunc = np.fft.fft(pulseResponse)
+        freqs = np.linspace(0, 1/samplePeriod, len(tranFunc)+1)
+        endIndex = len(tranFunc) / 2
+        tranFunc = tranFunc[0:endIndex]
+        freqs = freqs[0:endIndex]
+
+        # Save results
+        results.thru.pulseResponse = pulseResponse
+        results.thru.transferFunction = tranFunc
+        results.thru.frequencies = freqs
+
+    else:
+        # Get frequency responses from channel descriptions
+        for name in chNames:
+            fileName = importChannels.__dict__[name]
+
+            freqs = 0
+            tranFunc = 0
+
+            # Import keystone (.s4p) channel data
+            if fileName[-4:] == '.s4p':
+                fileAddress = os.path.join('.', 'touchstone', fileName)
+                backplane = rf.Network(fileAddress)
+
+                freqs = backplane.f
+                freqPoints = freqs.size
+
+                # Get differential mode transfer function
+                # Start by preparing differential S-parameters
+                sParamsTemp = np.copy(backplane.s)
+                
+                sParamsTemp[:,1,:] = np.copy(backplane.s[:,2,:])
+                sParamsTemp[:,2,:] = np.copy(backplane.s[:,1,:])
+                
+                sParamsTemp[:,:,1] = np.copy(backplane.s[:,:,2])
+                sParamsTemp[:,:,2] = np.copy(backplane.s[:,:,1])
+                
+                sParamsTemp[:,1,2] = np.copy(backplane.s[:,1,2])
+                sParamsTemp[:,2,1] = np.copy(backplane.s[:,2,1])
+                
+                sParamsTemp[:,1,1] = np.copy(backplane.s[:,2,2])
+                sParamsTemp[:,2,2] = np.copy(backplane.s[:,1,1])
         
-        # Apply step to channel convolution
-        else:
-            pulseResponse = np.convolve(idealStep, impulseResponse)
-            pulseResponse = pulseResponse[:-(len(impulseResponse)-1)] # remove the trailing (falling edge) of the convolution
+                M = np.array([[1,-1,0,0],[0,0,1,-1],[1,1,0,0],[0,0,1,1]])
+                invM = np.transpose(M)
+                
+                smmParams = np.zeros((4,4,freqPoints), dtype = complex)
+                
+                for i in range(freqPoints):
+                    smmParams[:,:,i] = (M@sParamsTemp[i,:,:]@invM)/2
+                
+                sParamsDiff = smmParams[0:2,0:2,:]
+                
+                # Assume source/load impedances of 50 ohm
+                zl = 50.0*np.ones((1,1,freqPoints))
+                zs = 50.0*np.ones((1,1,freqPoints))
+                z0 = backplane.z0[0,0]*np.ones((1,1,freqPoints))
+
+                # Reflection Coefficients
+                gammaL = (zl - z0) / (zl + z0)
+                gammaL[zl == np.inf] = 1 
+                
+                gammaS = (zs - z0) / (zs + z0)
+                gammaS[zs == np.inf] = 1
+                
+                gammaIn = (sParamsDiff[0,0,:] + sParamsDiff[0,1,:] * sParamsDiff[1,0,:] * gammaL) / (1 - sParamsDiff[1,1,:] * gammaL)
+                
+                tranFunc = sParamsDiff[1,0,:] * (1 + gammaL) * (1 - gammaS) / (1 - sParamsDiff[1,1,:] * gammaL) / (1 - gammaIn * gammaS) 
+                tranFunc = tranFunc.reshape(freqPoints,) 
             
-        # Contribute to combined channels based on present channel
-        if name[:4] == 'thru':
-            results.thru.pulseResponse = pulseResponse
-        elif name[:4] == 'next':
-            results.next.transferFunction = np.sqrt(results.next.transferFunction**2+transFunc**2)
-            results.next.pulseResponse = results.next.pulseResponse+pulseResponse
-            results.next.frequencies = results.__dict__[name].frequencies
-            results.next.channelNumb = results.next.channelNumb+1
-            results.xtalk.transferFunction = np.sqrt(results.xtalk.transferFunction**2+transFunc**2)
-            results.xtalk.pulseResponse = results.xtalk.pulseResponse+pulseResponse
-            results.xtalk.frequencies = results.__dict__[name].frequencies
-            results.xtalk.channelNumb = results.xtalk.channelNumb+1
-        elif name[:4] == 'fext':
-            results.fext.transferFunction = np.sqrt(results.fext.transferFunction**2+transFunc**2)
-            results.fext.pulseResponse = results.fext.pulseResponse+pulseResponse
-            results.fext.frequencies = results.__dict__[name].frequencies
-            results.fext.channelNumb = results.fext.channelNumb+1
-            results.xtalk.transferFunction = np.sqrt(results.xtalk.transferFunction**2+transFunc**2)
-            results.xtalk.pulseResponse = results.xtalk.pulseResponse+pulseResponse
-            results.xtalk.frequencies = results.__dict__[name].frequencies
-            results.xtalk.channelNumb = results.xtalk.channelNumb+1
+            elif fileName[-4:] == '.mat':
+                # If it's a .MAT file check for frequency points
+                
+                temp = objectFromMat(fileName)
+                try:
+                    tranFunc = temp.response
+                    freqs = temp.frequency
+                except AttributeError:
+                    print('ERROR: "{:s}" is lacking one or both of "frequency" and/or "response" as fields for defining a channel\'s response.\n----------------SIMULATION ABORTING----------------'.format(fileName))
+                    quit()  
+
+    
+            # Convolve channel with simulated circuit response
+            if modelCircuitTF:
+                circuit = objectFromMat(modelCircuitTFName)
+
+                # Convert circuit 
+                circuit = np.interp(freqs, circuit.frequency, circuit.response)
+                for i in range(len(circuit)):
+                    if isnan(circuit[i]): circuit[i] = 0
+
+                tranFunc = tranFunc * circuit
+
+            
+            # Add notch in response
+            if addNotch:
+                k = 2 * np.pi * notchFreq / 10
+                g = 10 ^ (notchAttenuation / 20)
+                notchLTI = ml.tf([1, 5*k/g, 100*k^2], [1, 5*k, 100*k^2])
+                mag, phase, _ = ml.bode(notchLTI, 2*np.pi*freqs, plot=False, deg=False) # Return phase in radians
+                mag = np.squeeze(mag)
+                phase = np.squeeze(phase)*np.pi/180
+                notchTF = mag * np.exp(np.pi * phase)
+                tranFunc = tranFunc * notchTF
+
+                
+            # Combine xtalk responses
+            if name[:4] == 'thru':
+                results.thru.transferFunction = tranFunc
+                results.thru.frequencies = freqs
+            elif name[:4] == 'next':
+                results.next.transferFunction = np.sqrt(results.next.transferFunction**2+tranFunc**2)
+                results.next.frequencies = freqs
+
+                results.next.channelNumb = results.next.channelNumb+1
+                results.xtalk.transferFunction = np.sqrt(results.xtalk.transferFunction**2+tranFunc**2)
+                results.xtalk.frequencies = freqs
+                results.xtalk.channelNumb = results.xtalk.channelNumb+1
+            elif name[:4] == 'fext':
+                results.fext.transferFunction = np.sqrt(results.fext.transferFunction**2+tranFunc**2)
+                results.fext.frequencies = freqs
+                results.fext.channelNumb = results.fext.channelNumb+1
+                results.xtalk.transferFunction = np.sqrt(results.xtalk.transferFunction**2+tranFunc**2)
+                results.xtalk.frequencies = freqs
+                results.xtalk.channelNumb = results.xtalk.channelNumb+1
+
+        # Create pulse response for all the combined channels
+        for name in results.__dict__:
+
+            freqs = results.__dict__[name].frequencies
+            tranFunc = results.__dict__[name].transferFunction
+    
+            # Create impulse response
+            
+            pulseResponse = impulseResponseConvolKernel(tranFunc, freqs, samplePeriod)
+        
+            # Create ideal pulse response with rise time
+            riseIdx = round(tRise/samplePeriod)
+            idealPulse = np.concatenate((np.zeros((preCursorCount*samplesPerSymb,)),np.linspace(0,1,riseIdx),np.ones((samplesPerSymb-riseIdx,)),np.linspace(1,0,riseIdx),np.zeros((postCursorCount*samplesPerSymb-riseIdx,))))
+        
+            # Apply pulse response to channel
+            if not addChannel:
+                if name[0:3] == 'thru':
+                    pulseResponse = np.convolve(np.concatenate((1, np.zeros((len(pulseResponse),)))), idealPulse, 'same')
+                else:
+                    pulseResponse = np.zeros((len(idealPulse),))
+            else:
+                pulseResponse = np.convolve(pulseResponse,idealPulse,'same')
+    
+            # Save pulse response
+            results.__dict__[name].pulseResponse = pulseResponse
+
+
+###########################################################################
+# Generates the convolution kernel for an impulse given a system's 
+# frequency response.
+#
+# Pads discrete time transfer frequency response with data in the frequency
+# domain to reach the needed step in time domain when an inverse Fourier
+# Transform is performed.
+#
+# This kernel is generally quite large so there is the option to have a 
+# window around the peak.
+###########################################################################
+def impulseResponseConvolKernel(frequencyResponse, freqs, samplePeriod: float) -> np.ndarray:
+    
+    # Get defining frequencies
+    fStep = freqs[1] - freqs[0]
+    fstep2 = freqs[2] - freqs[1]
+    fMin = min(freqs)
+    fMax = max(freqs)
+    fSteps = len(freqs)
+    workFrequencyResponse = 0
+
+    # Check that the frequency steps are linear
+    if fStep != fstep2:
+        print('\n------------------------------\nWARNING: Frequency response data not linearly spaced; linearizing for pulse response.\nTHIS MAY REDUCE THE ACCURACY OF RESULTS.\n------------------------------\n')
+        workFreqs = np.linspace(fMin, fMax, fSteps)
+        workFrequencyResponse = np.interp(workFreqs, freqs, frequencyResponse)
+
+        fStep = workFreqs[1] - workFreqs[0]
+    else:
+        # Use data as it came in
+        workFreqs = freqs
+        workFrequencyResponse = frequencyResponse
+
+
+    # Find oversampling factor to pad frequency response with
+    samplePeriod0 = 1 / (2*freqs[-1])
+    upConvert = int(np.ceil(samplePeriod0/samplePeriod))
+
+    # Pad response with zeros
+    freqRespPadded = np.concatenate((workFrequencyResponse, np.zeros((len(workFrequencyResponse)*(upConvert-1),))))
+
+    # To create an impulse response the padded frequency response is reflected
+    # then put through an inverse Fourier Transform to get the time response
+    tempH = np.concatenate((freqRespPadded, np.conj(np.flip(freqRespPadded[1:-1]))))
+    impulseResponse = np.real(np.fft.ifft(tempH))
+
+
+    # Center pulse
+    maxValueIndex = np.argmax(impulseResponse)
+    impulseResponse = np.concatenate((impulseResponse[maxValueIndex:],impulseResponse[:maxValueIndex]))
+    midPoint = int(len(impulseResponse) / 2)
+    impulseResponse = np.concatenate((impulseResponse[midPoint:],impulseResponse[:midPoint]))
+
+
+    # Ensure exact same sampling rate
+    time = np.linspace(0, 1/(2*freqs[-1]*upConvert), len(impulseResponse))
+    time2 = np.linspace(0, samplePeriod, len(impulseResponse))
+    impulseResponse = np.interp(time, time2, impulseResponse, left=0, right=0)
+    
+    return impulseResponse # Return unchanged response (will be large!)
+
 
 # Classes used to easily append jitter and distortion data 
 class jitter:

@@ -37,7 +37,6 @@ from generateSettingsLimits import generateSettingsLimits
 from initializeSimulation import initializeSimulation
 from checkSettings import checkSettings
 from adaption import displayAdaption, adaptLink
-from generateTransferFunction import generateTransferFunction
 from generateFixedInfluence import generateFixedInfluence
 from generateVariableInfluence import generateVariableInfluence
 from generatePulseResponse import generatePulseResponse
@@ -63,9 +62,6 @@ print('User-dependant settings generated')
 checkSettings(simSettings)
 
 doneLoadingTime = time.time() # Mark time once data was loaded
-
-# Start preconditioning the simulation
-generateTransferFunction(simSettings, simResults)
 
 # Generate fixed sources of influence
 generateFixedInfluence(simSettings, simResults)
