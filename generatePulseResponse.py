@@ -234,46 +234,9 @@ def applyChannel(simSettings: simulationSettings, simResults: simulationStatus):
                 outputSignal = outputSignal + np.concatenate((np.zeros((index,)), channels.__dict__[chName].pulseResponse*diffSignal[index], np.ones((tailLength,))*tailAmplitude))
             
 
-        # Limit signal length
-        outputSignal = limitPulse(outputSignal,signalingMode,samplesPerSymb,preCursorCount,postCursorCount)
-       
         # Save results
         simResults.pulseResponse.channel.input = inputSignal
         simResults.pulseResponse.channel.outputs.__dict__[chName] = outputSignal
-
-
-###########################################################################
-# This function limits the pulse response length. It either keeps signal
-# content greater than 1% of the maximum, or keeps the required number of
-# cursors, which ever longer.
-###########################################################################
-def limitPulse(signal,signalingMode,samplesPerSymb,preCursorCount,postCursorCount):
-
-    # Locate signal content greater than 1% of maximum
-    minVal = 0.01 * max(abs(signal))
-    start1P = 0
-    end1P = len(signal) - 1
-    while(abs(signal[start1P]) < minVal):
-        start1P = start1P + 1
-    
-    while(abs(signal[end1P]) < minVal):
-        end1P = end1P-1
-    
-
-    # Locate peak pulse
-    peakLoc = findPeakPulse(signal)
-    
-    # Chop signal ensuring all desired cursors are included
-    if signalingMode == '1+D' or signalingMode == '1+0.5D':
-        startC = round(peakLoc-(preCursorCount+1)*samplesPerSymb)-1
-        endC = round(peakLoc+(postCursorCount+2)*samplesPerSymb) # add additional symbol to allow for delay
-    else:
-        startC = round(peakLoc-(preCursorCount+0.5)*samplesPerSymb)-1
-        endC = round(peakLoc+(postCursorCount+1.5)*samplesPerSymb) # add additional symbol to allow for delay
-    
-    signal = signal[min(start1P,startC):max(end1P,endC)]  
-
-    return signal
 
 
 ###########################################################################
