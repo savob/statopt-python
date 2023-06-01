@@ -51,7 +51,7 @@ from displayDistributions import displayISI, displayPDF, displayBER
 
 # Begin simulation
 print('\n----------Preparing Simulation----------')
-startTime = time.time() # Get start (clock) time
+startTime = time.time() # Get start clock time
 
 simSettings = generateUserSettings()
 print('Simulation settings Loaded')
@@ -61,12 +61,12 @@ simResults = initializeSimulation(simSettings) # Really just adds a bunch of set
 print('User-dependant settings generated')
 checkSettings(simSettings)
 
-doneLoadingTime = time.time() # Mark time once data was loaded
+doneLoadingTime = time.time() # Mark time once data is loaded and verified
 
 # Generate fixed sources of influence
 generateFixedInfluence(simSettings, simResults)
 
-doneFixedTime = time.time() # Mark time once data was loaded
+doneFixedTime = time.time() # Mark time once fixed influences are prepared
 
 # Analyze and Adapt Link
 while not simResults.finished:
@@ -92,7 +92,7 @@ while not simResults.finished:
     # Update adaption settings (if required)
     adaptLink(simSettings, simResults)
 
-doneSimTime = time.time() # Mark time once data was loaded
+doneSimTime = time.time() # Mark time once simulations are complete 
 
 # Plot Results
 # In MATLAB these were all docked in the main window, however there is no to ensure that with matplotlib
