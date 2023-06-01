@@ -41,7 +41,7 @@ def displayChannels(simSettings: simulationSettings, simResults: simulationStatu
     freqScale = 1e-9 # Use this adjust frequency axis
 
     # Create figure
-    plt.figure(dpi=100, num='Channel Responses', layout='constrained')
+    plt.figure(dpi=200, num='Channel Responses', layout='constrained')
     plt.plot(channels.thru.frequencies * freqScale,20*np.log10(abs(channels.thru.transferFunction)), color = "blue", label = "THRU Channel", linewidth = 0.5)
     plt.ylabel('Attenuation [dB]')
     plt.xlabel('Frequency [GHz]')
@@ -99,7 +99,7 @@ def displayCTLEResponse(simSettings: simulationSettings, simResults: simulationS
 
 
     # Plot CTLE
-    plt.figure(dpi=100, num='CTLE Response', layout='constrained')
+    plt.figure(dpi=200, num='CTLE Response', layout='constrained')
     plt.semilogx(freqScale*CTLE.frequency, 10*np.log10(abs(CTLE.magnitude)), linewidth=0.5, label = "CTLE response")
     plt.grid()
 
@@ -163,7 +163,7 @@ def displayPulse(simSettings: simulationSettings, simResults: simulationStatus):
     RXOutput, _ = limitLength(RXOutput, signalingMode, preCursorCount, postCursorCount, samplesPerSymb, samplePeriod, False)
 
     # Plot transmitter output
-    fig, axs = plt.subplots(nrows=3, ncols=1, dpi=100, num='Pulse Response', sharex='all', layout='constrained')
+    fig, axs = plt.subplots(nrows=3, ncols=1, dpi=200, num='Pulse Response', sharex='all', layout='constrained', figsize=(6, 9))
     fig.suptitle('Pulse Responses')
     plotResponse(axs[0], TXOutput, timeAxis, True, 'Transmitter Output', samplesPerSymb, samplePeriod, cursorCount, preCursorCount, postCursorCount)
 

@@ -64,7 +64,7 @@ def displayISI(simSettings: simulationSettings, simResults: simulationStatus):
     
 
     # Plot all trajectories
-    plt.figure(dpi=100, num='ISI Trajectories', layout="constrained")
+    plt.figure(dpi=200, num='ISI Trajectories', layout="constrained")
     plt.title('ISI Trajectories')
     plt.ylabel('Amplitude [V]')
     plt.xlabel('Time (s)')
@@ -203,7 +203,7 @@ def plotDistribution(simSettings,simResults,distribution,name):
     
     
     # Create figure
-    plt.figure(dpi=100, num='PDF Plot', layout="constrained")
+    plt.figure(dpi=200, num='PDF Plot', layout="constrained")
     if name == 'Constellation Distribution':
         contLevels = contLevels/2
         X, Y = np.meshgrid(yAxis,yAxis)
@@ -351,7 +351,7 @@ def plotBERDistribution(simSettings: simulationSettings, simResults: simulationS
 
     # Plot BER
     # https://matplotlib.org/stable/tutorials/intermediate/arranging_axes.html
-    fig, axd = plt.subplot_mosaic([['top', 'top'], ['top', 'top'], ['lower left', 'lower right']], layout='constrained', num=figTitle, dpi=100)
+    fig, axd = plt.subplot_mosaic([['top', 'top'], ['top', 'top'], ['lower left', 'lower right']], layout='constrained', num=figTitle, dpi=200, figsize=(9.6, 6.4))
     X, Y = np.meshgrid(xAxisLong, yAxis)
 
     # Prepare colour map
