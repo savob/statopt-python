@@ -21,7 +21,7 @@
 # 
 ###########################################################################
 
-from userSettingsObjects import simulationSettings
+from userSettingsObjects import simulationSettings, nothing
 from initializeSimulation import simulationStatus
 import control.matlab as ml
 import numpy as np
@@ -49,10 +49,6 @@ def generateVariableInfluence(simSettings: simulationSettings, simResults: simul
 
     # Combine influences
     combineInfluences(simSettings, simResults)
-
-class nothing:
-    def __init__(self):
-        pass
 
 class CTLE:
 

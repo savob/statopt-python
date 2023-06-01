@@ -25,18 +25,13 @@
 #   
 ###########################################################################
 
-from userSettingsObjects import simulationSettings
+from userSettingsObjects import simulationSettings, nothing
 from initializeSimulation import simulationStatus
 import matplotlib.pyplot as plt
 import numpy as np
 import random
 import copy
 import functools
-
-class nothing:
-    def __init__(self):
-        pass
-
 
 def adaptLink(simSettings, simResults):
 

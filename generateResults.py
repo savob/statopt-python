@@ -19,14 +19,10 @@
 #   
 ###########################################################################
 
-from userSettingsObjects import simulationSettings
+from userSettingsObjects import simulationSettings, nothing
 from initializeSimulation import simulationStatus
 import numpy as np
 import scipy.signal as spsig
-
-class nothing:
-    def __init__(self):
-        pass
 
 def generateResults(simSettings: simulationSettings, simResults: simulationStatus):
 

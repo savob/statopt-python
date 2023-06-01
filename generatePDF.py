@@ -23,13 +23,9 @@
 #   
 ###########################################################################
 
-from userSettingsObjects import simulationSettings
+from userSettingsObjects import simulationSettings, nothing
 from initializeSimulation import simulationStatus
 import numpy as np
-
-class nothing:
-    def __init__(self):
-        pass
 
 def generatePDF(simSettings: simulationSettings, simResults: simulationStatus):
     

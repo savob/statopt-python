@@ -23,14 +23,10 @@
 #   
 ###########################################################################
 
-from userSettingsObjects import simulationSettings
+from userSettingsObjects import simulationSettings, nothing
 from initializeSimulation import simulationStatus
 import numpy as np
 import copy
-
-class nothing:
-    def __init__(self):
-        pass
 
 def generateISI(simSettings: simulationSettings, simResults: simulationStatus):
     

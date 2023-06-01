@@ -23,17 +23,13 @@
 #   
 ###########################################################################
 
-from userSettingsObjects import simulationSettings
+from userSettingsObjects import simulationSettings, nothing
 from initializeSimulation import simulationStatus
 import matplotlib.pyplot as plt
 import matplotlib.colors as colours
 import matplotlib.cm as cm
 import matplotlib as mpl
 import numpy as np
-
-class nothing:
-    def __init__(self):
-        pass
 
 def displayISI(simSettings: simulationSettings, simResults: simulationStatus):
     
