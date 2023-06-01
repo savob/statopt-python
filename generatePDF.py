@@ -152,12 +152,11 @@ def applyCrossTalk(simSettings: simulationSettings, simResults: simulationStatus
             for chName in PDF.initial.__dict__:
 
                 # Skip required channels
-                if(approximate):
+                if approximate:
                     if chName != 'xtalk':
                         continue
-                    
                 else:
-                    if chName == 'next' or chName == 'fext' or chName == 'xtalk':
+                    if chName in ['next', 'fext', 'xtalk']:
                         continue
 
         
@@ -181,7 +180,7 @@ def applyCrossTalk(simSettings: simulationSettings, simResults: simulationStatus
 
                     # Normalize distribution
                     total = np.sum(tmpDist)
-                    if total!=0:
+                    if total != 0:
                         tmpDist = tmpDist/total
                     
                     
@@ -231,7 +230,7 @@ def makeAsynch(syncChannel,samplesPerSymb,yAxisLength):
 def applyDistortion(simSettings: simulationSettings, simResults: simulationStatus):
 
     # Apply distortion only if desired
-    if not simSettings.transmitter.distortion.addDistortion and not simSettings.receiver.distortion.addDistortion: return 
+    if not (simSettings.transmitter.distortion.addDistortion or simSettings.receiver.distortion.addDistortion): return 
         
     # Import variables
     samplesPerSymb = simSettings.general.samplesPerSymb.value
@@ -279,10 +278,7 @@ def applyDistortion(simSettings: simulationSettings, simResults: simulationStatu
 def applyJitter(simSettings: simulationSettings, simResults: simulationStatus):
 
     # Add jitter only if desired
-    if not simSettings.transmitter.jitter.addJitter and \
-            not simSettings.receiver.jitter.addJitter:
-        return 
-    
+    if not (simSettings.transmitter.jitter.addJitter or simSettings.receiver.jitter.addJitter): return 
     
     # Import variables
     samplesPerSymb = simSettings.general.samplesPerSymb.value
@@ -322,7 +318,7 @@ def applyJitter(simSettings: simulationSettings, simResults: simulationStatus):
         # Ensure distribution adds up to 1 in vertical axis
         for index in range(len(xAxis)-1):
             total = np.sum(PDF.jitter.__dict__[transName][:,index])
-            if total !=0:
+            if total != 0:
                 PDF.jitter.__dict__[transName][:,index] = PDF.jitter.__dict__[transName][:,index]/total
 
     # Save results
@@ -336,9 +332,9 @@ def applyJitter(simSettings: simulationSettings, simResults: simulationStatus):
 def applyNoise(simSettings: simulationSettings, simResults: simulationStatus):
  
     # Add noise only if desired
-    if not simSettings.transmitter.noise.addNoise and\
-            not simSettings.channel.noise.addNoise and\
-            not simSettings.receiver.noise.addNoise:
+    if not (simSettings.transmitter.noise.addNoise or\
+            simSettings.channel.noise.addNoise or\
+            simSettings.receiver.noise.addNoise):
         return 
     
     

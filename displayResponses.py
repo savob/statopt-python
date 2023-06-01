@@ -75,19 +75,12 @@ def displayChannels(simSettings: simulationSettings, simResults: simulationStatu
 #   A plot of the CTLE transfer function
 #
 ###########################################################################
-
-from userSettingsObjects import simulationSettings
-from initializeSimulation import simulationStatus
-import matplotlib.pyplot as plt
-import numpy as np
-
 def displayCTLEResponse(simSettings: simulationSettings, simResults: simulationStatus):
     
     # Plot only if desired
     if not simSettings.general.plotting.CTLEResponse: return 
 
     # Import variables
-    symbolRate = simSettings.general.symbolRate.value
     zeroFreq   = simSettings.receiver.CTLE.zeroFreq.value
     pole1Freq  = simSettings.receiver.CTLE.pole1Freq.value
     zeroName     = ('z' + str(zeroFreq/1e9)).replace('.', '_')

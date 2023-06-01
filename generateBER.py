@@ -50,7 +50,7 @@ def generateBER(simSettings: simulationSettings, simResults: simulationStatus):
         generateHorizontalBathtub(simResults)
         
     except:
-        # Create empty structure
+        # Create empty structure if BER generation failed
         createEmptyStruct(simResults)
 
 
@@ -154,7 +154,6 @@ def combineTransitions(PDF,signalingMode,levelNumb,yAxisLength,samplesPerSymb):
 def findEyeLocations(simSettings: simulationSettings, simResults: simulationStatus):
 
     # Import variables
-    yAxisLength = simSettings.general.yAxisLength.value
     eyeNumb = simSettings.general.samplerNumb.value
     BER = simResults.eyeGeneration.BER.contours.combined
 

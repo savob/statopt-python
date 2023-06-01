@@ -26,8 +26,6 @@ from initializeSimulation import simulationStatus
 import control.matlab as ml
 import numpy as np
 import scipy.stats as stats
-from scipy import io
-import scipy as sp
 
 def generateVariableInfluence(simSettings: simulationSettings, simResults: simulationStatus):
     ml.use_matlab_defaults() # Needed to ensure compatibility with MATLAB expectations for control code
@@ -51,7 +49,6 @@ def generateVariableInfluence(simSettings: simulationSettings, simResults: simul
     combineInfluences(simSettings, simResults)
 
 class CTLE:
-
     def __init__(self, tf, mag, ph, freq):
         self.transferFunc = tf
         self.magnitude = mag
@@ -78,7 +75,7 @@ def generateCTLE(simSettings: simulationSettings, simResults: simulationStatus):
     poleName     = ('z' + str(pole1Freq/1e9)).replace('.', '_')
     
     # Define CTLE transfer function
-    if(addEqualization):
+    if addEqualization:
 
         # Determine if TF already calculated
         if 'RXCTLE' in simResults.influenceSources.__dict__:
@@ -97,7 +94,7 @@ def generateCTLE(simSettings: simulationSettings, simResults: simulationStatus):
         
         
         # Return if CTLE already calculated
-        if (calculated): return
+        if calculated: return
         
         # Calculate new TF
         else:
@@ -209,13 +206,13 @@ def generateTXNoise(simSettings: simulationSettings, simResults: simulationStatu
 
         # Calculate equivalent noise at receiver output
         powerDistribution = powerDistribution * (abs(channelTF) ** 2)
-        if(usePreAmp):
+        if usePreAmp:
             powerDistribution = powerDistribution * (gain ** 2)
         
-        if(useCTLE):
+        if useCTLE:
             powerDistribution = powerDistribution * (CTLEMagnitude ** 2)
         
-        if(useFFE):
+        if useFFE:
             powerDistribution = powerDistribution * (FFERMS ** 2)
         
         freqIncrement = channelFreqs[2]-channelFreqs[1]
@@ -235,13 +232,13 @@ def generateTXNoise(simSettings: simulationSettings, simResults: simulationStatu
         # Calculate equivalent noise at receiver output
         freqIndex = np.interp(sineFreq, channelFreqs, np.arange(len(channelFreqs)))
         sineAmp = sineAmp*abs(np.interp(freqIndex, np.arange(len(channelTF)),channelTF))
-        if(usePreAmp):
+        if usePreAmp:
             sineAmp = sineAmp*gain
         
-        if(useCTLE):
+        if useCTLE:
             sineAmp = sineAmp*abs(np.interp(freqIndex, np.arange(len(channelTF)),CTLEMagnitude))
         
-        if(useFFE):
+        if useFFE:
             sineAmp = sineAmp*FFERMS**2
         
         # Generate sine distribution
@@ -254,7 +251,7 @@ def generateTXNoise(simSettings: simulationSettings, simResults: simulationStatu
 
     # Convolve both noise types
     totalNoise = np.convolve(randNoise,sineNoise)
-    if(len(totalNoise)<2*supplyVoltage/yIncrement):
+    if len(totalNoise) < 2*supplyVoltage/yIncrement:
        totalNoise = np.concatenate((np.zeros((round(yAxisLength/2),)), totalNoise, np.zeros((round(yAxisLength/2),))))
     
     voltageScale = np.linspace(-(len(totalNoise)-1)/2*yIncrement, (len(totalNoise)-1)/2*yIncrement, len(totalNoise)+1)
@@ -301,13 +298,13 @@ def generateChannelNoise(simSettings: simulationSettings, simResults: simulation
         powerDistribution = noiseDensity * freqIncrement * np.ones((len(CTLE.frequency),))
 
         # Calculate equivalent noise at receiver output
-        if(usePreAmp):
+        if usePreAmp:
             powerDistribution = powerDistribution * (gain ** 2)
         
-        if(useCTLE):
+        if useCTLE:
             powerDistribution = powerDistribution * (CTLE.magnitude ** 2)
         
-        if(useFFE):
+        if useFFE:
             powerDistribution = powerDistribution * (FFERMS ** 2)
         
         outputPower = np.sum(powerDistribution)
@@ -363,13 +360,13 @@ def generateRXNoise(simSettings: simulationSettings, simResults: simulationStatu
         powerDistribution = np.ones((len(CTLE.frequency),))*(power/len(CTLE.frequency))
         
         # Calculate output refered noise output
-        if(useCTLE):
+        if useCTLE:
             powerDistribution = powerDistribution * (CTLE.magnitude ** 2)
         
-        if(usePreAmp):
+        if usePreAmp:
             powerDistribution = powerDistribution * (gain ** 2)
         
-        if(useFFE):
+        if useFFE:
             powerDistribution = powerDistribution * (FFERMS ** 2)
         
         outputPower = np.sum(powerDistribution)
@@ -388,13 +385,13 @@ def generateRXNoise(simSettings: simulationSettings, simResults: simulationStatu
         # Calculate equivalent noise at receiver output
         freqIndex = np.interp(sineFreq, CTLE.frequency, np.arange(len(CTLE.frequency)))
         sineAmp = sineAmp*abs(np.interp(freqIndex, np.arange(len(CTLE.magnitude)), CTLE.magnitude))
-        if(usePreAmp):
+        if usePreAmp:
             sineAmp = sineAmp * gain
         
-        if(useCTLE):
+        if useCTLE:
             sineAmp = sineAmp * abs(np.interp(freqIndex, np.arange(len(CTLE.magnitude)), CTLE.magnitude))
         
-        if(useFFE):
+        if useFFE:
             sineAmp = sineAmp * (FFERMS ** 2)
         
         # Generate sine distribution

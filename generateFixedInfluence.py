@@ -69,7 +69,6 @@ def createChannel(simSettings: simulationSettings, simResults: simulationStatus)
 
     # Import variables
     samplePeriod     = simSettings.general.samplePeriod.value
-    symbolPeriod     = simSettings.general.symbolPeriod.value
     samplesPerSymb   = simSettings.general.samplesPerSymb.value
     tRise            = simSettings.transmitter.tRise.value
     preCursorCount   = simSettings.transmitter.preCursorCount.value

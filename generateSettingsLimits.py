@@ -37,9 +37,9 @@ def generateSettingsLimits(simSettings: simulationSettings):
 def addLimits(targetValue: valueWithLimits,max,min,increment):
 
     # Set the limits 'inplace' if a value other than '[]' is passed in    
-    if(not isinstance(max, list)): targetValue.maxValue = max
-    if(not isinstance(min, list)): targetValue.minValue = min
-    if(not isinstance(increment, list)): targetValue.increment = increment
+    if not isinstance(max, list): targetValue.maxValue = max
+    if not isinstance(min, list): targetValue.minValue = min
+    if not isinstance(increment, list): targetValue.increment = increment
 
 
 ###########################################################################

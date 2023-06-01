@@ -69,7 +69,7 @@ def applyPulse(simSettings: simulationSettings, simResults: simulationStatus):
     includeSourceImpedance = simSettings.transmitter.includeSourceImpedance
     
     # Create pulse
-    if (includeSourceImpedance):
+    if includeSourceImpedance:
         pulse = np.concatenate((np.zeros((preCursorCount,)), [pulseVoltage/2], np.zeros((postCursorCount,))))
     else:
         pulse = np.concatenate((np.zeros((preCursorCount,)), [pulseVoltage], np.zeros((postCursorCount,))))
@@ -427,7 +427,7 @@ def applyRXFFE(simSettings: simulationSettings, simResults: simulationStatus):
             inputSignals.__dict__[chName] = inputSignals.__dict__[chName] # This is likely redundant
 
             # Skip required channels
-            if (approximate):
+            if approximate:
                 if chName != 'thru' and chName != 'xtalk':
                     continue
                 
@@ -549,10 +549,10 @@ def limitLength(simSettings,simResults):
         
         # Skip required channels
         if approximate:
-            if chName != 'thru' and chName != 'xtalk':
+            if chName not in ['thru', 'xtalk']:
                 continue
         else:
-            if chName == 'next' or chName == 'fext' or chName == 'xtalk':
+            if chName in ['next', 'fext', 'xtalk']:
                 continue
         
         # Locate pulse peak

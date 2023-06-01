@@ -300,7 +300,6 @@ def logResults(simResults):
 
     # Import variables
     currentResult  = simResults.adaption.currentResult
-    log            = simResults.adaption.log
     simNumb        = simResults.adaption.simNumb
     generationNumb = simResults.adaption.generationNumb
     optimalResult  = simResults.adaption.optimalResult
@@ -309,7 +308,8 @@ def logResults(simResults):
     # Add other results
     row = logEntry(simNumb, adaptMode, generationNumb, currentResult.name, \
                 currentResult.results.BER, currentResult.results.minEyeHeight, \
-                optimalResult.results.BER, optimalResult.results.minEyeHeight, currentResult.successful)
+                optimalResult.results.BER, optimalResult.results.minEyeHeight, 
+                currentResult.successful)
 
     # Add knob settings
     knobs = currentResult.knobs.__dict__
@@ -351,7 +351,7 @@ def displayResult(simSettings: simulationSettings, simResults: simulationStatus,
         
         headings = currentResult.knobs.__dict__
         for heading in headings:
-            if heading != 'receiver_preAmp_gain' and heading != 'receiver_FFE_taps_main':
+            if heading not in ['receiver_preAmp_gain', 'receiver_FFE_taps_main']:
                 value = currentResult.knobs.__dict__[heading]
                 if value > 1e3:
                     print('{0:s}: {1:.2e}'.format(heading,value))
@@ -381,7 +381,7 @@ def decideNextAction(simSettings: simulationSettings, simResults: simulationStat
         if not simResults.adaption.currentResult.successful:
             #beep
             answer = input('Would you like the adaption to continue without an initial condition? (Y/N) ')
-            if not (answer == 'y' or answer == 'Y'):
+            if answer not in ['y', 'Y']:
                 print('----------Simulation Canceled----------')
                 quit()
     
@@ -650,10 +650,9 @@ def createChildren(simSettings,generations,genNumb,childrenPerParent,totalParent
 
 
 ###########################################################################
-# This function will randomly select a new set of settings. It the
-# limitRandomness input is set to True, the randomness will be restricted.
-# To ensure the same knob combination is not resimulated, each combination 
-# is compared with previous simulations.
+# This function will randomly select a new set of settings. To ensure the 
+# same knob combination is not resimulated, each combination is compared 
+# with previous simulations.
 ###########################################################################
 def createMutations(simSettings,generations,genNumb,totalPopulation,log):
     

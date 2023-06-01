@@ -60,10 +60,10 @@ def measureDataLevs(simSettings: simulationSettings, simResults: simulationStatu
         # Find data levels
         try:
             spacing = 2
-            locations, prop = spsig.find_peaks(PDF[:,BER.eyeLocs.X], distance=spacing)
+            locations, _ = spsig.find_peaks(PDF[:,BER.eyeLocs.X], distance=spacing)
             while(len(locations)>levelCount):
                 spacing = spacing+2
-                locations, prop = spsig.find_peaks(PDF[:,BER.eyeLocs.X], distance=spacing)
+                locations, _ = spsig.find_peaks(PDF[:,BER.eyeLocs.X], distance=spacing)
             
             if len(locations) != levelCount:
                print('Warning: Cannot find data levels!')
@@ -154,7 +154,6 @@ def measureEyeSizes(simSettings: simulationSettings, simResults: simulationStatu
         eyeDims.eye0.widthUI = 0
         eyeDims.eye0.area = 0
         
-    
 
     # Save results
     simResults.results.BER = BER

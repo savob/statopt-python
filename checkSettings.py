@@ -107,13 +107,13 @@ def checkAdaptionSettings(simSettings: simulationSettings):
     checkLimits(simSettings.adaption.mode2Generations, 'adaption.mode2Generations')
     adaption=simSettings.adaption
 
-    if (adaption.totalParents.value + adaption.childrenPerParent.value * adaption.totalParents.value + adaption.totalMutations.value != adaption.totalPopulation.value):
+    if adaption.totalParents.value + adaption.childrenPerParent.value * adaption.totalParents.value + adaption.totalMutations.value != adaption.totalPopulation.value:
         error('adaption population groups must add up to total population!')
     
-    if (adaption.mode1Generations.value==0 and adaption.mode2Generations.value == 0):
+    if adaption.mode1Generations.value==0 and adaption.mode2Generations.value == 0:
         error('adaption must have at least one generation!')
     
-    if (simSettings.adaption.adapt):
+    if simSettings.adaption.adapt:
         if simSettings.adaption.knobs == False: # Empty lists are False
             error('adaption is desired however no knobs are specified!')
         
@@ -139,7 +139,7 @@ def checkAdaptionSettings(simSettings: simulationSettings):
         if pole1Tuned ^ zeroTuned: # XOR
             error('if adapting CTLE settings, must add both zero and pole1 frequency knobs!')
         
-        if(simSettings.channel.overrideResponse):
+        if simSettings.channel.overrideResponse:
             error('equalization has no effect when overwriting pulse response!')
         
     
@@ -283,7 +283,7 @@ def checkLimits(setting: valueWithLimits, nameOfsetting: str):
         error('{0} ({2:f}) must not excede {1:f}!'.format(nameOfsetting, setting.maxValue, setting.value))
     elif (not isnan(setting.minValue)) and setting.value < setting.minValue:
         error('{0} ({2:f}) must be larger than {1:f}!'.format(nameOfsetting, setting.minValue, setting.value))
-    elif (not isnan(setting.increment)):
+    elif not isnan(setting.increment):
 
         # Check if the value meets some specific increment from a baseline
         baseline = 0
