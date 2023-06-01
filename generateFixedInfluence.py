@@ -119,8 +119,8 @@ def createChannel(simSettings: simulationSettings, simResults: simulationStatus)
         # Create frequency response
         tranFunc = np.fft.fft(pulseResponse)
         freqs = np.linspace(0, 1/samplePeriod, len(tranFunc)+1)
-        endIndex = len(tranFunc) / 2
-        tranFunc = tranFunc[0:endIndex]
+        endIndex = int(len(tranFunc) / 2)
+        tranFunc = tranFunc[:endIndex]
         freqs = freqs[0:endIndex]
 
         # Save results
