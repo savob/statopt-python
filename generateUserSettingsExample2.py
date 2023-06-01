@@ -107,7 +107,7 @@ def generateUserSettings() -> simulationSettings:
     simSettings.transmitter.EQ.taps.pre2  = valueWithLimits(-0.00)
     simSettings.transmitter.EQ.taps.pre1  = valueWithLimits( 0.15)
     simSettings.transmitter.EQ.taps.main  = valueWithLimits( 1.00) # calculated automatically
-    simSettings.transmitter.EQ.taps.post1 = valueWithLimits( 0.15)
+    simSettings.transmitter.EQ.taps.post1 = valueWithLimits(-0.15)
     simSettings.transmitter.EQ.taps.post2 = valueWithLimits(-0.00)
     simSettings.transmitter.EQ.taps.post3 = valueWithLimits(-0.00)
     simSettings.transmitter.EQ.taps.post4 = valueWithLimits(-0.00)
@@ -156,14 +156,23 @@ def generateUserSettings() -> simulationSettings:
     simSettings.channel.makeAsynchronous = True
 
     # Channel file names (ensure channel data has same frequency points)
-    simSettings.channel.fileNames.thru = 'C2M__Z100_IL14_WC_BOR_H_L_H_THRU.s4p'
-    simSettings.channel.fileNames.next1 = 'C2M__Z100_IL14_WC_BOR_H_L_H_NEXT1.s4p'
-    simSettings.channel.fileNames.next2 = 'C2M__Z100_IL14_WC_BOR_H_L_H_NEXT2.s4p'
-    simSettings.channel.fileNames.next3 = 'C2M__Z100_IL14_WC_BOR_H_L_H_NEXT3.s4p'
-    simSettings.channel.fileNames.next4 = 'C2M__Z100_IL14_WC_BOR_H_L_H_NEXT4.s4p'
-    simSettings.channel.fileNames.fext1 = 'C2M__Z100_IL14_WC_BOR_H_L_H_FEXT1.s4p'
-    simSettings.channel.fileNames.fext2 = 'C2M__Z100_IL14_WC_BOR_H_L_H_FEXT2.s4p'
-    simSettings.channel.fileNames.fext3 = 'C2M__Z100_IL14_WC_BOR_H_L_H_FEXT3.s4p'
+    simSettings.channel.fileNames.thru  = 'TEC_Whisper27in_THRU_G14G15_07202016.s4p'
+    simSettings.channel.fileNames.next1 = 'TEC_Whisper27in_NEXT_H17H18_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.next2 = 'TEC_Whisper27in_NEXT_H14H15_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.next3 = 'TEC_Whisper27in_NEXT_H11H12_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.next4 = 'TEC_Whisper27in_NEXT_G17G18_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.next5 = 'TEC_Whisper27in_NEXT_G11G12_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.next6 = 'TEC_Whisper27in_NEXT_F17F18_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.next7 = 'TEC_Whisper27in_NEXT_F14F15_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.next8 = 'TEC_Whisper27in_NEXT_F11F12_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.fext1 = 'TEC_Whisper27in_FEXT_H17H18_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.fext2 = 'TEC_Whisper27in_FEXT_H14H15_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.fext3 = 'TEC_Whisper27in_FEXT_H11H12_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.fext4 = 'TEC_Whisper27in_FEXT_G17G18_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.fext5 = 'TEC_Whisper27in_FEXT_G11G12_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.fext6 = 'TEC_Whisper27in_FEXT_F17F18_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.fext7 = 'TEC_Whisper27in_FEXT_F14F15_to_G14G15_07212016.s4p'
+    simSettings.channel.fileNames.fext8 = 'TEC_Whisper27in_FEXT_F11F12_to_G14G15_07212016.s4p'
 
     # Noise
     simSettings.channel.noise.addNoise = True

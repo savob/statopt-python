@@ -32,6 +32,20 @@ The motivation for having this feature is to allow for the easy importing and ta
 
 # Credit for Provided Channels
 
-The channels distributed with StatEye and used in the examples were provided for research use by Samtec from their work: "100 GEL C2M Flyover Host Files: Tp0 to Tp2, with and without manufacturing variations, for losses of 9, 10, 11, 12, 13, and 14 dB Losses." IEEE 802.3ck 100 Gb/s per Lane Electrical Study Group. 18-May-2018.
+The channels distributed with StatEye and used in the examples were provided for research use by other researchers, credit for them is as follows.
+
+## "C2M_Z100_IL14_WC_BOR_H_L_H_" Files
+
+*Used in examples 0, 1, 3 and 4.*
+
+Samtec from their work: "100 GEL C2M Flyover Host Files: Tp0 to Tp2, with and without manufacturing variations, for losses of 9, 10, 11, 12, 13, and 14 dB Losses." IEEE 802.3ck 100 Gb/s per Lane Electrical Study Group. 18-May-2018.
 
 The presentation itself is available [here](https://grouper.ieee.org/groups/802/3/ck/public/18_05/mellitz_3ck_02_0518.pdf), all the channel files we used and the others they prepared for that presentation are in [this dataset](https://grouper.ieee.org/groups/802/3/ck/public/tools/c2m/mellitz_3ck_01_0518_C2M.zip). They have additional channel file sets available on their [group's page](https://grouper.ieee.org/groups/802/3/ck/public/tools/index.html).
+
+## "TEC_Whisper27in_" Files
+
+*Used in example 2.*
+
+TE Connectivity from their work: "100 Gb/s Measured Backplane Channels" for the March 2011 IEEE 802 LMSC Plenary Session presented by Megha Shanbhag.
+
+The presentation itself is available [here](http://www.ieee802.org/3/100GCU/public/mar11/shanbhag_01a_0311.pdf), the channel files originate from [this dataset](https://www.ieee802.org/3/100GCU/public/ChannelData/TEC_11_0401/shanbhag_01_0411.zip). They are posted alongside other channel datasets as part of their [task force's page](https://www.ieee802.org/3/100GCU/public/channel.html).
