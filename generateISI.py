@@ -67,10 +67,10 @@ def generateISI(simSettings: simulationSettings, simResults: simulationStatus):
         
         # Skip required channels
         if approximate:
-            if chName != 'thru' and chName != 'xtalk':
+            if chName not in['thru', 'xtalk']:
                 continue
         else:
-            if chName == 'next' or chName == 'fext' or chName == 'xtalk':
+            if chName in ['next', 'fext', 'xtalk']:
                 continue
             
         
@@ -98,7 +98,7 @@ def generateCursorCombinations(cursorCount, signalingMode, modulation, levelNumb
     ISI = nothing()
 
     # Create combinations with DC component
-    if signalingMode == 'standard' or signalingMode == '1+D' or signalingMode == '1+0.5D':
+    if signalingMode in ['standard', '1+D', '1+0.5D']:
         for combination in range(modulation**cursorCount):
             baseM = np.base_repr(combination, base=modulation) # create base-M value from combination
 
@@ -148,7 +148,7 @@ def clasifyTrajectories(ISI, preCursorCount, signalingMode):
         preCursor  = name[preCursorCount+0]
         mainCursor = name[preCursorCount+1]
         postCursor = name[preCursorCount+2]
-        if signalingMode == '1+D' or signalingMode == '1+0.5D':
+        if signalingMode in ['1+D', '1+0.5D']:
             if not ('trans'+postCursor+mainCursor) in classifiedISI.__dict__:
                 setattr(classifiedISI, ('trans'+postCursor+mainCursor), nothing())
             if not name in classifiedISI.__dict__[('trans'+postCursor+mainCursor)].__dict__:

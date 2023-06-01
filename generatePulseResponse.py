@@ -110,13 +110,11 @@ def applyTXEQ(simSettings: simulationSettings, simResults: simulationStatus):
             successful = False
         else:
             successful = True
-        
 
         # Ensure main tap is largest
         for tapName in taps.__dict__:
             if tapName != 'main' and abs(taps.__dict__[tapName].value) >= abs(main):
                 successful = False
-            
         
         simResults.results.successful = successful
 
@@ -277,13 +275,11 @@ def applyRXGain(simSettings: simulationSettings, simResults: simulationStatus):
         
         # Skip required channels
         if approximate:
-            if chName != 'thru' and chName != 'xtalk':
+            if chName not in ['thru', 'xtalk']:
                 continue
         else:
-            if chName == 'next' or chName == 'fext' or chName == 'xtalk':
+            if chName in ['next', 'fext', 'xtalk']:
                 continue
-            
-        
         
         # Amplify signal
         inputSignal = inputSignals.__dict__[chName]
@@ -327,10 +323,10 @@ def applyRXCTLE(simSettings: simulationSettings, simResults: simulationStatus):
         
         # Skip required channels
         if approximate:
-            if chName != 'thru' and chName != 'xtalk':
+            if chName not in ['thru', 'xtalk']:
                 continue
         else:
-            if chName == 'next' or chName == 'fext' or chName == 'xtalk':
+            if chName in ['next', 'fext', 'xtalk']:
                 continue
         
         # Apply CTLE
@@ -428,11 +424,10 @@ def applyRXFFE(simSettings: simulationSettings, simResults: simulationStatus):
 
             # Skip required channels
             if approximate:
-                if chName != 'thru' and chName != 'xtalk':
+                if chName not in ['thru', 'xtalk']:
                     continue
-                
             else:
-                if chName == 'next' or chName == 'fext' or chName == 'xtalk':
+                if chName in ['next', 'fext', 'xtalk']:
                     continue
 
             # Convolve signal with equalizer (why wasn't 'convole' used here? Will keep as it was for now)
