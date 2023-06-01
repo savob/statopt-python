@@ -28,11 +28,10 @@
 #   
 ###########################################################################
 
-import time # Used for timing exectution
-import matplotlib.pyplot as plt
-
 from generateUserSettingsExample0 import generateUserSettings # Change the 'from' file to desired file
 
+import time # Used for monitoring execution time
+import matplotlib.pyplot as plt
 from generateSettingsLimits import generateSettingsLimits
 from initializeSimulation import initializeSimulation
 from checkSettings import checkSettings
