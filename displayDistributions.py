@@ -527,8 +527,6 @@ def plotHorizontalBathtub(simSettings: simulationSettings, simResults: simulatio
     bathTubs = simResults.eyeGeneration.BER.bathTubX
     
     # Display bathtub
-    
-    legText = []
     tubs = list(bathTubs.__dict__)
     for index in range(len(tubs)-1, -1, -1):
         tubName = tubs[index]
@@ -542,6 +540,7 @@ def plotHorizontalBathtub(simSettings: simulationSettings, simResults: simulatio
     curPlot.set_title('Horizontal Bathtub')
     curPlot.set_ylabel('BER')
     curPlot.set_xlabel('Time [s]')
+    curPlot.set_xlim((min(xAxisCenter), max(xAxisCenter)))
     curPlot.grid(True)
     if len(tubs) > 1:
         curPlot.legend()

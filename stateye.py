@@ -28,7 +28,7 @@
 #   
 ###########################################################################
 
-from generateUserSettingsExample2 import generateUserSettings # Change the 'from' file to desired file
+from generateUserSettingsExample0 import generateUserSettings # Change the 'from' file to desired file
 
 import time # Used for monitoring execution time
 import matplotlib.pyplot as plt
