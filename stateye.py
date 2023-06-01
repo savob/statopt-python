@@ -53,11 +53,8 @@ print('\n----------Preparing Simulation----------')
 startTime = time.time() # Get start clock time
 
 simSettings = generateUserSettings()
-print('Simulation settings Loaded')
 generateSettingsLimits(simSettings)
-print('Simulation settings limits set')
 simResults = initializeSimulation(simSettings) # Really just adds a bunch of settings and prepares simulation result object
-print('User-dependant settings generated')
 checkSettings(simSettings)
 
 doneLoadingTime = time.time() # Mark time once data is loaded and verified
@@ -120,7 +117,7 @@ print('\n----------Simulation Complete----------')
 endTime = time.time()
 
 print('{:.3f} seconds elapsed since starting the script:'.format(endTime - startTime))
-print('\t{:8.3f} to load and verify in simulation parameters'.format(doneLoadingTime - startTime))
+print('\t{:8.3f} to load in and verify simulation parameters'.format(doneLoadingTime - startTime))
 print('\t{:8.3f} to prepare fixed system influences'.format(doneFixedTime - doneLoadingTime))
 print('\t{:8.3f} to run simulation and adaption'.format(doneSimTime - doneFixedTime))
 print('\t{:8.3f} to output data'.format(endTime - doneSimTime))
