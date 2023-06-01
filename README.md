@@ -16,7 +16,9 @@ By default, an equalized PAM-4 link has been created. This link is ready to simu
 
 Operation of the StatEye tool is meant to be simple. The majority of user effort is in configuring the simulation to suit one's needs. The general flow for setting up and running a simulation is as follows.
 
-1. Upload desired Touchstone (`.s4p`) files and/or `.mat` files to describe distortion or pulses. *Note: Touchstone files for channels need to go into the `/touchstone/` folder.*
+1. Upload desired Touchstone (`.s4p`) files and/or `.mat` files to describe distortion or pulses.
+   - Files for channels need to go into the `/channels/` folder. *(Both `.s4p` and `.mat` channel descriptions).* 
+   - All others (predefined pulses, distortion, etc.) are to be kept in the base directory, alongside this readme file.
 2. Configure simulation settings to match desired parameters. Check the example files for baseline configurations.
    - Refer to desired files for channels
    - Set desired output plots

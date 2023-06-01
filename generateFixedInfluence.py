@@ -138,7 +138,7 @@ def createChannel(simSettings: simulationSettings, simResults: simulationStatus)
 
             # Import keystone (.s4p) channel data
             if fileName[-4:] == '.s4p':
-                fileAddress = os.path.join('.', 'touchstone', fileName)
+                fileAddress = os.path.join('.', 'channels', fileName)
                 backplane = rf.Network(fileAddress)
 
                 freqs = backplane.f
