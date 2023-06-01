@@ -144,7 +144,7 @@ def applyTXEQ(simSettings: simulationSettings, simResults: simulationStatus):
     # Change signal to continuous time
     outputSignal= np.zeros((samplesPerSymb*len(discreteSignal),))
     for index in range(len(discreteSignal)):
-       outputSignal[index*samplesPerSymb:(index+1)*samplesPerSymb-1] = discreteSignal[index]
+       outputSignal[index*samplesPerSymb:(index+1)*samplesPerSymb] = discreteSignal[index]
     
     
     # Save results
@@ -513,10 +513,10 @@ def applyRXDFE(simSettings: simulationSettings, simResults: simulationStatus):
 
                 if signalingMode == '1+D' or signalingMode == '1+0.5D':
                     startIdx = round(peakLoc+(position-1)*samplesPerSymb)
-                    endIdx = round(peakLoc+position*samplesPerSymb-1)
+                    endIdx = round(peakLoc+position*samplesPerSymb)
                 else:
                     startIdx = round(peakLoc+(position-0.5)*samplesPerSymb)
-                    endIdx = round(peakLoc+(position+0.5)*samplesPerSymb-1)
+                    endIdx = round(peakLoc+(position+0.5)*samplesPerSymb)
                 
                 startIdx = max(min(startIdx,len(outputSignal)-samplesPerSymb),1)
                 endIdx = max(min(endIdx,len(outputSignal)),samplesPerSymb)
@@ -581,7 +581,7 @@ def limitLength(simSettings,simResults):
         if endIdx > len(pulses.__dict__[chName]):
             pulses.__dict__[chName] = np.concatenate((pulses.__dict__[chName], np.zeros((endIdx-len(pulses.__dict__[chName]),))))
         else:
-            pulses.__dict__[chName] = pulses.__dict__[chName][0:endIdx]
+            pulses.__dict__[chName] = pulses.__dict__[chName][:endIdx]
         
         
         # Adjust beginning
