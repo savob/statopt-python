@@ -24,12 +24,11 @@ Operation of the StatEye tool is meant to be simple. The majority of user effort
    - Select the parameters to be adjusted in the adaption process, if enabled
 3. Adjust the `stateye.py` script to read the simulation configuration function from the desired simulation file.
 4. Run the `stateye.py` script.
-   - Users may be asked whether or not to update the previously saved channel information. **This is needed if the Touchstone files are updated**, but can be skipped in most cases.
    - If the simulation is expected to take a long time, the user will need to confirm that they want the simulation to proceed.
 5. Wait for the simulation to complete.
 6. Enjoy the results!
 
-*Tip: To increase the speed of the simulation, reduce the number of impulse response pre and postcursors. This will reduce the accuracy of the final results.*
+*Tip: To increase the speed of the simulation, reduce the number of impulse response pre- and post-cursors. Do note that this will reduce the accuracy of the final results.*
 
 ## Example Outputs
 
@@ -175,17 +174,10 @@ There are many knobs that can have an effect on the simulation, here is a comple
 |`receiver.distortion.addDistortion`  |  Add receiver linear distortion |
 |`receiver.distortion.fileName`       |  File specifying 1-to-1 voltage mapping (structure containing "input" and "output" vectors of same length) |
 
-# Remaining Work
+# Future Work
 
-- [x] Fix up and validate the adaption system
-- [x] Perform more varied tests of the system
-- [x] Polish up the figure formatting. E.g. prevent axes labels overlapping adjacent plots when the window is sized smaller.
-- [x] Port more example configurations for users
-- [x] Update and upload documentation for operation based on the "readme"s from MATLAB
-- [x] Clean up comments and disclaimers in files
-- [ ] Verify accuracy of system simulation (pulse and CTLE responses)
-- [ ] Investigate the use of an alternative, more interactive graphics library like [pyqt](https://www.pyqtgraph.org/) or [Altair](https://altair-viz.github.io/index.html)
-- [x] Improve installation process. Perhaps preparing this as a package for Anaconda or pip.
+- [ ] Investigate the use of an alternative, more interactive graphics library for figures like [pyqt](https://www.pyqtgraph.org/) or [Altair](https://altair-viz.github.io/index.html)
+- [ ] Consider allowing the chaining of `.s4p` files to allow systems to be more flexible. For example allowing one to change the transmission line but keeping the same die-to-pad channel.
 
 # Dependancies
 
@@ -205,6 +197,6 @@ These can all be automatically installed/verified to be the right versions using
 
 # Credit
 
-Originally written in MATLAB by Jeremy Cosson-Martin and Jhoan Salinas for Ali Sheikholeslami's research group. Porting to Python was done by Savo Bajic as a project for Ali Sheikholeslami's wireline course, ECE1392, based on version 1.11 of StatEye in MATLAB.
+Originally written in MATLAB by Jeremy Cosson-Martin and Jhoan Salinas for Ali Sheikholeslami's research group. Porting to Python was done by Savo Bajic as a project for Ali Sheikholeslami's wireline course, ECE1392, based on version 1.11 of StatEye in MATLAB, although it has been updated since in parallel with the MATLAB version.
 
 The Touchstone files used for examples were provided by Samtec as part of the IEEE 802.3ck 100 Gb/s per Lane Electrical Study Group. More information is available in the [Touchstone folder readme](/touchstone/readme.md).
