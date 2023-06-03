@@ -1,6 +1,6 @@
-# StatEye Simulation
+# StatOpt
 
-Statistical eye modelling tool, StatEye, ported to Python 3. Uses statistical methods to model various wireline effects to estimate the performance of different wireline link configurations, provides estimates for Bit Error Rates, Eye dimensions, as well as various plots relating to link performance. 
+StatOpt is a statistical eye modelling and link optimization tool for wireline communications, originally developed in MATLAB, now ported to Python 3. Uses statistical methods to model various wireline effects to estimate the performance of different link configurations, provides estimates for Bit Error bates, eye dimensions, as well as various plots relating to link performance. 
 
 By default, an equalized PAM-4 link has been created. This link is ready to simulate out of the box. Enjoy!
 
@@ -14,7 +14,7 @@ By default, an equalized PAM-4 link has been created. This link is ready to simu
 
 # Operation
 
-Operation of the StatEye tool is meant to be simple. The majority of user effort is in configuring the simulation to suit one's needs. The general flow for setting up and running a simulation is as follows.
+Operation of the StatOpt tool is meant to be simple. The majority of user effort is in configuring the simulation to suit one's needs. The general flow for setting up and running a simulation is as follows.
 
 1. Upload desired Touchstone (`.s4p`) files and/or `.mat` files to describe distortion or pulses.
    - Files for channels need to go into the `/channels/` folder. *(Both `.s4p` and `.mat` channel descriptions).* 
@@ -24,8 +24,8 @@ Operation of the StatEye tool is meant to be simple. The majority of user effort
    - Set desired output plots
    - Adjust the amount of taps in equalizers
    - Select the parameters to be adjusted in the adaption process, if enabled
-3. Adjust the `stateye.py` script to read the simulation configuration function from the desired simulation file.
-4. Run the `stateye.py` script.
+3. Adjust the `statopt.py` script to read the simulation configuration function from the desired simulation file.
+4. Run the `statopt.py` script.
    - If the simulation is expected to take a long time, the user will need to confirm that they want the simulation to proceed.
 5. Wait for the simulation to complete.
 6. Enjoy the results!
@@ -199,6 +199,6 @@ These can all be automatically installed/verified to be the right versions using
 
 # Credit
 
-Originally written in MATLAB by Jeremy Cosson-Martin and Jhoan Salinas for Ali Sheikholeslami's research group. Porting to Python was done by Savo Bajic as a project for Ali Sheikholeslami's wireline course, ECE1392, based on version 1.11 of StatEye in MATLAB, although it has been updated since in parallel with the MATLAB version.
+Originally written in MATLAB by Jeremy Cosson-Martin and Jhoan Salinas for Ali Sheikholeslami's research group. Porting to Python was done by Savo Bajic as a project for Ali Sheikholeslami's wireline course, ECE1392, based on version 1.11 in MATLAB, although it has been updated since in parallel with the MATLAB version.
 
 The Touchstone files used for examples were provided by Samtec as part of the IEEE 802.3ck 100 Gb/s per Lane Electrical Study Group. More information is available in the [Touchstone folder readme](/touchstone/readme.md).

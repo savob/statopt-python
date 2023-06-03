@@ -32,7 +32,7 @@ The motivation for having this feature is to allow for the easy importing and ta
 
 # Credit for Provided Channels
 
-The channels distributed with StatEye and used in the examples were provided for research use by other researchers, credit for them is as follows.
+The channel descriptions distributed with this program and used in the examples were provided for research use by other researchers, credit for them is as follows.
 
 ## "C2M_Z100_IL14_WC_BOR_H_L_H_" Files
 

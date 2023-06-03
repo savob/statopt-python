@@ -1,6 +1,6 @@
 ###########################################################################
 #
-#   StatEye Simulator
+#   StatOpt Simulator
 #   by Jeremy Cosson-Martin, Jhoan Salinas of
 #   Ali Sheikholeslami's group
 #   Ported to Python 3 by Savo Bajic
