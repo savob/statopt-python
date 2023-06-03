@@ -442,7 +442,7 @@ def plotEyeContours(simSettings: simulationSettings, simResults: simulationStatu
         breaks.append(1e-3)
 
         # Plot contours and prepare legend information using proxy artists to record colour
-        CS = curPlot.contour(X,Y,distribution, breaks, colors=coloursList, linewidth=1)
+        CS = curPlot.contour(X,Y,distribution, breaks, colors=coloursList, linewidths=[1.0])
         proxy = [plt.Rectangle((0,0),1,1,fc = pc.get_edgecolor()) for pc in CS.collections]
 
     # Add legend based on style
