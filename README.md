@@ -181,6 +181,9 @@ There are many knobs that can have an effect on the simulation, here is a comple
 
 - [ ] Investigate the use of an alternative, more interactive graphics library for figures like [pyqt](https://www.pyqtgraph.org/) or [Altair](https://altair-viz.github.io/index.html)
 - [ ] Consider allowing the chaining of `.s4p` files to allow systems to be more flexible. For example allowing one to change the transmission line but keeping the same die-to-pad channel.
+- [ ] Speed up simulation of RX CTLE step. **Currently `lsim` is responsible for 90% of run time during adaption.**
+  - Attempt to parallelize its operation across all channels in a given link configuration
+  - Consider replacing `lsim` with a covolution operation like what is done for pulse response generation. This is probably what goes on inside `lsim` but we could avoid repeatly calculating this repsonse by recording it the first time for a given CTLE. Then whenever the response is needed, read it from memory and convole which is much faster than recalculating the impulse reponse repeatedly.
 
 # Dependancies
 
