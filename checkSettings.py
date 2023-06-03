@@ -345,8 +345,7 @@ def checkSimTime(simSettings: simulationSettings):
         calculations = pow(modulation.value, cursorCount.value)
     
     
-    # Determine approximate simulation time
-    # TODO: #1 Update these coefficients with tests from Python (these are the ones taken from MATLAB)
+    # Estimate approximate simulation time
     simTime = []
     simTime.append(0.8 * chanNumb)                                     # Generate sources
     simTime.append(2e-2 * chanNumb)                                    # Generate pulse response
