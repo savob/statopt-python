@@ -217,7 +217,11 @@ def measureCOM(simResults: simulationStatus):
             signalHeight = dLevs[index+1]-dLevs[index]
             eyeHeight = eyes.__dict__['eye' + str(index)].height
             noiseHeight = signalHeight-eyeHeight
-            comTmp = 20*np.log10(signalHeight/noiseHeight)
+            try:
+                comTmp = 20*np.log10(signalHeight/noiseHeight)
+            except:
+                print("Issue getting COM with signalHeight of {0:f} and noiseHeight of {1:f}. Setting COM for this to -1000.".format(signalHeight, noiseHeight))
+                comTmp = -1000
             
             # Save worst COM
             if index == 0 or comTmp < com: com = comTmp 
