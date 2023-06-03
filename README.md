@@ -177,13 +177,6 @@ There are many knobs that can have an effect on the simulation, here is a comple
 |`receiver.distortion.addDistortion`  |  Add receiver linear distortion |
 |`receiver.distortion.fileName`       |  File specifying 1-to-1 voltage mapping (structure containing "input" and "output" vectors of same length) |
 
-# Future Work
-
-- [ ] Investigate the use of an alternative, more interactive graphics library for figures like [pyqt](https://www.pyqtgraph.org/) or [Altair](https://altair-viz.github.io/index.html)
-- [ ] Consider allowing the chaining of `.s4p` files to allow systems to be more flexible. For example allowing one to change the transmission line but keeping the same die-to-pad channel.
-- [ ] Speed up simulation of RX CTLE step. **Currently `lsim` is responsible for 90% of run time during adaption.**
-  - Attempt to parallelize its operation across all channels in a given link configuration
-  - Consider replacing `lsim` with a covolution operation like what is done for pulse response generation. This is probably what goes on inside `lsim` but we could avoid repeatly calculating this repsonse by recording it the first time for a given CTLE. Then whenever the response is needed, read it from memory and convole which is much faster than recalculating the impulse reponse repeatedly.
 
 # Dependancies
 
@@ -201,6 +194,14 @@ These can all be automatically installed/verified to be the right versions using
 
 *NOTE: This may run on earlier versions of the packages and Python, but it has only been extensively tested on Python 3.10 with the package versions specified as the minimums in `requirements.txt`.*
 
+# Future Work
+
+- [ ] Investigate the use of an alternative, more interactive graphics library for figures like [pyqt](https://www.pyqtgraph.org/) or [Altair](https://altair-viz.github.io/index.html)
+- [ ] Consider allowing the chaining of `.s4p` files to allow systems to be more flexible. For example allowing one to change the transmission line but keeping the same die-to-pad channel.
+- [ ] Speed up simulation of RX CTLE step. **Currently `lsim` is responsible for 90% of run time during adaption.**
+  - Attempt to parallelize its operation across all channels in a given link configuration
+  - Consider replacing `lsim` with a covolution operation like what is done for pulse response generation. This is probably what goes on inside `lsim` but we could avoid repeatly calculating this repsonse by recording it the first time for a given CTLE. Then whenever the response is needed, read it from memory and convole which is much faster than recalculating the impulse reponse repeatedly.
+  
 # Credit
 
 Originally written in MATLAB by Jeremy Cosson-Martin and Jhoan Salinas for Ali Sheikholeslami's research group. Porting to Python was done by Savo Bajic as a project for Ali Sheikholeslami's wireline course, ECE1392, based on version 1.11 in MATLAB, although it has been updated since in parallel with the MATLAB version.
