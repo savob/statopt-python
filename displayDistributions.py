@@ -81,11 +81,11 @@ def displayISI(simSettings: simulationSettings, simResults: simulationStatus):
         # Add additional point to stich eyes together
         trajectory = orderTraj.__dict__[comb]
 
-        trajectory1 = trajectory[int(samplesPerSymb/2)+1:]
+        trajectory1 = trajectory[int(samplesPerSymb/2):]
         velocity = trajectory1[-1]-trajectory1[-2]
         trajectory1 = np.concatenate((trajectory1, [trajectory1[-1]+velocity]))
 
-        trajectory2 = trajectory[:int(samplesPerSymb/2)-1]
+        trajectory2 = trajectory[:int(samplesPerSymb/2)]
         velocity = trajectory2[1]-trajectory2[0]
         trajectory2 = np.concatenate(([trajectory2[0]-velocity], trajectory2))
 
@@ -97,17 +97,17 @@ def displayISI(simSettings: simulationSettings, simResults: simulationStatus):
             if np.mod(numbSymb,2) == 0:
 
                 # Plot left half
-                xIndex = np.arange(symb*samplesPerSymb, (symb+0.5)*samplesPerSymb, 1)
+                xIndex = np.arange(symb*samplesPerSymb, (symb+0.5)*samplesPerSymb + 1, 1)
                 xAxis = xIndex*samplePeriod
                 plt.plot(xAxis,trajectory1)
 
                 # Plot right half
-                xIndex = np.arange((symb+0.5)*samplesPerSymb, (symb+1)*samplesPerSymb, 1)
+                xIndex = np.arange((symb+0.5)*samplesPerSymb, (symb+1)*samplesPerSymb + 1, 1)
                 xAxis = xIndex*samplePeriod
                 plt.plot(xAxis,trajectory2)
             else:
                 # Plot full eye
-                xIndex = np.arange(symb*samplesPerSymb, (1+symb)*samplesPerSymb, 1)
+                xIndex = np.arange(symb*samplesPerSymb, (1+symb)*samplesPerSymb + 1, 1)
                 xAxis = xIndex*samplePeriod
                 plt.plot(xAxis,trajectory3)
 
