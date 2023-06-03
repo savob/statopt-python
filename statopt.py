@@ -113,7 +113,7 @@ displayResults(simSettings, simResults)
 displayAdaption(simSettings, simResults)
 
 # End Simulation
-print('\n----------Simulation Complete----------')
+print('\a\n----------Simulation Complete----------') # 'Bell' character, '\a', to ring when done
 endTime = time.time()
 
 print('{:.3f} seconds elapsed since starting the script:'.format(endTime - startTime))
