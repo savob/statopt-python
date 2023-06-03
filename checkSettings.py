@@ -345,16 +345,15 @@ def checkSimTime(simSettings: simulationSettings):
         calculations = pow(modulation.value, cursorCount.value)
     
     
-    # Determine approximate simulation time
-    # TODO: #1 Update these coefficients with tests from Python (these are the ones taken from MATLAB)
+    # Estimate approximate simulation time
     simTime = []
     simTime.append(0.8 * chanNumb)                                     # Generate sources
     simTime.append(2e-2 * chanNumb)                                    # Generate pulse response
     simTime.append(3.2e-4 * chanNumb * calculations)                   # Generate ISI
     simTime.append(0.6 * chanNumb * modulation.value)                  # Generate PDF
     simTime.append(0.5)                                                # Generate BER
-    simTime.append(0.7 * chanNumb * totalSimulations.value * adapt)    # Adaption
-    simTime.append(2.0)                                                # Plotting (assumes plotting channel, impulse, CTLE, PDF and BER)
+    simTime.append(1.0 * chanNumb * totalSimulations.value * adapt)    # Adaption
+    simTime.append(3.0)                                                # Plotting (assumes plotting channel, impulse, CTLE, PDF and BER)
     
     # Total the time
     totalTime = sum(simTime)
@@ -364,7 +363,7 @@ def checkSimTime(simSettings: simulationSettings):
     if totalTime > 5*60 :
         print('\a') # Print bell character to try triggering a notification on the user's end
         answer = input('The simulation is expected to take {:.0f} minutes. Are you sure you would like to continue? (Y/N) '.format(totalTime/60))
-        if not (answer == 'y' or answer == 'Y'):
+        if answer not in ['y', 'Y']:
             print('\n----------Simulation Canceled----------')
             quit()
         
