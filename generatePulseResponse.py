@@ -553,12 +553,9 @@ def limitLength(simSettings,simResults):
         # Locate pulse peak
         pulse = np.round(pulses.__dict__[chName], 6)
 
-        # I feel like this logic just results in finding the middle of the pulse everytime but it is like this in StatEye, since 
-        peakLoc1 = findPeakPulse(pulse)
-        peakLoc2 = findPeakPulse(np.flip(pulse))
-
-        peakLoc2 = len(pulse)-peakLoc2+1
-        peakLoc = round(np.mean([peakLoc1, peakLoc2]))
+        # In MATLAB the pulse was read from both ends to find the center of a pulse (if it was a plateau).
+        # With SciPy this not not needed, it returns the center of a peak by default instead of the leading edge
+        peakLoc = findPeakPulse(pulse)
 
         # Limit length
         if signalingMode == '1+D':
