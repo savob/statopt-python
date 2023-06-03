@@ -94,7 +94,8 @@ def generateHist(simSettings: simulationSettings, simResults: simulationStatus):
                 if trajectories.__dict__[chName].__dict__[transName] == []:
                     trajectories.__dict__[chName].__dict__[transName] = ISI.__dict__[chName].__dict__[transName].__dict__[comb].trajectory 
                 else:
-                    trajectories.__dict__[chName].__dict__[transName] = np.vstack((trajectories.__dict__[chName].__dict__[transName], ISI.__dict__[chName].__dict__[transName].__dict__[comb].trajectory))
+                    trajectories.__dict__[chName].__dict__[transName] = np.hstack((trajectories.__dict__[chName].__dict__[transName], ISI.__dict__[chName].__dict__[transName].__dict__[comb].trajectory)) # Use hstack and transpose for slight speed boost
+            trajectories.__dict__[chName].__dict__[transName] = np.transpose(trajectories.__dict__[chName].__dict__[transName])
         
         # Create transition-classified histogram from matrix
         for transName in transitions:
