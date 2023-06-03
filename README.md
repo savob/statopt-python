@@ -34,31 +34,32 @@ Operation of the StatOpt tool is meant to be simple. The majority of user effort
 
 ## Example Outputs
 
-The following output plots are generated using the configuration in `generateUserSettingsExample0.py`.
+The following output plots are generated using the configuration in `generateUserSettingsExample0.py`. *Note: Distortion and ISI Trajectory plots are not plotted by default when executing the example as provided. Distortion is not actually enabled for it (by default) and ISI trajectories takes a very long time to render.*
 
-Plots related to the system's characteristics
+### System Response characteristics
 
 ![Channel responses](./media/Channel_Responses.png)
 ![CTLE Responses](./media/CTLE_Response.png)
-
-The pulse response of the system, there are some slight deviations from the MATLAB version due to the different approaches taken to model it. In MATLAB a polynomial was fit to the frequency resonse, however in Python the discrete time response based on frequency response was used with no curve fitting.
-
 ![Pulse Response](./media/Pulse_Response.png)
 
-Using the pulse response with the different possible data strings to record the different possible inter-symbol interference trajectories for the system, to take.
+### Inter-Symbol Interference
+
+Using the pulse response with the different possible data strings to record the different possible inter-symbol interference trajectories for the system to take.
 
 ![ISI Trajectories](./media/ISI_Trajectories.png)
 
-Plots of the various influences on the system.
+### Influences on the System 
 
 ![Jitter](./media/Jitter_Distribution.png)
 ![Noise](./media/Noise_Distribution.png)
 ![Distortion](./media/Non-Linearity.png)
 
-The final probability density distribution and analysis.
+*Note: in example 0 distortion is not enabled by default, hence the simple distortion curves.*
+
+### Final Probability Density and Bit Error Rate
 
 ![PDF](./media/PDF_Plot.png)
-![BER](./media/BER_Plot.png)
+![BER](./media/BER_Plot_(on_PDF).png)
 
 # Knob Definitions
 
@@ -82,7 +83,7 @@ There are many knobs that can have an effect on the simulation, here is a comple
 |`general.plotting.jitterSource`      |  Display jitter distribution |
 |`general.plotting.noiseSource`       |  Display noise distribution |
 |`general.plotting.distortionSource`  |  Display linear distortion |
-|`general.plotting.ISI`               |  Display trace eye diagram (CAREFUL: THIS CAN TAKE A LONG TIME TO DISPLAY) |
+|`general.plotting.ISI`               |  Display trace eye diagram **(CAREFUL: THIS CAN TAKE A LONG TIME TO DISPLAY)** |
 |`general.plotting.PDFInitial`        |  Display impairment-free eye diagram |
 |`general.plotting.PDFCrossTalk`      |  Display eye diagram after adding cross-talk |
 |`general.plotting.PDFDistorted`      |  Display eye diagram after adding linear distortion |
