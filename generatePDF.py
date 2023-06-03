@@ -77,11 +77,10 @@ def generateHist(simSettings: simulationSettings, simResults: simulationStatus):
 
         # Skip required channels
         if approximate:
-            if chName != 'thru' and chName != 'xtalk':
+            if chName not in ['thru', 'xtalk']:
                 continue
-            
         else:
-            if chName == 'next' or chName == 'fext' or chName == 'xtalk':
+            if chName in ['next', 'fext', 'xtalk']:
                 continue
         
         # Combine trajectories into a single matrix
@@ -103,9 +102,9 @@ def generateHist(simSettings: simulationSettings, simResults: simulationStatus):
                 # Not that in MATLAB the bins are defined by center-points, while in Python they are the edges.
                 yAxisLong = np.concatenate((yAxis, [yAxis[-1] + yIncrement])) - yIncrement/2 # add additional bin to remove clipping
                 if trajectories.__dict__[chName].__dict__[transName].ndim > 1:
-                    histogram, edges = np.histogram(trajectories.__dict__[chName].__dict__[transName][:,index], yAxisLong)
+                    histogram, _ = np.histogram(trajectories.__dict__[chName].__dict__[transName][:,index], yAxisLong)
                 else:
-                    histogram, edges = np.histogram(trajectories.__dict__[chName].__dict__[transName][index], yAxisLong)
+                    histogram, _ = np.histogram(trajectories.__dict__[chName].__dict__[transName][index], yAxisLong)
                 normalized = histogram / len(transitions) # Normalize for all transitions
 
                 if PDF.initial.__dict__[chName].__dict__[transName] == []:
@@ -203,7 +202,7 @@ def applyCrossTalk(simSettings: simulationSettings, simResults: simulationStatus
 # instance, normalizes the summation and then sets all time instance to the
 # same distribution.
 ###########################################################################
-def makeAsynch(syncChannel,samplesPerSymb,yAxisLength):
+def makeAsynch(syncChannel,samplesPerSymb,yAxisLength) -> np.ndarray:
 
     # Sum all time instance probabilities
     asyncChannel = np.zeros((yAxisLength,samplesPerSymb))

@@ -61,7 +61,6 @@ def generateISI(simSettings: simulationSettings, simResults: simulationStatus):
         # Clasify ISI trajectories classified by transition
         transitions = clasifyTrajectories(combinations, preCursorCount, signalingMode)
     
-    
     # Loop through each available channel file
     for chName in pulses.__dict__:
         
@@ -72,16 +71,15 @@ def generateISI(simSettings: simulationSettings, simResults: simulationStatus):
         else:
             if chName in ['next', 'fext', 'xtalk']:
                 continue
-            
-        
+
         # Split pulse into symbol portions
         splitPul = splitPulse(pulses.__dict__[chName], preCursorCount, postCursorCount, samplesPerSymb)
 
         # Apply cursor combinations to the split pulse response
         # Need to make a copy to have seperate objects for each channel
-        temp = applyCursorCombination(transitions,splitPul,samplesPerSymb)
-        temp2 = copy.deepcopy(temp)
-        setattr(result, chName, temp2)
+        temp = copy.deepcopy(transitions) # Copy to new object before it gets filled with more data
+        applyCursorCombination(temp, splitPul, samplesPerSymb)
+        setattr(result, chName, temp)
     
     
     # Save results
@@ -210,6 +208,4 @@ def applyCursorCombination(ISI, splitPulse, samplesPerSymb):
             for pos in range(len(vector)):
                 offset = splitPulse.__dict__[cursors[pos]] * vector[pos] # multiply cursor by data levels
                 ISI.__dict__[transName].__dict__[comb].trajectory = ISI.__dict__[transName].__dict__[comb].trajectory + offset
-            
-    return ISI    
     
