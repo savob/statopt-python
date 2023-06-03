@@ -353,8 +353,8 @@ def checkSimTime(simSettings: simulationSettings):
     simTime.append(3.2e-4 * chanNumb * calculations)                   # Generate ISI
     simTime.append(0.6 * chanNumb * modulation.value)                  # Generate PDF
     simTime.append(0.5)                                                # Generate BER
-    simTime.append(0.7 * chanNumb * totalSimulations.value * adapt)    # Adaption
-    simTime.append(2.0)                                                # Plotting (assumes plotting channel, impulse, CTLE, PDF and BER)
+    simTime.append(1.0 * chanNumb * totalSimulations.value * adapt)    # Adaption
+    simTime.append(3.0)                                                # Plotting (assumes plotting channel, impulse, CTLE, PDF and BER)
     
     # Total the time
     totalTime = sum(simTime)
