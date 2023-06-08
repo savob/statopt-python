@@ -199,7 +199,7 @@ def plotDistribution(simSettings,simResults,distribution,name):
     
     
     # Create figure
-    plt.figure(dpi=200, num='PDF Plot', layout="constrained")
+    plt.figure(dpi=200, num=name, layout="constrained")
     if name == 'Constellation Distribution':
         contLevels = contLevels/2
         X, Y = np.meshgrid(yAxis,yAxis)
