@@ -86,34 +86,31 @@ def generateHist(simSettings: simulationSettings, simResults: simulationStatus):
         # Combine trajectories into a single matrix
         transitions = ISI.__dict__[chName].__dict__
         for transName in transitions:
-            setattr(PDF.initial.__dict__[chName], transName, [])
 
-            trajectories.__dict__[chName].__dict__[transName]=[]
-            cursorComb = ISI.__dict__[chName].__dict__[transName].__dict__
-            for comb in cursorComb:
-                if trajectories.__dict__[chName].__dict__[transName] == []:
-                    trajectories.__dict__[chName].__dict__[transName] = ISI.__dict__[chName].__dict__[transName].__dict__[comb].trajectory 
-                else:
-                    trajectories.__dict__[chName].__dict__[transName] = np.hstack((trajectories.__dict__[chName].__dict__[transName], ISI.__dict__[chName].__dict__[transName].__dict__[comb].trajectory)) # Use hstack and transpose for slight speed boost
-            trajectories.__dict__[chName].__dict__[transName] = np.transpose(trajectories.__dict__[chName].__dict__[transName])
+            cursorComb = list(ISI.__dict__[chName].__dict__[transName].__dict__)
+
+            # Prepare matrix to avoid dynamically resizing
+            trajectoryVectorLength = len(ISI.__dict__[chName].__dict__[transName].__dict__[cursorComb[0]].trajectory)
+            trajectories.__dict__[chName].__dict__[transName] = np.zeros((len(cursorComb), trajectoryVectorLength))
+
+            for index, comb in enumerate(cursorComb):
+                trajectories.__dict__[chName].__dict__[transName][index, :] = ISI.__dict__[chName].__dict__[transName].__dict__[comb].trajectory      
         
         # Create transition-classified histogram from matrix
         for transName in transitions:
-            for index in range(samplesPerSymb):
+
+            # Statically define matrix
+            PDF.initial.__dict__[chName].__dict__[transName] = np.zeros((len(yAxis), samplesPerSymb))
+
+            for count, index in enumerate(range(samplesPerSymb)):
                 # Not that in MATLAB the bins are defined by center-points, while in Python they are the edges.
                 yAxisLong = np.concatenate((yAxis, [yAxis[-1] + yIncrement])) - yIncrement/2 # add additional bin to remove clipping
                 if trajectories.__dict__[chName].__dict__[transName].ndim > 1:
                     histogram, _ = np.histogram(trajectories.__dict__[chName].__dict__[transName][:,index], yAxisLong)
                 else:
                     histogram, _ = np.histogram(trajectories.__dict__[chName].__dict__[transName][index], yAxisLong)
-                normalized = histogram / len(transitions) # Normalize for all transitions
-
-                if PDF.initial.__dict__[chName].__dict__[transName] == []:
-                    PDF.initial.__dict__[chName].__dict__[transName] = normalized
-                else:
-                    PDF.initial.__dict__[chName].__dict__[transName] = np.vstack((PDF.initial.__dict__[chName].__dict__[transName], normalized))
-        
-            PDF.initial.__dict__[chName].__dict__[transName] =  np.transpose(PDF.initial.__dict__[chName].__dict__[transName])
+                
+                PDF.initial.__dict__[chName].__dict__[transName][:, count] = histogram / len(transitions) # Normalize for all transitions
                 
     # Save results
     simResults.eyeGeneration.PDF = PDF # reset previous PDF
@@ -172,9 +169,8 @@ def applyCrossTalk(simSettings: simulationSettings, simResults: simulationStatus
                 
 
                 # Loop through each sample
-                temp = []
                 for time in range(samplesPerSymb):
-
+                    
                     # Convolute channels together
                     tmpDist = np.convolve(newPDF.crossTalk.__dict__[transName][:,time], disturbance[:,time])
 
@@ -183,15 +179,8 @@ def applyCrossTalk(simSettings: simulationSettings, simResults: simulationStatus
                     if total != 0:
                         tmpDist = tmpDist/total
                     
-                    
                     # Size convolution to match yAxis length
-                    if temp == []:
-                        temp = tmpDist[int((len(tmpDist)-yAxisLength)/2) : int(-(len(tmpDist)-yAxisLength)/2)] 
-                    else:
-                        temp = np.vstack((temp, tmpDist[int((len(tmpDist)-yAxisLength)/2) : int(-(len(tmpDist)-yAxisLength)/2)]))
-                
-                newPDF.crossTalk.__dict__[transName] = np.transpose(temp)
-        
+                    newPDF.crossTalk.__dict__[transName][:, time] = tmpDist[int((len(tmpDist)-yAxisLength)/2) : int(-(len(tmpDist)-yAxisLength)/2)]
 
     # Save results
     simResults.eyeGeneration.PDF = newPDF
