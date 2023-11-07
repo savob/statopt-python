@@ -182,11 +182,11 @@ There are many knobs that can have an effect on the simulation, here is a comple
 
 In addition to running Python 3.10 or newer, the following libraries are needed to run this code:
 
-- [NumPy](https://numpy.org/install/)
-- [SciPy](https://scipy.org/install/)
-- [matplotlib](https://matplotlib.org/stable/users/getting_started/index.html#installation-quick-start)
+- [NumPy](https://numpy.org/)
+- [SciPy](https://scipy.org/)
+- [matplotlib](https://matplotlib.org/stable/)
 - [scikit-rf](https://github.com/scikit-rf/scikit-rf)
-- [Python Control Library](https://python-control.readthedocs.io/en/0.9.3.post2/intro.html)
+- [Python Control Library](https://python-control.readthedocs.io/en/)
 
 These can all be automatically installed/verified to be the right versions using the following command in the project directory:
 
@@ -200,7 +200,7 @@ These can all be automatically installed/verified to be the right versions using
 - [ ] Consider allowing the chaining of `.s4p` files to allow systems to be more flexible. For example allowing one to change the transmission line but keeping the same die-to-pad channel.
 - [ ] Speed up simulation of RX CTLE step. **Currently `lsim` is responsible for 90% of run time during adaption.**
   - Attempt to parallelize its operation across all channels in a given link configuration
-  - Consider replacing `lsim` with a covolution operation like what is done for pulse response generation. This is probably what goes on inside `lsim` but we could avoid repeatly calculating this repsonse by recording it the first time for a given CTLE. Then whenever the response is needed, read it from memory and convole which is much faster than recalculating the impulse reponse repeatedly.
+  - Consider replacing `lsim` with a convolution operation like what is done for pulse response generation. This is probably what goes on inside `lsim` but we could avoid repeatly calculating this repsonse by recording it the first time for a given CTLE. Then whenever the response is needed, read it from memory and convole which is much faster than recalculating the impulse reponse repeatedly.
   
 # Credit
 
