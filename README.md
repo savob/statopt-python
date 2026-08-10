@@ -1,3 +1,6 @@
+>[!WARNING]
+> I prepared as a project for a class during my masters studies, however I am no longer maintaining it. I am merely keeping it posted so if anyone finds it they can consider addressing some of the issues I noticed, and so there is a greater chance someone finds out about this and can then get in contact with the group led by [Prof. Ali Sheikholeslami](https://www.eecg.utoronto.ca/~ali/) that I prepared this for to get [more information](https://www.eecg.utoronto.ca/~ali/statopt/main.html). They should be considered the real maintainers.
+
 # StatOpt
 
 StatOpt is a statistical eye modelling and link optimization tool for wireline communications, originally developed in MATLAB, now ported to Python 3. Uses statistical methods to model various wireline effects to estimate the performance of different link configurations, provides estimates for Bit Error bates, eye dimensions, as well as various plots relating to link performance. 
